@@ -1,27 +1,34 @@
 Package: MACE
 Title: MACE_PGK
 Version: 0.0.0.9000
-Authors@R: person('Marco', 'Ferrari', email = 'm.ferrari20@imperial.ac.uk', role = c('cre', 'aut'))
-Description: App to analyse locomotor activity data from circadian cabinets.
+Authors@R: 
+    person(given = "Marco",
+           family = "Ferrari",
+           role = c("cre", "aut"),
+           email = "m.ferrari20@imperial.ac.uk")
+Description: App to analyse locomotor activity data from circadian
+    cabinets.
 License: MIT + file LICENSE
 Imports: 
-    attempt,
+    attachment,
     config (>= 0.3.1),
-    DT,
-    glue,
+    dplyr,
     golem (>= 0.3.1),
-    htmltools,
-    processx,
+    magrittr,
+    pryr,
+    shinipsum,
     shiny (>= 1.6.0),
-    thinkr
-Encoding: UTF-8
-LazyData: true
-RoxygenNote: 7.1.1
+    shinydashboard,
+    shinydashboardPlus
 Suggests: 
-    rmarkdown,
     knitr,
+    rmarkdown,
     spelling,
     testthat (>= 3.0.0)
+VignetteBuilder: 
+    knitr
 Config/testthat/edition: 3
+Encoding: UTF-8
 Language: en-US
-VignetteBuilder: knitr
+LazyData: true
+RoxygenNote: 7.1.2
