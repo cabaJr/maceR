@@ -2,7 +2,7 @@
 % Please edit documentation in R/run_app.R
 \name{run_app}
 \alias{run_app}
-\title{Run the Shiny Application}
+\title{MACE}
 \usage{
 run_app(
   onStart = NULL,
@@ -37,5 +37,8 @@ expression in order for the match to be considered successful.}
 See `?golem::get_golem_options` for more details.}
 }
 \description{
+add description
+}
+\details{
 Run the Shiny Application
 }
