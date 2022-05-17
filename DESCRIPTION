@@ -8,7 +8,7 @@ Authors@R:
            email = "m.ferrari20@imperial.ac.uk")
 Description: App to analyse locomotor activity data from circadian
     cabinets.
-License: MIT + file LICENSE
+License: AGPL (>= 3)
 Imports: 
     attachment,
     config (>= 0.3.1),
