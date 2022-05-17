@@ -20,11 +20,11 @@
 ## 
 golem::fill_desc(
   pkg_name = "MACE", # The Name of the package containing the App 
-  pkg_title = "PKG_TITLE", # The Title of the package containing the App 
-  pkg_description = "PKG_DESC.", # The Description of the package containing the App 
-  author_first_name = "AUTHOR_FIRST", # Your First Name
-  author_last_name = "AUTHOR_LAST", # Your Last Name
-  author_email = "AUTHOR@MAIL.COM", # Your Email
+  pkg_title = "MACE_PGK", # The Title of the package containing the App 
+  pkg_description = "App to analyse locomotor activity data from circadian cabinets.", # The Description of the package containing the App 
+  author_first_name = "Marco", # Your First Name
+  author_last_name = "Ferrari", # Your Last Name
+  author_email = "m.ferrari20@imperial.ac.uk", # Your Email
   repo_url = NULL # The URL of the GitHub Repo (optional) 
 )     
 

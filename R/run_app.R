@@ -1,8 +1,10 @@
 #' Run the Shiny Application
 #'
+#' @title MACE
 #' @param ... arguments to pass to golem_opts. 
 #' See `?golem::get_golem_options` for more details.
 #' @inheritParams shiny::shinyApp
+#' @description add description
 #'
 #' @export
 #' @importFrom shiny shinyApp
