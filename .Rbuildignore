@@ -7,3 +7,11 @@ $run_dev.*
 ^LICENSE\.md$
 ^README\.Rmd$
 ^CODE_OF_CONDUCT\.md$
+^\.github$
+^\.travis\.yml$
+^\.gitlab-ci\.yml$
+^appveyor\.yml$
+^\.circleci$
+^\.circleci/config\.yml$
+^Makefile$
+^Jenkinsfile$
