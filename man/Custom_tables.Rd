@@ -13,6 +13,48 @@ container of R6 objects generator
 \details{
 Custom_tables
 }
+\examples{
+
+## ------------------------------------------------
+## Method `Custom_tables$HHActivity`
+## ------------------------------------------------
+
+HHActivity(env)
+CheckIf
+
+
+## ------------------------------------------------
+## Method `Custom_tables$checkIf`
+## ------------------------------------------------
+
+write examples
+behavrTable
+
+
+## ------------------------------------------------
+## Method `Custom_tables$behavrTable`
+## ------------------------------------------------
+
+write expamples of behavrTable application
+dailyAct
+
+
+## ------------------------------------------------
+## Method `Custom_tables$dailyAct`
+## ------------------------------------------------
+
+dailyAct(env)
+computePer
+
+
+## ------------------------------------------------
+## Method `Custom_tables$computePer`
+## ------------------------------------------------
+
+provide examples on how to call the function for the different 
+    period analyses available with different params
+    
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
@@ -37,6 +79,11 @@ compile}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-compile}{\code{Custom_tables$compile()}}
+\item \href{#method-HHActivity}{\code{Custom_tables$HHActivity()}}
+\item \href{#method-checkIf}{\code{Custom_tables$checkIf()}}
+\item \href{#method-behavrTable}{\code{Custom_tables$behavrTable()}}
+\item \href{#method-dailyAct}{\code{Custom_tables$dailyAct()}}
+\item \href{#method-computePer}{\code{Custom_tables$computePer()}}
 \item \href{#method-clone}{\code{Custom_tables$clone()}}
 }
 }
@@ -58,6 +105,168 @@ compile}
 \subsection{Returns}{
 
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-HHActivity"></a>}}
+\if{latex}{\out{\hypertarget{method-HHActivity}{}}}
+\subsection{Method \code{HHActivity()}}{
+function to create tibble with mouse activity daily grouped in 
+    30 minutes bins
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Custom_tables$HHActivity(env)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{env}}{App_settings environment}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{HHActivity(env)
+CheckIf
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-checkIf"></a>}}
+\if{latex}{\out{\hypertarget{method-checkIf}{}}}
+\subsection{Method \code{checkIf()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Custom_tables$checkIf(funEnv, subsetPlot)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{funEnv}}{env containing App_settings}
+
+\item{\code{subsetPlot}}{Yes/No value}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{write examples
+behavrTable
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-behavrTable"></a>}}
+\if{latex}{\out{\hypertarget{method-behavrTable}{}}}
+\subsection{Method \code{behavrTable()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Custom_tables$behavrTable(x, subsetVal)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{App_settings environment}
+
+\item{\code{subsetVal}}{Yes/No value if to subset dataset or not}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{write expamples of behavrTable application
+dailyAct
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-dailyAct"></a>}}
+\if{latex}{\out{\hypertarget{method-dailyAct}{}}}
+\subsection{Method \code{dailyAct()}}{
+function to generate the sum of the activity for each day and
+    store it on a table.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Custom_tables$dailyAct(env)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{env}}{environment containing myCleanMice object}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{dailyAct(env)
+computePer
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-computePer"></a>}}
+\if{latex}{\out{\hypertarget{method-computePer}{}}}
+\subsection{Method \code{computePer()}}{
+function to analyse data generated with behavrTable() to 
+    extract period lenght in data if present.
+    Describe Analysis methods and link to papers that compare the different
+    methods
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Custom_tables$computePer(method, periodRange, funenv)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{method}}{method to choose. Available are: "chi_sq_periodogram", 
+"ac_periodogram", "ls_periodogram".}
+
+\item{\code{periodRange}}{numeric,}
+
+\item{\code{funenv}}{Not used?}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{provide examples on how to call the function for the different 
+    period analyses available with different params
+    
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

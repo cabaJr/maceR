@@ -82,7 +82,7 @@ app_server <- function( input, output, session ) {
     output$Analysis <- render_tabItem_ui(tabname = "Analysis",
                                          text = "Analysis",
                                          icon = "sliders-h")
-    # initialize menù in yourData tab
+    # initialize menu in yourData tab
     update_DS_ui(session, "serietype", "2")
     move_tab(session, "YourData")
     showModal(modalDialog("Your data are ready", title = "Data", easyClose = TRUE))
@@ -109,7 +109,7 @@ app_server <- function( input, output, session ) {
     }else{}
   })
   
-  #open/close subsetting parameters in DataStructure tab box 1
+## open/close subsetting parameters in DataStructure tab box 1
   observeEvent(input$serieType, { 
     case <- input$serieType
       switch(case,
@@ -117,7 +117,7 @@ app_server <- function( input, output, session ) {
              "Time points" = {update_DS_ui(session, "serietype", 2)})
   })
   
-  observeEvent(input$DFsubsetRT, { #need to add function for closing
+  observeEvent(input$DFsubsetRT, { ## need to add function for closing
     case <- input$DFsubsetRT
     switch(case,
            "Yes" = update_DS_ui(session, "subsetting", "1"),
@@ -138,6 +138,76 @@ app_server <- function( input, output, session ) {
            "Real time" = {update_DS_ui(session, "subsetting", "3")},
            "Time points" = {update_DS_ui(session, "subsetting", "4")})
     }else{update_DS_ui(session, "subsetting", "5")}
+  })
+  
+  observeEvent(input$subsetPlot, { ## open/close subsetting parameters
+    case <- input$subsetPlot
+    if(is.null(App_settings$env2) == FALSE){ ## change this with a function
+      # switch(case, "Yes" = {App_settings$showSubsetting()}, "No" = {App_settings$clearSubsetting()})
+## add function to populate fields with corresponding info when opening 
+##     subset menu. see 1726-1753 app3.R 
+    }
+  })
+
+## add function to display list of ids subset 
+  
+# print call of single actogram plot
+  observeEvent(input$print,{
+    ## get Custom table object through App_settings
+    Custom_tables <- App_settings$env2$Custom_tables
+    ## check if table1 is already present or calculate it
+    Custom_tables$checkIf(App_settings, input$subsetPlot) #call to checker function that then calls behavrTable
+    ## get annotate environment
+    Annotate <- App_settings$env4$Annotate
+    ## function to clear all plots
+    # App_settings$clearActos()
+    ## calculate LD settings
+    App_settings$setLD(App_settings, input$LDcond , input$DDask, input$DDcond)
+    browser()
+    
+    ## add function to plot graphs
+    
+    # if ("total" %in% input$stdActogram){
+    #   shinyjs::show(id = "spin1_1", anim = FALSE)
+    #   # if(Custom_tables$cacheKeys[1,2] == Annotate$cacheKeys[1,2]){
+    #   #   output$actogram1 <- renderCachedPlot({plot1}, cacheKeyExpr = Custom_tables$table1)
+    #   # }else{
+    #   #plot actogram and store it
+    #   Annotate$plot_actogram(App_settings, "total")
+    #   plot1 <- Annotate$Actograms$acto1[[1]]
+    #   output$actogram1 <- renderCachedPlot({plot1}, cacheKeyExpr = Custom_tables$table1)
+    # }
+    # shinyjs::show(id = "actogram1", anim = FALSE)
+    # shinyjs::show(id = "actogram_1", anim = FALSE)
+    # # }
+    # if ("sex" %in% input$stdActogram){
+    #   shinyjs::show(id = "spin1_2", anim = FALSE)
+    #   #plot actogram and store it
+    #   Annotate$plot_actogram(App_settings, "sex")
+    #   plot2 <- Annotate$Actograms$acto2[[1]]
+    #   output$actogram2 <- renderCachedPlot({plot2}, cacheKeyExpr = Custom_tables$table1)
+    #   shinyjs::show(id = "actogram2", anim = FALSE)
+    #   shinyjs::show(id = "actogram_2", anim = FALSE)
+    # }
+    # if ("genotype" %in% input$stdActogram){
+    #   shinyjs::show(id = "spin1_3", anim = FALSE)
+    #   #plot actogram and store it
+    #   Annotate$plot_actogram(App_settings, "genotype")
+    #   plot3 <- Annotate$Actograms$acto3[[1]]
+    #   output$actogram3 <- renderCachedPlot({plot3}, cacheKeyExpr = Custom_tables$table1)
+    #   shinyjs::show(id = "actogram3", anim = FALSE)
+    #   shinyjs::show(id = "actogram_3", anim = FALSE)
+    # }
+    # if ("cabinet" %in% input$stdActogram){
+    #   shinyjs::show(id = "spin1_4", anim = FALSE)
+    #   #plot actogram and store it
+    #   Annotate$plot_actogram(App_settings, "cabinet")
+    #   plot4 <- Annotate$Actograms$acto4[[1]]
+    #   output$actogram4 <-renderCachedPlot({plot4}, cacheKeyExpr = Custom_tables$table1)
+    #   shinyjs::show(id = "actogram4", anim = FALSE)
+    #   shinyjs::show(id = "actogram_4", anim = FALSE)
+    # }
+    
   })
   
 #### DEBUG ########################################

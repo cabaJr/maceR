@@ -15,3 +15,5 @@ check_uploads <- function(App_settings){
   } else {check <- FALSE}
   check
 }
+
+## add check functions to generate tables

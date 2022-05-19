@@ -43,17 +43,38 @@
 #' in yourData tab works
 
 #' 17/05/2022
-#' started making dynamic rendering of DataStructure box 1 choices 
+#' started making dynamic rendering of DataStructure box 1 choices
+#' activate observers to change UI in DataStructure
 
+#' 18/05/2022
+#' activating functions in Custom_tables: Behavr_table,
+#' Connect ui to functions in Custom_tables
+#' 
+
+#' 19/05/2022
+#' finish Behavr_table activation
+#' activate HHActivity, dailyAct, computePer
+#' mod_box_plot_fct_plotter module to generate boxes to show plots
+#' 
 
 #'
 #' CODING
 #' 
-#' - activate observers to change UI in DataStructure
 #' - activate more fun in Custom_tables and Annotate
+#' - activate buttons in Analysis tab: Subsetting box and various analyses
+#'     option selection. See mod_analysis for details.
 #' - activate plotting and storing functions
-#' - restructure Data structure box 1
 #' - activate download buttons
+#' - create analysis presets (e.g. 1 periodogram, 1 daily activity, 1 periodogram, etc..)
+#' 
+#' UI
+#' 
+#' - Update landing page
+#' - Restructure Data structure box 1
+#' - redesign plotting to be more user friendly, use of boxes to display
+#'     plots. Box are generated from module call 
+#'     (mod_box_plot_ui() + mod_box_plot_server()), which generates a new box each
+#'     time is called.
 #' 
 #' WRITING
 #' 
@@ -66,4 +87,9 @@
 #' - fix buttons in DataStructure tab
 #' - fix problem with radiobuttons not showing the dot
 #' 
-#' 
+#' To do: Below the data subsetting box, create action buttons to start new 
+#'     analyses, like actogram, Daily activity, etc. Use 
+#'     shinydashboardPlus set of new ui objects to make it sexy. Each time a 
+#'     new Analysis is generated, either flip the card and ask for parameters
+#'     settings or open a box where the user can select all the parameters and
+#'     see the output.

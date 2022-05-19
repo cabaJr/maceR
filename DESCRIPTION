@@ -19,7 +19,8 @@ Imports:
     shinipsum,
     shiny (>= 1.6.0),
     shinydashboard,
-    shinydashboardPlus
+    shinydashboardPlus,
+    zeitgebr
 Suggests: 
     knitr,
     rmarkdown,

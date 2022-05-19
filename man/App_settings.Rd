@@ -443,6 +443,13 @@ Initialize_DS
 \if{html}{\out{<div class="r">}}\preformatted{App_settings$initialize_DS(server)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{server}}{is it really needed?}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 
 }
