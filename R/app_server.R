@@ -151,7 +151,7 @@ app_server <- function( input, output, session ) {
 
 ## add function to display list of ids subset 
   
-# print call of single actogram plot
+## print call of single actogram plot
   observeEvent(input$print,{
     ## get Custom table object through App_settings
     Custom_tables <- App_settings$env2$Custom_tables
@@ -161,10 +161,13 @@ app_server <- function( input, output, session ) {
     Annotate <- App_settings$env4$Annotate
     ## function to clear all plots
     # App_settings$clearActos()
+    
     ## calculate LD settings
     App_settings$setLD(App_settings, input$LDcond , input$DDask, input$DDcond)
-    browser()
-    
+    ## render Plot tab if not present
+    output$Plots <- checkPlots(App_settings)
+    ## create new box
+    insert_box("#plot_placeholder")
     ## add function to plot graphs
     
     # if ("total" %in% input$stdActogram){
@@ -210,6 +213,62 @@ app_server <- function( input, output, session ) {
     
   })
   
+  ## function to call DP Actogram printing
+  observeEvent(input$printDP, {
+    ## get Custom table object through App_settings
+    Custom_tables <- App_settings$env2$Custom_tables
+    ## check if table1 is already present or calculate it
+    Custom_tables$checkIf(App_settings, input$subsetPlot)
+    ## render Plot tab if not present
+    output$Plots <- checkPlots(App_settings)
+    ## get annotate environment
+    Annotate <- App_settings$env4$Annotate
+    ns_id <- length(Annotate$DAct_plots$DAct1)
+    output$plot_box <- shiny::renderUI(mod_box_plot_ui(ns_id))
+  })
+  
+  ## function to calculate dailyActivity()
+  observeEvent(input$dayAct, {
+    ## get Custom table object through App_settings
+    Custom_tables <- App_settings$env2$Custom_tables
+    ##compute daily activity table
+    Custom_tables$dailyAct(App_settings)
+    ## render Plot tab if not present
+    output$Plots <- checkPlots(App_settings)
+    ## get annotate environment
+    Annotate <- App_settings$env4$Annotate
+    ns_id <- length(Annotate$DAct_plots$DAct1)
+    browser()
+    output$plot_box <- shiny::renderUI(mod_box_plot_ui(ns_id))
+  })
+  
+  ##function to calcultate Periodogram
+  observeEvent(input$periodPrint, {
+    ## get Custom table object through App_settings
+    Custom_tables <- App_settings$env2$Custom_tables
+    ## check that the user has selected a function to analyse
+    #add a validate to verify the function
+    # validate(
+    #   need(input$periodFun != "", )
+    # )
+    showModal(modalDialog("select a function", title = "Help - Subset data", easyClose = TRUE))
+    ## store the selected values: method, periodrange, periodCho
+    ## function used to compute periodogram table
+    method <- input$periodFun
+    ## range of expected period length
+    periodRange <- input$periodRange
+    ## Plot type: all, faceted by sex, genotype, cabinet, specific id
+    plotType <- input$periodCho
+    ## check if table1 has been calculated otherwise run behavrTable()
+    Custom_tables$checkIf(App_settings, input$subsetPlot)
+    ##compute Periodogram table
+    Custom_tables$computePer(method = method, periodRange = periodRange, funenv = App_settings$env2)
+    ## render Plot tab if not present
+    output$Plots <- checkPlots(App_settings)
+    ## get annotate environment
+    Annotate <- App_settings$env4$Annotate
+  })
+
 #### DEBUG ########################################
   #DEBUG in app
   observeEvent(input$debug, {

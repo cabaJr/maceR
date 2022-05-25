@@ -18,7 +18,8 @@ App_settings <- R6::R6Class("App_settings",
 #' @field ExpStart what day and hour does the experiment starts?
 #' @field timepointDur what is the sampling frequency?
 #' @field subsetting list containing info about data subsetting
-#' @field LDcondition kist containing info on LD conditions
+#' @field LDcondition list containing info on LD conditions
+#' @field plotTab TRUE/FALSE value to know if the plot tab has been activated
 #' @field env1 contains environment#1
 #' @field env2 contains environment#2
 #' @field env3 contains environment#3
@@ -42,6 +43,7 @@ App_settings <- R6::R6Class("App_settings",
                                                  DPDD1 = NULL,
                                                  DPDD2 = NULL
                               ),
+                              plotTab = FALSE,
                               env1 = NULL,
                               env2 = NULL,
                               env3 = NULL,
@@ -145,7 +147,7 @@ App_settings <- R6::R6Class("App_settings",
                                 per1End <- ddStart*86400
                                 Llpha1 <- (0.4 / qty)
                                 Llpha2 <- 0.02
-                                browser()
+                                # browser()
                                 # define DDstart and DDlength
                                 DDday <- as.numeric(ddStart)
                                 dataLen <- (length1%/%86400)-2
@@ -171,7 +173,7 @@ App_settings <- R6::R6Class("App_settings",
                                 self$LDcondition$DPLD = DPLD
                                 self$LDcondition$DPDD1 = DPDD1
                                 self$LDcondition$DPDD2 = DPDD2
-                                browser()
+                                # browser()
                               },
                               
 #' updateTimeRange

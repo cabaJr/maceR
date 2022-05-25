@@ -57,8 +57,8 @@ app_ui <- function(request) {
                                   mod_analysis_ui("analysis_ui_1")
                                   ), #endAnalysis
           #### Plots ######
-          shinydashboard::tabItem(tabName = "Plots"
-                                  # mod_plots_ui("plots_ui_1")
+          shinydashboard::tabItem(tabName = "Plots",
+                                  mod_plots_ui("plots_ui_1")
                                   ) #endPlots
         ) #end Tab Items
       ), #end dashboardBody

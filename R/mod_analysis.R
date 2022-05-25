@@ -108,6 +108,9 @@ mod_analysis_ui <- function(id){
                                  actionButton(inputId = "periodPrint", label = "Print"), downloadButton(outputId = "Dl3", label = "Download"))
                  )
              )
+    ),
+    fluidRow(div(style = "margin:30px;"),
+             shiny::uiOutput("plot_box")
     )
     
   )
@@ -120,6 +123,30 @@ mod_analysis_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
  
+    # observeEvent(input$printDP, {
+    #   ## get Custom table object through App_settings
+    #   Custom_tables <- App_settings$env2$Custom_tables
+    #   ## check if table1 is already present or calculate it
+    #   Custom_tables$checkIf(App_settings, input$subsetPlot)
+    #   ## get annotate environment
+    #   Annotate <- App_settings$env4$Annotate
+    #   ns_id <- length(Annotate$DAct_plots$DAct1)
+    #   browser()
+    #   output$plot_box <- shiny::renderUI(mod_box_plot_ui(ns_id))
+    # })
+    # 
+    # observeEvent(input$dayAct, {
+    #   ## get Custom table object through App_settings
+    #   Custom_tables <- App_settings$env2$Custom_tables
+    #   ##compute daily activity table
+    #   Custom_tables$dailyAct(App_settings)
+    #   ## get annotate environment
+    #   Annotate <- App_settings$env4$Annotate
+    #   ns_id <- length(Annotate$DAct_plots$DAct1)
+    #   browser()
+    #   output$plot_box <- shiny::renderUI(mod_box_plot_ui(ns_id))
+    # })
+    
   })
 }
     

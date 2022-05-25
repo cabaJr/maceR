@@ -179,4 +179,20 @@
       })
     
   }
+  
+#' insert_box
+#' @description Generates a new box after the placeholder
+#' @param placeholder what is the placeholder to use
+#'
+#' @return a box 
+#' @export
+#'
+  insert_box <- function(placeholder){
+    shiny::insertUI(
+      selector = placeholder,
+      where = "afterEnd",
+      ui = mod_box_plot_ui("box_plot_ui_1")
+    )
+  }
+  
 #' @noRd

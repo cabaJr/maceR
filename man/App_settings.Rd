@@ -107,7 +107,9 @@ Initialize_DS
 
 \item{\code{subsetting}}{list containing info about data subsetting}
 
-\item{\code{LDcondition}}{kist containing info on LD conditions}
+\item{\code{LDcondition}}{list containing info on LD conditions}
+
+\item{\code{plotTab}}{TRUE/FALSE value to know if the plot tab has been activated}
 
 \item{\code{env1}}{contains environment#1}
 

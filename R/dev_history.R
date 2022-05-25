@@ -55,6 +55,17 @@
 #' finish Behavr_table activation
 #' activate HHActivity, dailyAct, computePer
 #' mod_box_plot_fct_plotter module to generate boxes to show plots
+
+#' 20/05/2022 
+#' connect buttons in Analysis tab to DP actogram, dailyActivity, HHActivity,
+#'     and computePer
+
+#' 22/05/2022
+#' connected computePer function
+
+#' 25/05/2022
+#' activate Plot tab when any print button is clicked
+#' insertUI() to insert a box with a plot every time a new plot is generated
 #' 
 
 #'
@@ -93,3 +104,9 @@
 #'     new Analysis is generated, either flip the card and ask for parameters
 #'     settings or open a box where the user can select all the parameters and
 #'     see the output.
+#'     
+#' Questions:
+#' 
+#' - is it possible to have an observer from inside a module?
+#' - is it possible to generate multiple boxes by reusing the same module?
+#'     and how to put the placeholder in the ui file?

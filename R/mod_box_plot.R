@@ -11,7 +11,7 @@ mod_box_plot_ui <- function(id){
   ns <- NS(id)
   tagList(
     
- shinydashboardPlus::boxPlus(
+ shinydashboardPlus::box(
    title = "Closable Box with dropdown", 
    closable = TRUE, 
    width = NULL,
@@ -20,13 +20,13 @@ mod_box_plot_ui <- function(id){
    collapsible = TRUE,
    enable_dropdown = TRUE,
    dropdown_icon = "wrench",
-   dropdown_menu = dropdownItemList(
-     dropdownItem(url = "http://www.google.com", name = "Link to google"),
-     dropdownItem(url = "#", name = "item 2"),
-     dropdownDivider(),
-     dropdownItem(url = "#", name = "item 3")
-   ),
-   p("Box Content")
+   # dropdown_menu = dropdownItemList(
+   #   dropdownItem(url = "http://www.google.com", name = "Link to google"),
+   #   dropdownItem(url = "#", name = "item 2"),
+   #   dropdownDivider(),
+   #   dropdownItem(url = "#", name = "item 3")
+   # ),
+   div("plot")
  )
  
   )

@@ -236,7 +236,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
                              meta <- self$metadata
                              perFun <- method
                              vals <- periodRange
-                             # browser()
+                             browser()
                              switch(perFun,
                                     "chi_sq_periodogram" = {
                                       period <- zeitgebr::periodogram(Activity, data, period_range = c(behavr::hours(vals[1]), behavr::hours(vals[2])),
