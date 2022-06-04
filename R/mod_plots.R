@@ -14,7 +14,11 @@ mod_plots_ui <- function(id){
     tabsetPanel(
       tabPanel("Single line actogram",
                fluidRow(
-                 div(id = "plot_placeholder")
+                 shiny::br(),
+                 # mod_box_plot_ui(ns("box_plot_ui_1"), plot_title = "trial"),
+                 uiOutput(ns("acto1"))
+                 # div(id = "acto_plot_placeholder"),
+                 # plotOutput(ns("plot_try"))
                  # withSpinner(plotOutput('actogram1'), id = "spin1_1", type = 4, color = "#2E9AFE", size = 0.65),
                  # downloadButton(outputId = "actogram_1", label = "Download"),
                  # withSpinner(plotOutput('actogram2'), id = "spin1_2", type = 4, color = "#2E9AFE", size = 0.65),
@@ -23,11 +27,12 @@ mod_plots_ui <- function(id){
                  # downloadButton(outputId = "actogram_3", label = "Download"),
                  # withSpinner(plotOutput('actogram4'), id = "spin1_4", type = 4, color = "#2E9AFE", size = 0.65),
                  # downloadButton(outputId = "actogram_4", label = "Download")
-               )
+               ),
       ),#end actogram panel
       tabPanel("Actogram",
                fluidRow(
-                 
+                 shiny::br(),
+                 div(id = "DPacto_plot_placeholder")
                  # withSpinner(plotOutput('DPactogram1'), id = "spin2_1", type = 4, color = "#2E9AFE", size = 0.65),
                  # downloadButton(outputId = "DPactogram_1", label = "Download"),
                  # withSpinner(plotOutput('DPactogram2'), id = "spin2_2", type = 4, color = "#2E9AFE", size = 0.65),
@@ -42,7 +47,8 @@ mod_plots_ui <- function(id){
       ),#end DP actogram panel
       tabPanel("Daily activity",
                fluidRow(
-                 
+                 shiny::br(),
+                 div(id = "DA_plot_placeholder")
                  # withSpinner(plotOutput('DAct1'), id = "spin3_1", type = 4, color = "#2E9AFE", size = 0.65),
                  # downloadButton(outputId = "DAct_1", label = "Download"),
                  # withSpinner(plotOutput('DAct2'), id = "spin3_2", type = 4, color = "#2E9AFE", size = 0.65),
@@ -59,7 +65,8 @@ mod_plots_ui <- function(id){
       ),#end Daily Activity panel
       tabPanel("Periodogram",
                fluidRow(
-                 
+                 shiny::br(),
+                 div(id = "perio_plot_placeholder")
                  # withSpinner(plotOutput('Per1'), id = "spin4_1", type = 4, color = "#2E9AFE", size = 0.65),
                  # downloadButton(outputId = "Per_1", label = "Download"),
                  # withSpinner(plotOutput('Per2'), id = "spin4_2", type = 4, color = "#2E9AFE", size = 0.65),
@@ -81,10 +88,28 @@ mod_plots_ui <- function(id){
 #' plots Server Functions
 #'
 #' @noRd 
-mod_plots_server <- function(id){
-  moduleServer( id, function(input, output, session){
+mod_plots_server <- function(id, env, plot_list = reactiveValues(NULL)){
+  # browser()
+  moduleServer( 
+    id, 
+    function(input, output, session){#}, placeholder = placeholder, title = title, plotObj = plotObj){
     ns <- session$ns
     
+    Annotate <- env$env4$Annotate
+
+    plot_list_static <- isolate(plot_list)
+    acto_choices <- c("total", "sex", "genotype", "cabinet")
+    acto_selected <- acto_choices %in% plot_list_static
+    #don't compute when app is started but only after files are uploaded
+    if(TRUE %in% acto_selected){
+      title = "Actogram"
+      output$acto1 <- renderUI({
+        mod_box_plot_ui(ns("box_plot_ui_1"), title)
+      })
+      mod_box_plot_server("box_plot_ui_1", env, session, acto_selected)
+    }
+    
+
   })
 }
     

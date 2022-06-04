@@ -27,13 +27,7 @@ check_uploads <- function(App_settings){
 #'
 
 checkPlots <- function(App_settings){
-  if(App_settings$plotTab == TRUE){
-  } else {
     App_settings$plotTab <- TRUE
-    # browser()
-    render_tabItem_ui(tabname = "Plots",
-                      text = "Plots", 
-                      icon = "chart-pie")
   } 
-}
+# }
 ## add check functions to generate tables

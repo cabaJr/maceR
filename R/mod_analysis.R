@@ -14,41 +14,41 @@ mod_analysis_ui <- function(id){
  
     fluidRow(div(style = "margin:30px;"),
              
-             shinydashboardPlus::box(title= "Subset data to visualize", id = "box3_0", width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
+             shinydashboard::box(title= "Subset data to visualize", id = "box3_0", width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
                  fluidRow(column(width = 8,
-                                 radioButtons(inputId = "subsetPlot", label = "Do you want to subset the data to visualize?", choices = c("Yes", "No"), inline = TRUE, selected = "No")
+                                 shinyWidgets::prettyRadioButtons(inputId = ns("subsetPlot"), label = "Do you want to subset the data to visualize?", choices = c("Yes", "No"), inline = TRUE, selected = "No")
                  ),
                  column(width = 3, offset = 1,
-                        actionButton('help3_0', label = 'Help',
+                        actionButton(ns('help3_0'), label = 'Help',
                                      style="color: #fff; background-color: #1e690c; border-color: #1e530c;"))),
-                 fluidRow(column(width = 3, selectInput(inputId = "idSubsetList", label = "Select Id", choices = c("choose" = ""), multiple = TRUE, width = 150)),
-                          column(width = 3, selectInput(inputId = "sexSubsetList", label = "Select Sex", choices = c("choose" = ""), multiple = TRUE, width = 150)),
-                          column(width = 3, selectInput(inputId = "geneSubsetList", label = "Select Genotype", choices = c("choose" = ""), multiple = TRUE, width = 150)),
-                          column(width = 3, selectInput(inputId = "cabSubsetList", label = "Select Cabinet", choices = c("choose" = ""), multiple = TRUE, width = 150))
+                 fluidRow(column(width = 3, selectInput(inputId = ns("idSubsetList"), label = "Select Id", choices = c("choose" = ""), multiple = TRUE, width = 150)),
+                          column(width = 3, selectInput(inputId = ns("sexSubsetList"), label = "Select Sex", choices = c("choose" = ""), multiple = TRUE, width = 150)),
+                          column(width = 3, selectInput(inputId = ns("geneSubsetList"), label = "Select Genotype", choices = c("choose" = ""), multiple = TRUE, width = 150)),
+                          column(width = 3, selectInput(inputId = ns("cabSubsetList"), label = "Select Cabinet", choices = c("choose" = ""), multiple = TRUE, width = 150))
                  ),
                  fluidRow(column(width = 12,
-                                 textOutput("text11"), textOutput("metaUniqueO")
+                                 textOutput(ns("text11")), textOutput(ns("metaUniqueO"))
                  )),
                  fluidRow(column(width = 12,
-                                 sliderInput(inputId = "timeSubset", label = "Select time window to visualize", min = 0, max = 34, step = 0.125, value = c(0, 10), width = '90%')))
+                                 sliderInput(inputId = ns("timeSubset"), label = "Select time window to visualize", min = 0, max = 34, step = 0.125, value = c(0, 10), width = '90%')))
              )
     ),
     fluidRow(div(style = "margin:30px;"),
              
-             shinydashboardPlus::box(title= "Single line actogram", id = "box3_1", width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
+             shinydashboard::box(title= "Single line actogram", id = ns("box3_1"), width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
                  fluidRow(column(width = 12,
-                                 checkboxGroupInput(inputId = "stdActogram", label = "Select the desired plots:",
+                                 shinyWidgets::prettyCheckboxGroup(inputId = ns("stdActogram"), label = "Select the desired plots:",
                                                     choiceNames = c("Total Actogram", "Splitted by sex", "Splitted by genotype", "Splitted by cabinet"),
                                                     choiceValues = c("total", "sex", "genotype", "cabinet"),
                                                     inline = TRUE, width = "80%"),
-                                 actionButton(inputId = "print", label = "print"), actionButton(inputId = "Dl1", label = "Download")
+                                 actionButton(inputId = ns("print"), label = "print"), actionButton(inputId = "Dl1", label = "Download")
                  ))
              )
     ),
     fluidRow(div(style = "margin:30px;"),
-             shinydashboardPlus::box(title= "Actogram", id = "box3_2", width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
+             shinydashboard::box(title= "Actogram", id = "box3_2", width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
                  fluidRow(column(width = 12,
-                                 checkboxGroupInput(inputId = "DPActogram", label = "Select the desired plots:",
+                                 shinyWidgets::prettyCheckboxGroup(inputId = "DPActogram", label = "Select the desired plots:",
                                                     choiceNames = c("Cumulative", "Averaged by sex", "Averaged by genotype", "Averaged by cabinet"),# "Individual"),
                                                     choiceValues = c("total", "sex", "genotype", "cabinet"),#, "individual"),
                                                     inline = TRUE, width = "80%"), selectizeInput(inputId = "chooseId", label = NULL, choices = c("choose" = "", levels(unique)), width = 85, multiple = FALSE),
@@ -57,9 +57,9 @@ mod_analysis_ui <- function(id){
              )
     ),
     fluidRow(div(style = "margin:30px;"),
-             shinydashboardPlus::box(title= "Sum of daily activity", id = "box3_3", width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
+             shinydashboard::box(title= "Sum of daily activity", id = "box3_3", width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
                  fluidRow(column(width = 12,
-                                 checkboxGroupInput(inputId = "DAsum", label = "Select the desired plots:",
+                                 shinyWidgets::prettyCheckboxGroup(inputId = "DAsum", label = "Select the desired plots:",
                                                     choiceNames = c("Averaged by genotype", "Averaged by sex", "Individual + mean", "Averaged by sex, divided by cabinet", "Individual, divided by sex and genotype + mean", "Individual, divided by cabinet and genotype"),
                                                     choiceValues = c("~gen", "~sex", "individual", "gen~sex", "indiv+sex~gen", "indiv+cab~gen"),
                                                     inline = FALSE, width = "80%"),
@@ -88,7 +88,7 @@ mod_analysis_ui <- function(id){
     #          )
     # ),
     fluidRow(div(style = "margin:30px;"),
-             shinydashboardPlus::box(title= "Periodogram", id = "box3_5", width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
+             shinydashboard::box(title= "Periodogram", id = "box3_5", width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
                  fluidRow(column(width = 6,
                                  sliderInput(inputId = "periodRange", label = "Select period range", min = 12, max = 34, step = 1, value = c(20, 28), width = '90%'),
                  ),
@@ -96,7 +96,7 @@ mod_analysis_ui <- function(id){
                         selectizeInput(inputId = "periodFun", label = "Select function", choices = c("choose" = "", "Chi square" = "chi_sq_periodogram", "Autocorrelated" = "ac_periodogram", "Lomb-Scargle" = "ls_periodogram"), multiple = FALSE, width = '70%')),
                  ),
                  fluidRow(column(width = 8,
-                                 checkboxGroupInput(inputId = "periodCho", label = "Select the desired plot:",
+                                 shinyWidgets::prettyCheckboxGroup(inputId = "periodCho", label = "Select the desired plot:",
                                                     choiceNames = c("Cumulative", "Individual", "Sex", "Genotype", "Cabinet"),# "Select Id"),
                                                     choiceValues = c("total", "faceted", "sex", "genotype", "cabinet"),# "individual"),
                                                     inline = TRUE, width = "85%")),
@@ -110,7 +110,7 @@ mod_analysis_ui <- function(id){
              )
     ),
     fluidRow(div(style = "margin:30px;"),
-             shiny::uiOutput("plot_box")
+             # shiny::uiOutput("plot_box")
     )
     
   )
@@ -119,10 +119,47 @@ mod_analysis_ui <- function(id){
 #' analysis Server Functions
 #'
 #' @noRd 
-mod_analysis_server <- function(id){
+mod_analysis_server <- function(id, App_settings){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
- 
+    
+    ## show help messages 
+    observeEvent(input$help3_0, {show_help(App_settings, 7)})
+    observeEvent(input$help3_4, {show_help(App_settings, 8)})
+    observeEvent(input$help3_5, {show_help(App_settings, 9)})
+    
+    ## initialize toReturn object
+    toReturn <- reactiveValues(plotTab = NULL,
+                               actos = NULL,
+                               DPactos = NULL,
+                               Dact = NULL,
+                               periods = NULL)
+    
+    observeEvent(input$print,{
+      ## get Custom table object through App_settings
+      Custom_tables <- App_settings$env2$Custom_tables
+      ## check if table1 is already present or calculate it
+      Custom_tables$checkIf(App_settings, input$subsetPlot) #call to checker function that then calls behavrTable
+      ## get annotate environment
+      Annotate <- App_settings$env4$Annotate
+      
+      ## calculate LD settings --> make the module able to access values outside of it with
+      ## myModule("myModule1", reactive(input$checkbox1))
+      # App_settings$setLD(App_settings, input$LDcond , input$DDask, input$DDcond)
+      
+      ## get user plot choices
+      plot_choices <- input$stdActogram
+      ## call the function to output the plot for all the selected plot types
+      purrr::map(plot_choices, ~ Annotate$plot_actogram(x = App_settings, type = .x))
+      
+      ## assign value to be returned to activate plot tab
+      if(App_settings$plotTab == FALSE){
+        toReturn$plotTab <- checkPlots(App_settings)
+      }
+      ## assign value of selected plots to be returned
+      toReturn$actos <- plot_choices
+    })
+    
     # observeEvent(input$printDP, {
     #   ## get Custom table object through App_settings
     #   Custom_tables <- App_settings$env2$Custom_tables
@@ -147,6 +184,16 @@ mod_analysis_server <- function(id){
     #   output$plot_box <- shiny::renderUI(mod_box_plot_ui(ns_id))
     # })
     
+    ## create list with values to return
+    analysis_out <- list(
+      plotTab = reactive(toReturn$plotTab),
+      actos = reactive(toReturn$actos),
+      DPactos= reactive(toReturn$DPactos),
+      Dact = reactive(toReturn$Dact),
+      periods = reactive(toReturn$periods)
+    )
+    
+    return(analysis_out)
   })
 }
     

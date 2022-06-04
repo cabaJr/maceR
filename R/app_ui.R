@@ -62,6 +62,10 @@ app_ui <- function(request) {
                                   ) #endPlots
         ) #end Tab Items
       ), #end dashboardBody
+      
+      controlbar = shinydashboardPlus::dashboardControlbar(
+        actionButton("debug", label = "debugger")
+      )
     )
   ) 
 }

@@ -7,26 +7,32 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
-mod_box_plot_ui <- function(id){
+mod_box_plot_ui <- function(id, plot_title){
   ns <- NS(id)
   tagList(
     
- shinydashboardPlus::box(
-   title = "Closable Box with dropdown", 
-   closable = TRUE, 
-   width = NULL,
-   status = "warning", 
-   solidHeader = FALSE, 
-   collapsible = TRUE,
-   enable_dropdown = TRUE,
-   dropdown_icon = "wrench",
-   # dropdown_menu = dropdownItemList(
-   #   dropdownItem(url = "http://www.google.com", name = "Link to google"),
-   #   dropdownItem(url = "#", name = "item 2"),
-   #   dropdownDivider(),
-   #   dropdownItem(url = "#", name = "item 3")
-   # ),
-   div("plot")
+ shinydashboardPlus::box(title= plot_title, 
+                         id = "boxwplot", 
+                         width = 12, 
+                         solidHeader = TRUE, 
+                         collapsible = TRUE, 
+                         status = "primary",
+                         enable_dropdown = TRUE,
+                         dropdown_icon = "wrench",
+                         fluidRow(
+                            column(width = 12,
+                                   plotOutput(ns("plot_hold"))
+                                   )
+                            ),
+                         fluidRow(
+                           column(width = 2, 
+                                  offset = 0,
+                                  actionButton(inputId = ns("stop"), label = "browser")
+                         ),
+                            column(width = 2, 
+                                   offset = 5,
+                                   downloadButton(outputId = "download_1", label = "Download"))
+                            )
  )
  
   )
@@ -35,11 +41,19 @@ mod_box_plot_ui <- function(id){
 #' box_plot Server Functions
 #'
 #' @noRd 
-mod_box_plot_server <- function(id){
-  moduleServer( id, function(input, output, session){
-    ns <- session$ns
- 
-  })
+mod_box_plot_server <- function(id, env, session, acto_selected){
+   moduleServer( id, function(input, output, session){
+      ns <- session$ns
+      Annotate <- env$env4$Annotate
+      # browser()
+      # for(i in seq_len(plot_list)){
+      # if(is.null(plot_list) == TRUE){}else{
+        plot <- Annotate$Actograms$acto1[[1]]
+      # }
+         output$plot_hold <- renderPlot(plot)
+         # observeEvent(input$stop, {browser()})
+      # }
+   })
 }
     
 ## To be copied in the UI

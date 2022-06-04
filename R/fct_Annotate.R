@@ -74,9 +74,17 @@ Annotate <- R6::R6Class("Annotate",
                       self$metaTable <- d1
                     },
 
+#' showdata
+#'
+#' @param env aa
+#' @param id ss
+#' @param miceList dd
+#'
+#' @return
+#' @export
+#'
                     showData = function(env, id, miceList){
                       myCleanMice <- env$myCleanMice
-                      if (id == "All"){
                         d2 <- dplyr::tibble(
                           "id" = as.character(),
                           "Sex" = as.character(),
@@ -85,6 +93,7 @@ Annotate <- R6::R6Class("Annotate",
                           "Time point" = as.character(),
                           "Activity" = as.character()
                         )
+                        if (id == "All"){
                         for (h in seq_len(length(myCleanMice))){
                           d1 <- dplyr::tibble(
                             "id" = myCleanMice[[h]]$id,
@@ -115,61 +124,69 @@ Annotate <- R6::R6Class("Annotate",
                         )
                       }
                       self$actTable <- d2
-                    }#,
+                    },
 #                     
-#                     plot_actogram = function(x, type){   #access data to env2 (where custom_tables object is stored). env2 should contain myCleanMice objects
-#                       data <- x$env2$Custom_tables$table1
-#                       len <- length(x$App_settings$dataList$name)
-#                       Llpha <- (0.4 / len)
-#                       LDcond <- x$LDcondition
-#                       # browser()
-#                       if(type == "total"){
-#                         plot <- ggetho(data, mapping = aes(x = t, y = id, z = Activity), summary_time_window = 180)+
-#                           stat_bar_tile_etho()+
-#                           LDcond$SLLD+
-#                           LDcond$SLDD+
-#                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
-#                           ggtitle("Full length actogram ")
-#                         self$Actograms$acto1[[1]] <- plot
-#                       }else if(type == "sex"){
-#                         plot <- ggetho(data, aes(x = t, y = id, z = Activity), summary_time_window = 180) +
-#                           LDcond$SLLD+
-#                           LDcond$SLDD+
-#                           # ld1+
-#                           # dd1+
-#                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
-#                           stat_bar_tile_etho()+
-#                           facet_grid(sex ~ ., space = "free", scales = "free_y")+
-#                           ylab("")+
-#                           ggtitle("Actogram", subtitle = "Splitted by sex")
-#                         self$Actograms$acto2[[1]] <- plot
-#                       }else if(type == "genotype"){
-#                         plot <- ggetho(data, aes(x = t, y = id, z = Activity), summary_time_window = 180) +
-#                           stat_bar_tile_etho()+
-#                           facet_grid(Genotype ~ ., space = "free", scales = "free_y")+
-#                           ylab("")+
-#                           LDcond$SLLD+
-#                           LDcond$SLDD+
-#                           # ld1+
-#                           # dd1+
-#                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
-#                           ggtitle("Actogram", subtitle = "Splitted by genotype")
-#                         self$Actograms$acto3[[1]] <- plot
-#                       }else if(type == "cabinet"){
-#                         plot <- ggetho(data, aes(x = t, y = id, z = Activity), summary_time_window = 180) +
-#                           LDcond$SLLD+
-#                           LDcond$SLDD+
-#                           # ld1+
-#                           # dd1+
-#                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
-#                           stat_bar_tile_etho()+
-#                           facet_grid(Cabinet ~ ., space = "free", scales = "free_y")+
-#                           ylab("")+
-#                           ggtitle("Actogram", subtitle = "Splitted by cabinet")
-#                         self$Actograms$acto4[[1]] <- plot
-#                       }
-#                       self$cacheKeys[1,2] <- copy(x$env2$Custom_tables$cacheKeys[1,2])
-#                     },
+#' plot_actogram
+#'
+#' @param x dd
+#' @param type ff
+#'
+#' @return
+#' @export
+#'
+                    plot_actogram = function(x, type){   #access data to env2 (where custom_tables object is stored). env2 should contain myCleanMice objects
+                      data <- x$env2$Custom_tables$table1
+                      len <- length(x$App_settings$dataList$name)
+                      Llpha <- (0.4 / len)
+                      LDcond <- x$LDcondition
+                      # browser()
+                      if(type == "total"){
+                        plot <- ggetho::ggetho(data, mapping = ggplot2::aes(x = t, y = id, z = Activity), summary_time_window = 180)+
+                          ggetho::stat_bar_tile_etho()+
+                          LDcond$SLLD+
+                          LDcond$SLDD+
+                          # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
+                          ggplot2::ggtitle("Full length actogram ")
+                        self$Actograms$acto1[[1]] <- plot
+                      }else if(type == "sex"){
+                        plot <- ggetho::ggetho(data, ggplot2::aes(x = t, y = id, z = Activity), summary_time_window = 180) +
+                          LDcond$SLLD+
+                          LDcond$SLDD+
+                          # ld1+
+                          # dd1+
+                          # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
+                          ggetho::stat_bar_tile_etho()+
+                          ggplot2::facet_grid(sex ~ ., space = "free", scales = "free_y")+
+                          ggplot2::ylab("")+
+                          ggplot2::ggtitle("Actogram", subtitle = "Splitted by sex")
+                        self$Actograms$acto2[[1]] <- plot
+                      }else if(type == "genotype"){
+                        plot <- ggetho::ggetho(data, ggplot2::aes(x = t, y = id, z = Activity), summary_time_window = 180) +
+                          ggetho::stat_bar_tile_etho()+
+                          ggplot2::facet_grid(Genotype ~ ., space = "free", scales = "free_y")+
+                          ggplot2::ylab("")+
+                          LDcond$SLLD+
+                          LDcond$SLDD+
+                          # ld1+
+                          # dd1+
+                          # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
+                          ggplot2::ggtitle("Actogram", subtitle = "Splitted by genotype")
+                        self$Actograms$acto3[[1]] <- plot
+                      }else if(type == "cabinet"){
+                        plot <- ggetho::ggetho(data, ggplot2::aes(x = t, y = id, z = Activity), summary_time_window = 180) +
+                          LDcond$SLLD+
+                          LDcond$SLDD+
+                          # ld1+
+                          # dd1+
+                          # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
+                          ggetho::stat_bar_tile_etho()+
+                          ggplot2::facet_grid(Cabinet ~ ., space = "free", scales = "free_y")+
+                          ggplot2::ylab("")+
+                          ggplot2::ggtitle("Actogram", subtitle = "Splitted by cabinet")
+                        self$Actograms$acto4[[1]] <- plot
+                      }
+                      # self$cacheKeys[1,2] <- data.table::copy(x$env2$Custom_tables$cacheKeys[1,2])
+                    }#,
 #                     
 #                     plot_DPactogram = function(x, type){ #"total", "sex", "genotype", "cabinet", "individual"
 #                       data <- x$env2$Custom_tables$table1
