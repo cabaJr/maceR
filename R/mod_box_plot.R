@@ -25,13 +25,9 @@ mod_box_plot_ui <- function(id, plot_title){
                                    )
                             ),
                          fluidRow(
-                           column(width = 2, 
-                                  offset = 0,
-                                  actionButton(inputId = ns("stop"), label = "browser")
-                         ),
                             column(width = 2, 
-                                   offset = 5,
-                                   downloadButton(outputId = "download_1", label = "Download"))
+                                   offset = 7,
+                                   downloadButton(outputId = ns("download_1"), label = "Download"))
                             )
  )
  
@@ -41,18 +37,30 @@ mod_box_plot_ui <- function(id, plot_title){
 #' box_plot Server Functions
 #'
 #' @noRd 
-mod_box_plot_server <- function(id, env, session, acto_selected){
+mod_box_plot_server <- function(id, env, acto_selected, count){
    moduleServer( id, function(input, output, session){
       ns <- session$ns
       Annotate <- env$env4$Annotate
-      # browser()
+      
       # for(i in seq_len(plot_list)){
       # if(is.null(plot_list) == TRUE){}else{
-        plot <- Annotate$Actograms$acto1[[1]]
+      browser()
+        plot_location <- eval(parse(text = unlist(acto_selected[count, 3]), n =1))
       # }
-         output$plot_hold <- renderPlot(plot)
+         output$plot_hold <- renderPlot(plot_location)
          # observeEvent(input$stop, {browser()})
       # }
+         
+      #Download function
+         filename_part <- unlist(acto_selected[count, 1])
+         output$download_1 <- downloadHandler( #set an option to choose the quality of the output image
+           filename = function(){paste("Single_line_acto_", filename_part, "_", Sys.Date(), ".png", sep = "")},
+           content = function(file){
+             png(file, width = 1820, height = 787, units = "px")
+             print(plot_location)
+             dev.off()
+           }
+         )
    })
 }
     

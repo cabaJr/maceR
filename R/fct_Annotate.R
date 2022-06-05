@@ -38,6 +38,14 @@ Annotate <- R6::R6Class("Annotate",
                                         Per4 = list(),
                                         Per5 = list()
                     ),
+                    output_list_acto = dplyr::tibble(
+                      "handler" = c("total", "sex", "genotype", "cabinet"),
+                      "destination" = c("acto1", "acto2", "acto3", "acto4"),
+                      "location" = list("Annotate$Actograms$acto1[[1]]", "Annotate$Actograms$acto2[[1]]",
+                                     "Annotate$Actograms$acto3[[1]]", "Annotate$Actograms$acto4[[1]]"),
+                      "title" = c("Actogram - all animals", "Actogram - split by sex",
+                                  "Actogram - split by genotype", "Actogram - split by cabinet")
+                    ),
                     actTable = NULL,
                     metaTable = NULL,
                     cacheKeys = dplyr::tibble("table" = seq(1:8), #table to store keys of hashed tables when plotting

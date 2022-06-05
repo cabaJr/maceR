@@ -16,7 +16,10 @@ mod_plots_ui <- function(id){
                fluidRow(
                  shiny::br(),
                  # mod_box_plot_ui(ns("box_plot_ui_1"), plot_title = "trial"),
-                 uiOutput(ns("acto1"))
+                 uiOutput(ns("acto1")),
+                 uiOutput(ns("acto2")),
+                 uiOutput(ns("acto3")),
+                 uiOutput(ns("acto4"))
                  # div(id = "acto_plot_placeholder"),
                  # plotOutput(ns("plot_try"))
                  # withSpinner(plotOutput('actogram1'), id = "spin1_1", type = 4, color = "#2E9AFE", size = 0.65),
@@ -32,7 +35,8 @@ mod_plots_ui <- function(id){
       tabPanel("Actogram",
                fluidRow(
                  shiny::br(),
-                 div(id = "DPacto_plot_placeholder")
+                 div(id = "DPacto_plot_placeholder"),
+                 uiOutput(ns("DPacto1"))
                  # withSpinner(plotOutput('DPactogram1'), id = "spin2_1", type = 4, color = "#2E9AFE", size = 0.65),
                  # downloadButton(outputId = "DPactogram_1", label = "Download"),
                  # withSpinner(plotOutput('DPactogram2'), id = "spin2_2", type = 4, color = "#2E9AFE", size = 0.65),
@@ -98,15 +102,22 @@ mod_plots_server <- function(id, env, plot_list = reactiveValues(NULL)){
     Annotate <- env$env4$Annotate
 
     plot_list_static <- isolate(plot_list)
-    acto_choices <- c("total", "sex", "genotype", "cabinet")
-    acto_selected <- acto_choices %in% plot_list_static
+    acto_choices <- Annotate$output_list_acto
+    
+    acto_selected <- acto_choices[acto_choices$handler  %in% plot_list_static, ]
+    browser()
     #don't compute when app is started but only after files are uploaded
-    if(TRUE %in% acto_selected){
-      title = "Actogram"
-      output$acto1 <- renderUI({
-        mod_box_plot_ui(ns("box_plot_ui_1"), title)
+    if(is.null(acto_selected) == FALSE){
+      for(i in seq_len(nrow(acto_selected[, 1]))){
+      title = unlist(acto_selected[i, 4])
+      pos <- unlist(acto_selected[i, 2])
+      module_id <- paste("box_plot_ui_", pos, sep = "")
+      output[[pos]] <- renderUI({
+        mod_box_plot_ui(NS(id, module_id), title)
       })
-      mod_box_plot_server("box_plot_ui_1", env, session, acto_selected)
+      mod_box_plot_server(module_id, env, acto_selected, i)
+      
+    }
     }
     
 

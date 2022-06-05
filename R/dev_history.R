@@ -91,10 +91,12 @@
 #' now using output from modules to control action of following mod
 #' use pretty buttons
 #' render box_plot inside plots with random plot
-#' 
+#' print plots in boxes
+
+  #' 05/06/2022
+#' make downloadButton functional
 
   #' PRIORITIES
-#' - print plots in boxes
 #' - make downloadButton functional
 #' - expand to all plots available
 #' - make tables of data available for download
