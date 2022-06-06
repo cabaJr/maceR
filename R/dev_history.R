@@ -95,9 +95,17 @@
 
   #' 05/06/2022
 #' make downloadButton functional
+#' managed to generalise plotting for actograms but for loop containing 
+#'     renderUI doesn't work well when trying to plot multiple plots at the
+#'     same time. It works if only one plot is selected and printed and then
+#'     repeated
+
+  #' 06/06/2022
+#' change values of checkbox input to make them unique
+#' expand table to include all plots
+#' expand plotting to other plots -> need to debug the function
 
   #' PRIORITIES
-#' - make downloadButton functional
 #' - expand to all plots available
 #' - make tables of data available for download
 #' - remake analysis tab with more user friendly flipbox

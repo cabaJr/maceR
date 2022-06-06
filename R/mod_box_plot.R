@@ -41,15 +41,10 @@ mod_box_plot_server <- function(id, env, acto_selected, count){
    moduleServer( id, function(input, output, session){
       ns <- session$ns
       Annotate <- env$env4$Annotate
-      
-      # for(i in seq_len(plot_list)){
-      # if(is.null(plot_list) == TRUE){}else{
-      browser()
-        plot_location <- eval(parse(text = unlist(acto_selected[count, 3]), n =1))
-      # }
-         output$plot_hold <- renderPlot(plot_location)
-         # observeEvent(input$stop, {browser()})
-      # }
+      ## get object containing the corresponding plot from table in Annotate
+      plot_location <- eval(parse(text = unlist(acto_selected[count, 3]), n =1))
+      ## print the parsed plot  
+      output$plot_hold <- renderPlot(plot_location)
          
       #Download function
          filename_part <- unlist(acto_selected[count, 1])

@@ -39,12 +39,34 @@ Annotate <- R6::R6Class("Annotate",
                                         Per5 = list()
                     ),
                     output_list_acto = dplyr::tibble(
-                      "handler" = c("total", "sex", "genotype", "cabinet"),
-                      "destination" = c("acto1", "acto2", "acto3", "acto4"),
+                      "handler" = c("total", "sex", "genotype", "cabinet",
+                                    "DAtotal", "DAsex", "DAgenotype", "DAcabinet",
+                                    "~gen", "~sex", "individual", "gen~sex", "indiv+sex~gen", "indiv+cab~gen",
+                                    "Pertotal", "Perfaceted", "Persex", "Pergenotype", "Percabinet"),
+                      "destination" = c("acto1", "acto2", "acto3", "acto4",
+                                        "DPacto1", "DPacto2", "DPacto3", "DPacto4",
+                                        "DAct1", "DAct2", "DAct3", "DAct4", "DAct5", "DAct6",
+                                        "Per1", "Per2", "Per3", "Per4", "Per5"),
                       "location" = list("Annotate$Actograms$acto1[[1]]", "Annotate$Actograms$acto2[[1]]",
-                                     "Annotate$Actograms$acto3[[1]]", "Annotate$Actograms$acto4[[1]]"),
+                                     "Annotate$Actograms$acto3[[1]]", "Annotate$Actograms$acto4[[1]]", 
+                                     "Annotate$DPActograms$DPacto1[[1]]", "Annotate$DPActograms$DPacto2[[1]]", 
+                                     "Annotate$DPActograms$DPacto4[[1]]", "Annotate$DPActograms$DPacto4[[1]]", 
+                                     "Annotate$DAct_plots$DAct1[[1]]", "Annotate$DAct_plots$DAct2[[1]]", 
+                                     "Annotate$DAct_plots$DAct3[[1]]", "Annotate$DAct_plots$DAct4[[1]]", 
+                                     "Annotate$DAct_plots$DAct5[[1]]", "Annotate$DAct_plots$DAct6[[1]]", 
+                                     "Annotate$period_plots$Per1[[1]]", "Annotate$period_plots$Per2[[1]]", 
+                                     "Annotate$period_plots$Per3[[1]]", "Annotate$period_plots$Per4[[1]]", 
+                                     "Annotate$period_plots$Per5[[1]]"),
                       "title" = c("Actogram - all animals", "Actogram - split by sex",
-                                  "Actogram - split by genotype", "Actogram - split by cabinet")
+                                  "Actogram - split by genotype", "Actogram - split by cabinet",
+                                  "Double plotted actogram - all animals", "Double plotted actogram - split by sex",
+                                  "Double plotted actogram - split by genotype", "Double plotted actogram - split by cabinet",
+                                  "Sum of daily activity - ", "Sum of daily activity - ", 
+                                  "Sum of daily activity - ", "Sum of daily activity - ", 
+                                  "Sum of daily activity - ", "Sum of daily activity - ", 
+                                  "Periodogram - cumulative", "Periodogram - individual", 
+                                  "Periodogram - by sex", "Periodogram - by genotype", 
+                                  "Periodogram - by cabinet")
                     ),
                     actTable = NULL,
                     metaTable = NULL,
@@ -194,81 +216,88 @@ Annotate <- R6::R6Class("Annotate",
                         self$Actograms$acto4[[1]] <- plot
                       }
                       # self$cacheKeys[1,2] <- data.table::copy(x$env2$Custom_tables$cacheKeys[1,2])
+                    },
+
+#' plot_DPactogram
+#'
+#' @param x aa
+#' @param type ss 
+#'
+#' @return
+#' @export
+                    plot_DPactogram = function(x, type){ #"total", "sex", "genotype", "cabinet", "individual"
+                      data <- x$env2$Custom_tables$table1
+                      len <- as.numeric(length(x$App_settings$dataList$name))
+                      lenD <-  14#x$Custom_tables$metadata$Data_length[1]/1440
+                      Llpha <- (0.4 / (len*lenD))
+                      LDcond <- x$LDcondition
+                      # browser()
+                      if(type == "total"){
+                        plot <- ggetho(data, aes(x = t, z = Activity), multiplot = 2, summary_time_window = 120)+
+                          LDcond$DPLD+
+                          LDcond$DPDD1+
+                          LDcond$DPDD2+
+                          # ld1+
+                          # dd1+
+                          # dd2+
+                          # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
+                          stat_bar_tile_etho()+
+                          facet_wrap(~id+sex+Genotype, ncol = 4, labeller = label_wrap_gen(multi_line=FALSE))+
+                          ylab("")+
+                          ggtitle("Double plotted actogram", subtitle = "splitted by ID")
+                        self$DPActograms[1][[1]] <- plot
+                      }else if(type == "sex"){
+                        plot <- ggetho(data, aes(x = t, z=Activity),
+                                       summary_time_window = 120,
+                                       multiplot = 2) +
+                          LDcond$DPLD+
+                          LDcond$DPDD1+
+                          LDcond$DPDD2+
+                          # ld1+
+                          # dd1+
+                          # dd2+
+                          # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
+                          stat_bar_tile_etho()+
+                          facet_grid(sex~Genotype)+
+                          ylab("")+
+                          ggtitle("Double plotted actogram", subtitle = "averaged by sex vs genotype, time window per each bin is 5'")
+                        self$DPActograms[2][[1]] <- plot
+                      }else if(type == "genotype"){
+                        plot <- ggetho(data, aes(x = t, z=Activity),
+                                       summary_time_window = 120,
+                                       multiplot = 2)+
+                          LDcond$DPLD+
+                          LDcond$DPDD1+
+                          LDcond$DPDD2+
+                          # ld1+
+                          # dd1+
+                          # dd2+
+                          # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
+                          stat_bar_tile_etho()+
+                          facet_grid(Cabinet~Genotype)+
+                          ylab("")+
+                          ggtitle("Double plotted actogram", subtitle = "averaged by cabinet vs genotype, time window per each bin is 5'")
+                        self$DPActograms[3][[1]] <- plot
+                      }else if(type == "cabinet"){
+                        plot <- ggetho(data, aes(x = t, z=Activity),
+                                       summary_time_window = 120,
+                                       multiplot = 2)+
+                          LDcond$DPLD+
+                          LDcond$DPDD1+
+                          LDcond$DPDD2+
+                          # ld1+
+                          # dd1+
+                          # dd2+
+                          # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
+                          stat_bar_tile_etho()+
+                          facet_grid(Cabinet~sex)+
+                          ylab("")+
+                          ggtitle("Double plotted actogram", subtitle = "averaged by cabinet vs sex, time window per each bin is 5'")
+                        self$DPActograms[4][[1]] <- plot
+                      }else if(type == "individual"){
+
+                      }
                     }#,
-#                     
-#                     plot_DPactogram = function(x, type){ #"total", "sex", "genotype", "cabinet", "individual"
-#                       data <- x$env2$Custom_tables$table1
-#                       len <- as.numeric(length(x$App_settings$dataList$name))
-#                       lenD <-  14#x$Custom_tables$metadata$Data_length[1]/1440
-#                       Llpha <- (0.4 / (len*lenD))
-#                       LDcond <- x$LDcondition
-#                       # browser()
-#                       if(type == "total"){
-#                         plot <- ggetho(data, aes(x = t, z = Activity), multiplot = 2, summary_time_window = 120)+
-#                           LDcond$DPLD+
-#                           LDcond$DPDD1+
-#                           LDcond$DPDD2+
-#                           # ld1+
-#                           # dd1+
-#                           # dd2+
-#                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
-#                           stat_bar_tile_etho()+
-#                           facet_wrap(~id+sex+Genotype, ncol = 4, labeller = label_wrap_gen(multi_line=FALSE))+
-#                           ylab("")+
-#                           ggtitle("Double plotted actogram", subtitle = "splitted by ID")
-#                         self$DPActograms[1][[1]] <- plot
-#                       }else if(type == "sex"){
-#                         plot <- ggetho(data, aes(x = t, z=Activity),
-#                                        summary_time_window = 120,
-#                                        multiplot = 2) +
-#                           LDcond$DPLD+
-#                           LDcond$DPDD1+
-#                           LDcond$DPDD2+
-#                           # ld1+
-#                           # dd1+
-#                           # dd2+
-#                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
-#                           stat_bar_tile_etho()+
-#                           facet_grid(sex~Genotype)+
-#                           ylab("")+
-#                           ggtitle("Double plotted actogram", subtitle = "averaged by sex vs genotype, time window per each bin is 5'")
-#                         self$DPActograms[2][[1]] <- plot
-#                       }else if(type == "genotype"){
-#                         plot <- ggetho(data, aes(x = t, z=Activity),
-#                                        summary_time_window = 120,
-#                                        multiplot = 2)+
-#                           LDcond$DPLD+
-#                           LDcond$DPDD1+
-#                           LDcond$DPDD2+
-#                           # ld1+
-#                           # dd1+
-#                           # dd2+
-#                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
-#                           stat_bar_tile_etho()+
-#                           facet_grid(Cabinet~Genotype)+
-#                           ylab("")+
-#                           ggtitle("Double plotted actogram", subtitle = "averaged by cabinet vs genotype, time window per each bin is 5'")
-#                         self$DPActograms[3][[1]] <- plot
-#                       }else if(type == "cabinet"){
-#                         plot <- ggetho(data, aes(x = t, z=Activity),
-#                                        summary_time_window = 120,
-#                                        multiplot = 2)+
-#                           LDcond$DPLD+
-#                           LDcond$DPDD1+
-#                           LDcond$DPDD2+
-#                           # ld1+
-#                           # dd1+
-#                           # dd2+
-#                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
-#                           stat_bar_tile_etho()+
-#                           facet_grid(Cabinet~sex)+
-#                           ylab("")+
-#                           ggtitle("Double plotted actogram", subtitle = "averaged by cabinet vs sex, time window per each bin is 5'")
-#                         self$DPActograms[4][[1]] <- plot
-#                       }else if(type == "individual"){
-#                         
-#                       }
-#                     },
 #                     
 #                     plot_DAct = function(x, type){
 #                       activity <- x$Custom_tables$table2 #get activity file from Custom_tables

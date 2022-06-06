@@ -41,7 +41,7 @@ mod_analysis_ui <- function(id){
                                                     choiceNames = c("Total Actogram", "Splitted by sex", "Splitted by genotype", "Splitted by cabinet"),
                                                     choiceValues = c("total", "sex", "genotype", "cabinet"),
                                                     inline = TRUE, width = "80%"),
-                                 actionButton(inputId = ns("print"), label = "print"), actionButton(inputId = "Dl1", label = "Download")
+                                 actionButton(inputId = ns("print"), label = "print"), actionButton(inputId = ns("Dl1"), label = "Download")
                  ))
              )
     ),
@@ -50,9 +50,9 @@ mod_analysis_ui <- function(id){
                  fluidRow(column(width = 12,
                                  shinyWidgets::prettyCheckboxGroup(inputId = "DPActogram", label = "Select the desired plots:",
                                                     choiceNames = c("Cumulative", "Averaged by sex", "Averaged by genotype", "Averaged by cabinet"),# "Individual"),
-                                                    choiceValues = c("total", "sex", "genotype", "cabinet"),#, "individual"),
-                                                    inline = TRUE, width = "80%"), selectizeInput(inputId = "chooseId", label = NULL, choices = c("choose" = "", levels(unique)), width = 85, multiple = FALSE),
-                                 actionButton(inputId = "printDP", label = "print")
+                                                    choiceValues = c("DAtotal", "DAsex", "DAgenotype", "DAcabinet"),#, "individual"),
+                                                    inline = TRUE, width = "80%"), selectizeInput(inputId = ns("chooseId"), label = NULL, choices = c("choose" = "", levels(unique)), width = 85, multiple = FALSE),
+                                 actionButton(inputId = ns("printDP"), label = "print")
                  ))
              )
     ),
@@ -63,16 +63,16 @@ mod_analysis_ui <- function(id){
                                                     choiceNames = c("Averaged by genotype", "Averaged by sex", "Individual + mean", "Averaged by sex, divided by cabinet", "Individual, divided by sex and genotype + mean", "Individual, divided by cabinet and genotype"),
                                                     choiceValues = c("~gen", "~sex", "individual", "gen~sex", "indiv+sex~gen", "indiv+cab~gen"),
                                                     inline = FALSE, width = "80%"),
-                                 actionButton(inputId = "dayAct", label = "Daily activity"),
+                                 actionButton(inputId = ns("dayAct"), label = "Daily activity"),
                  )),
                  fluidRow(column(width = 12,
                                  br(),
-                                 DT::DTOutput('dailyActivity')
+                                 DT::DTOutput(ns('dailyActivity'))
                                  
                  )),
                  fluidRow(column(width = 2, offset = 9,
                                  br(),
-                                 downloadButton(outputId = "Dl2", label = "Download")
+                                 downloadButton(outputId = ns("Dl2"), label = "Download")
                  ))
              )
     ),
@@ -90,22 +90,22 @@ mod_analysis_ui <- function(id){
     fluidRow(div(style = "margin:30px;"),
              shinydashboard::box(title= "Periodogram", id = "box3_5", width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
                  fluidRow(column(width = 6,
-                                 sliderInput(inputId = "periodRange", label = "Select period range", min = 12, max = 34, step = 1, value = c(20, 28), width = '90%'),
+                                 sliderInput(inputId = ns("periodRange"), label = "Select period range", min = 12, max = 34, step = 1, value = c(20, 28), width = '90%'),
                  ),
                  column(width = 5, offset = 1,
-                        selectizeInput(inputId = "periodFun", label = "Select function", choices = c("choose" = "", "Chi square" = "chi_sq_periodogram", "Autocorrelated" = "ac_periodogram", "Lomb-Scargle" = "ls_periodogram"), multiple = FALSE, width = '70%')),
+                        selectizeInput(inputId = ns("periodFun"), label = "Select function", choices = c("choose" = "", "Chi square" = "chi_sq_periodogram", "Autocorrelated" = "ac_periodogram", "Lomb-Scargle" = "ls_periodogram"), multiple = FALSE, width = '70%')),
                  ),
                  fluidRow(column(width = 8,
-                                 shinyWidgets::prettyCheckboxGroup(inputId = "periodCho", label = "Select the desired plot:",
+                                 shinyWidgets::prettyCheckboxGroup(inputId = ns("periodCho"), label = "Select the desired plot:",
                                                     choiceNames = c("Cumulative", "Individual", "Sex", "Genotype", "Cabinet"),# "Select Id"),
-                                                    choiceValues = c("total", "faceted", "sex", "genotype", "cabinet"),# "individual"),
+                                                    choiceValues = c("Pertotal", "Perfaceted", "Persex", "Pergenotype", "Percabinet"),# "individual"),
                                                     inline = TRUE, width = "85%")),
                           column(width = 3, offset = 1,
                                  actionButton('help3_5', label = 'Help',
                                               style="color: #fff; background-color: #1e690c; border-color: #1e530c;"))
                  ),
                  fluidRow(column(width = 6,
-                                 actionButton(inputId = "periodPrint", label = "Print"), downloadButton(outputId = "Dl3", label = "Download"))
+                                 actionButton(inputId = ns("periodPrint"), label = "Print"), downloadButton(outputId = ns("Dl3"), label = "Download"))
                  )
              )
     ),
@@ -160,17 +160,27 @@ mod_analysis_server <- function(id, App_settings){
       toReturn$actos <- plot_choices
     })
     
-    # observeEvent(input$printDP, {
-    #   ## get Custom table object through App_settings
-    #   Custom_tables <- App_settings$env2$Custom_tables
-    #   ## check if table1 is already present or calculate it
-    #   Custom_tables$checkIf(App_settings, input$subsetPlot)
-    #   ## get annotate environment
-    #   Annotate <- App_settings$env4$Annotate
-    #   ns_id <- length(Annotate$DAct_plots$DAct1)
-    #   browser()
-    #   output$plot_box <- shiny::renderUI(mod_box_plot_ui(ns_id))
-    # })
+    observeEvent(input$printDP, {
+      ## get Custom table object through App_settings
+      Custom_tables <- App_settings$env2$Custom_tables
+      ## check if table1 is already present or calculate it
+      Custom_tables$checkIf(App_settings, input$subsetPlot) #call to checker function that then calls behavrTable
+      ## get annotate environment
+      Annotate <- App_settings$env4$Annotate
+      ## add LD settings calculation
+      
+      ## get user plot choices
+      plot_choices <- input$DPActogram
+      ## call the function to output the plot for all the selected plot types
+      purrr::map(plot_choices, ~ Annotate$plot_DPactogram(x = App_settings, type = .x))
+      
+      ## assign value to be returned to activate plot tab
+      if(App_settings$plotTab == FALSE){
+        toReturn$plotTab <- checkPlots(App_settings)
+      }
+      ## assign value of selected plots to be returned
+      toReturn$actos <- plot_choices
+    })
     # 
     # observeEvent(input$dayAct, {
     #   ## get Custom table object through App_settings

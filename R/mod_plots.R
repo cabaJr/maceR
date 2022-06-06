@@ -35,8 +35,11 @@ mod_plots_ui <- function(id){
       tabPanel("Actogram",
                fluidRow(
                  shiny::br(),
-                 div(id = "DPacto_plot_placeholder"),
-                 uiOutput(ns("DPacto1"))
+                 uiOutput(ns("DPacto1")),
+                 uiOutput(ns("DPacto2")),
+                 uiOutput(ns("DPacto3")),
+                 uiOutput(ns("DPacto4")),
+                 uiOutput(ns("DPacto5"))
                  # withSpinner(plotOutput('DPactogram1'), id = "spin2_1", type = 4, color = "#2E9AFE", size = 0.65),
                  # downloadButton(outputId = "DPactogram_1", label = "Download"),
                  # withSpinner(plotOutput('DPactogram2'), id = "spin2_2", type = 4, color = "#2E9AFE", size = 0.65),
@@ -52,7 +55,12 @@ mod_plots_ui <- function(id){
       tabPanel("Daily activity",
                fluidRow(
                  shiny::br(),
-                 div(id = "DA_plot_placeholder")
+                 uiOutput(ns("DAct1")),
+                 uiOutput(ns("DAct2")),
+                 uiOutput(ns("DAct3")),
+                 uiOutput(ns("DAct4")),
+                 uiOutput(ns("DAct5")),
+                 uiOutput(ns("DAct6"))
                  # withSpinner(plotOutput('DAct1'), id = "spin3_1", type = 4, color = "#2E9AFE", size = 0.65),
                  # downloadButton(outputId = "DAct_1", label = "Download"),
                  # withSpinner(plotOutput('DAct2'), id = "spin3_2", type = 4, color = "#2E9AFE", size = 0.65),
@@ -70,7 +78,11 @@ mod_plots_ui <- function(id){
       tabPanel("Periodogram",
                fluidRow(
                  shiny::br(),
-                 div(id = "perio_plot_placeholder")
+                 uiOutput(ns("Per1")),
+                 uiOutput(ns("Per2")),
+                 uiOutput(ns("Per3")),
+                 uiOutput(ns("Per4")),
+                 uiOutput(ns("Per5"))
                  # withSpinner(plotOutput('Per1'), id = "spin4_1", type = 4, color = "#2E9AFE", size = 0.65),
                  # downloadButton(outputId = "Per_1", label = "Download"),
                  # withSpinner(plotOutput('Per2'), id = "spin4_2", type = 4, color = "#2E9AFE", size = 0.65),
@@ -93,7 +105,7 @@ mod_plots_ui <- function(id){
 #'
 #' @noRd 
 mod_plots_server <- function(id, env, plot_list = reactiveValues(NULL)){
-  # browser()
+  
   moduleServer( 
     id, 
     function(input, output, session){#}, placeholder = placeholder, title = title, plotObj = plotObj){
@@ -105,7 +117,7 @@ mod_plots_server <- function(id, env, plot_list = reactiveValues(NULL)){
     acto_choices <- Annotate$output_list_acto
     
     acto_selected <- acto_choices[acto_choices$handler  %in% plot_list_static, ]
-    browser()
+    # browser()
     #don't compute when app is started but only after files are uploaded
     if(is.null(acto_selected) == FALSE){
       for(i in seq_len(nrow(acto_selected[, 1]))){
@@ -116,7 +128,6 @@ mod_plots_server <- function(id, env, plot_list = reactiveValues(NULL)){
         mod_box_plot_ui(NS(id, module_id), title)
       })
       mod_box_plot_server(module_id, env, acto_selected, i)
-      
     }
     }
     
