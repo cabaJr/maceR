@@ -82,15 +82,26 @@ app_server <- function( input, output, session ) {
     }
   }, once = TRUE)
   
+  #observe when a new actogram is selected and print it
   observeEvent(analysis_out$actos(), {
-  plots_out <- mod_plots_server("plots_ui_1", App_settings, plot_list = analysis_out$actos())
+  plots_out_actos <- mod_plots_server("plots_ui_1", App_settings, plot_list = analysis_out$actos())
+  })
+  #observe when a new DP actogram is selected and print it
+  observeEvent(analysis_out$DPactos(), {
+  plots_out_DPactos <- mod_plots_server("plots_ui_1", App_settings, plot_list = analysis_out$DPactos())
+  })
+  #observe when a new daily activity is selected and print it
+  observeEvent(analysis_out$Dact(), {
+  plots_out_Dact <- mod_plots_server("plots_ui_1", App_settings, plot_list = analysis_out$Dact())
+  })
+  #observe when a new periodogram is selected and print it
+  observeEvent(analysis_out$periods(), {
+  plots_out_periods <- mod_plots_server("plots_ui_1", App_settings, plot_list = analysis_out$periods())
   })
   
   
 #### To Debug #########
-  # observeEvent(analysis_out, {
-  #   showModal(modalDialog("Analysis_out has been updated", title = "Help", easyClose = TRUE))
-  # })
+
   
   #### DEBUG ########################################
   

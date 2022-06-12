@@ -105,21 +105,20 @@
 #' expand table to include all plots
 #' expand plotting to other plots -> need to debug the function
 
+  #' 12/06/2022
+#' Activate daily activity plotting
+
   #' PRIORITIES
-#' - expand to all plots available
+#' - Fix Double plotted actograms
+#' - expand to Periodograms
+#' - activate LD functions
 #' - make tables of data available for download
 #' - remake analysis tab with more user friendly flipbox
 #' - RMarkdown document
 
   #' CODING
-#' couple the generated box with the plot that is generated: when the printing
-#'     function is called there are other functions called:
-#'     - render that plot inside the box, where the placeholder "plot_hold" is
-#'     - have the download button to be connected to the specified Annotate$plot
-#' - activate more fun in Annotate
 #' - activate buttons in Analysis tab: Subsetting box and various analyses
 #'     option selection. See mod_analysis for details.
-#' - activate plotting and storing functions
 #' - activate download buttons
 #' - create analysis presets (e.g. 1 periodogram, 1 daily activity, 1 periodogram, etc..)
 #' 
@@ -135,7 +134,7 @@
   #' WRITING
 #' 
 #' - write documentation for R6 objects
-#' - rewrite documentation for all @param and @field
+#' - rewrite documentation for all @param, @field and @return 
 #' - go through foo and fix when passing env to follow a std way
 #'
   #' FIXINGS 
@@ -153,14 +152,16 @@
 #'     settings or open a box where the user can select all the parameters and
 #'     see the output.
 #'     
+#'     : make plot tab as nested moduled with each new horizontal tab is appended 
+#'     next to the previous and contain all the analyses submitted to that plot type.     
+#'     
 #' Questions:
-#' 
-#' - is it possible to have an observer from inside a module?
-#' 
-#' 
 #' 
 #' Solved questions:
 #' 
+#' - #' - is it possible to have an observer from inside a module?
+#'     Yes, if the object to observe is correctly namespaced in the UI and the
+#'     server is related to that UI.
 #' - is it possible to generate multiple boxes by reusing the same module?
 #'     and how to put the placeholder in the ui file? -> use insertUI() coupled
 #'     with a placeholder div(id = "")

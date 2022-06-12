@@ -48,7 +48,7 @@ mod_analysis_ui <- function(id){
     fluidRow(div(style = "margin:30px;"),
              shinydashboard::box(title= "Actogram", id = "box3_2", width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
                  fluidRow(column(width = 12,
-                                 shinyWidgets::prettyCheckboxGroup(inputId = "DPActogram", label = "Select the desired plots:",
+                                 shinyWidgets::prettyCheckboxGroup(inputId = ns("DPActogram"), label = "Select the desired plots:",
                                                     choiceNames = c("Cumulative", "Averaged by sex", "Averaged by genotype", "Averaged by cabinet"),# "Individual"),
                                                     choiceValues = c("DAtotal", "DAsex", "DAgenotype", "DAcabinet"),#, "individual"),
                                                     inline = TRUE, width = "80%"), selectizeInput(inputId = ns("chooseId"), label = NULL, choices = c("choose" = "", levels(unique)), width = 85, multiple = FALSE),
@@ -57,9 +57,9 @@ mod_analysis_ui <- function(id){
              )
     ),
     fluidRow(div(style = "margin:30px;"),
-             shinydashboard::box(title= "Sum of daily activity", id = "box3_3", width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
+             shinydashboard::box(title= "Sum of daily activity", id = ns("box3_3"), width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
                  fluidRow(column(width = 12,
-                                 shinyWidgets::prettyCheckboxGroup(inputId = "DAsum", label = "Select the desired plots:",
+                                 shinyWidgets::prettyCheckboxGroup(inputId = ns("DAsum"), label = "Select the desired plots:",
                                                     choiceNames = c("Averaged by genotype", "Averaged by sex", "Individual + mean", "Averaged by sex, divided by cabinet", "Individual, divided by sex and genotype + mean", "Individual, divided by cabinet and genotype"),
                                                     choiceValues = c("~gen", "~sex", "individual", "gen~sex", "indiv+sex~gen", "indiv+cab~gen"),
                                                     inline = FALSE, width = "80%"),
@@ -88,7 +88,7 @@ mod_analysis_ui <- function(id){
     #          )
     # ),
     fluidRow(div(style = "margin:30px;"),
-             shinydashboard::box(title= "Periodogram", id = "box3_5", width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
+             shinydashboard::box(title= "Periodogram", id = ns("box3_5"), width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
                  fluidRow(column(width = 6,
                                  sliderInput(inputId = ns("periodRange"), label = "Select period range", min = 12, max = 34, step = 1, value = c(20, 28), width = '90%'),
                  ),
@@ -101,7 +101,7 @@ mod_analysis_ui <- function(id){
                                                     choiceValues = c("Pertotal", "Perfaceted", "Persex", "Pergenotype", "Percabinet"),# "individual"),
                                                     inline = TRUE, width = "85%")),
                           column(width = 3, offset = 1,
-                                 actionButton('help3_5', label = 'Help',
+                                 actionButton(ns('help3_5'), label = 'Help',
                                               style="color: #fff; background-color: #1e690c; border-color: #1e530c;"))
                  ),
                  fluidRow(column(width = 6,
@@ -179,20 +179,30 @@ mod_analysis_server <- function(id, App_settings){
         toReturn$plotTab <- checkPlots(App_settings)
       }
       ## assign value of selected plots to be returned
-      toReturn$actos <- plot_choices
+      toReturn$DPactos <- plot_choices
     })
-    # 
-    # observeEvent(input$dayAct, {
-    #   ## get Custom table object through App_settings
-    #   Custom_tables <- App_settings$env2$Custom_tables
-    #   ##compute daily activity table
-    #   Custom_tables$dailyAct(App_settings)
-    #   ## get annotate environment
-    #   Annotate <- App_settings$env4$Annotate
-    #   ns_id <- length(Annotate$DAct_plots$DAct1)
-    #   browser()
-    #   output$plot_box <- shiny::renderUI(mod_box_plot_ui(ns_id))
-    # })
+
+    observeEvent(input$dayAct, {
+      # browser()
+      ## get Custom table object through App_settings
+      Custom_tables <- App_settings$env2$Custom_tables
+      ##compute daily activity table
+      ## to add a check that if parameters are the same there is no need to recompute
+      Custom_tables$dailyAct(App_settings)
+      ## get annotate environment
+      Annotate <- App_settings$env4$Annotate
+      ## get user plot choices
+      plot_choices <- input$DAsum
+      ## call the function to output the plot for all the selected plot types
+      purrr::map(plot_choices, ~ Annotate$plot_DAct(x = App_settings, type = .x))
+      
+      ## assign value to be returned to activate plot tab
+      if(App_settings$plotTab == FALSE){
+        toReturn$plotTab <- checkPlots(App_settings)
+      }
+      ## assign value of selected plots to be returned
+      toReturn$Dact <- plot_choices
+    })
     
     ## create list with values to return
     analysis_out <- list(

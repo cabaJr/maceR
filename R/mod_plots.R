@@ -119,6 +119,7 @@ mod_plots_server <- function(id, env, plot_list = reactiveValues(NULL)){
     acto_selected <- acto_choices[acto_choices$handler  %in% plot_list_static, ]
     # browser()
     #don't compute when app is started but only after files are uploaded
+    # try with an while cycle, each time deleting one item in the list of plot to compute
     if(is.null(acto_selected) == FALSE){
       for(i in seq_len(nrow(acto_selected[, 1]))){
       title = unlist(acto_selected[i, 4])
