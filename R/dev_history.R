@@ -114,6 +114,7 @@
 #' - activate LD functions
 #' - make tables of data available for download
 #' - remake analysis tab with more user friendly flipbox
+#' - update landing page
 #' - RMarkdown document
 
   #' CODING
