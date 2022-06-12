@@ -38,6 +38,41 @@ Annotate <- R6::R6Class("Annotate",
                                         Per4 = list(),
                                         Per5 = list()
                     ),
+                    output_list_acto = dplyr::tibble(
+                      "handler" = c("total", "sex", "genotype", "cabinet",
+                                    "DAtotal", "DAsex", "DAgenotype", "DAcabinet",
+                                    "~gen", "~sex", "individual", "gen~sex", "indiv+sex~gen", "indiv+cab~gen",
+                                    "Pertotal", "Perfaceted", "Persex", "Pergenotype", "Percabinet"),
+                      "destination" = c("acto1", "acto2", "acto3", "acto4",
+                                        "DPacto1", "DPacto2", "DPacto3", "DPacto4",
+                                        "DAct1", "DAct2", "DAct3", "DAct4", "DAct5", "DAct6",
+                                        "Per1", "Per2", "Per3", "Per4", "Per5"),
+                      ## list containing the location of each plot in Annotate$ 
+                      "location" = list(## Actograms
+                                     "Annotate$Actograms$acto1[[1]]", "Annotate$Actograms$acto2[[1]]",
+                                     "Annotate$Actograms$acto3[[1]]", "Annotate$Actograms$acto4[[1]]",
+                                     ## DPActograms
+                                     "Annotate$DPActograms$DPacto1[[1]]", "Annotate$DPActograms$DPacto2[[1]]", 
+                                     "Annotate$DPActograms$DPacto4[[1]]", "Annotate$DPActograms$DPacto4[[1]]", 
+                                     ## Daily activity
+                                     "Annotate$DAct_plots$DAct1", "Annotate$DAct_plots$DAct2", 
+                                     "Annotate$DAct_plots$DAct3", "Annotate$DAct_plots$DAct4", 
+                                     "Annotate$DAct_plots$DAct5", "Annotate$DAct_plots$DAct6", 
+                                     ## Periodograms
+                                     "Annotate$period_plots$Per1[[1]]", "Annotate$period_plots$Per2[[1]]", 
+                                     "Annotate$period_plots$Per3[[1]]", "Annotate$period_plots$Per4[[1]]", 
+                                     "Annotate$period_plots$Per5[[1]]"),
+                      "title" = c("Actogram - all animals", "Actogram - split by sex",
+                                  "Actogram - split by genotype", "Actogram - split by cabinet",
+                                  "Double plotted actogram - all animals", "Double plotted actogram - split by sex",
+                                  "Double plotted actogram - split by genotype", "Double plotted actogram - split by cabinet",
+                                  "Sum of daily activity - ", "Sum of daily activity - ", 
+                                  "Sum of daily activity - ", "Sum of daily activity - ", 
+                                  "Sum of daily activity - ", "Sum of daily activity - ", 
+                                  "Periodogram - cumulative", "Periodogram - individual", 
+                                  "Periodogram - by sex", "Periodogram - by genotype", 
+                                  "Periodogram - by cabinet")
+                    ),
                     actTable = NULL,
                     metaTable = NULL,
                     cacheKeys = dplyr::tibble("table" = seq(1:8), #table to store keys of hashed tables when plotting
@@ -74,9 +109,17 @@ Annotate <- R6::R6Class("Annotate",
                       self$metaTable <- d1
                     },
 
+#' showdata
+#'
+#' @param env aa
+#' @param id ss
+#' @param miceList dd
+#'
+#' @return
+#' @export
+#'
                     showData = function(env, id, miceList){
                       myCleanMice <- env$myCleanMice
-                      if (id == "All"){
                         d2 <- dplyr::tibble(
                           "id" = as.character(),
                           "Sex" = as.character(),
@@ -85,6 +128,7 @@ Annotate <- R6::R6Class("Annotate",
                           "Time point" = as.character(),
                           "Activity" = as.character()
                         )
+                        if (id == "All"){
                         for (h in seq_len(length(myCleanMice))){
                           d1 <- dplyr::tibble(
                             "id" = myCleanMice[[h]]$id,
@@ -115,284 +159,337 @@ Annotate <- R6::R6Class("Annotate",
                         )
                       }
                       self$actTable <- d2
+                    },
+#                     
+#' plot_actogram
+#'
+#' @param x dd
+#' @param type ff
+#'
+#' @return
+#' @export
+#'
+                    plot_actogram = function(x, type){   #access data to env2 (where custom_tables object is stored). env2 should contain myCleanMice objects
+                      data <- x$env2$Custom_tables$table1
+                      len <- length(x$App_settings$dataList$name)
+                      Llpha <- (0.4 / len)
+                      LDcond <- x$LDcondition
+                      # browser()
+                      if(type == "total"){
+                        plot <- ggetho::ggetho(data, mapping = ggplot2::aes(x = t, y = id, z = Activity), summary_time_window = 180)+
+                          ggetho::stat_bar_tile_etho()+
+                          LDcond$SLLD+
+                          LDcond$SLDD+
+                          # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
+                          ggplot2::ggtitle("Full length actogram ")
+                        self$Actograms$acto1[[1]] <- plot
+                      }else if(type == "sex"){
+                        plot <- ggetho::ggetho(data, ggplot2::aes(x = t, y = id, z = Activity), summary_time_window = 180) +
+                          LDcond$SLLD+
+                          LDcond$SLDD+
+                          # ld1+
+                          # dd1+
+                          # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
+                          ggetho::stat_bar_tile_etho()+
+                          ggplot2::facet_grid(sex ~ ., space = "free", scales = "free_y")+
+                          ggplot2::ylab("")+
+                          ggplot2::ggtitle("Actogram", subtitle = "Splitted by sex")
+                        self$Actograms$acto2[[1]] <- plot
+                      }else if(type == "genotype"){
+                        plot <- ggetho::ggetho(data, ggplot2::aes(x = t, y = id, z = Activity), summary_time_window = 180) +
+                          ggetho::stat_bar_tile_etho()+
+                          ggplot2::facet_grid(Genotype ~ ., space = "free", scales = "free_y")+
+                          ggplot2::ylab("")+
+                          LDcond$SLLD+
+                          LDcond$SLDD+
+                          # ld1+
+                          # dd1+
+                          # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
+                          ggplot2::ggtitle("Actogram", subtitle = "Splitted by genotype")
+                        self$Actograms$acto3[[1]] <- plot
+                      }else if(type == "cabinet"){
+                        plot <- ggetho::ggetho(data, ggplot2::aes(x = t, y = id, z = Activity), summary_time_window = 180) +
+                          LDcond$SLLD+
+                          LDcond$SLDD+
+                          # ld1+
+                          # dd1+
+                          # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
+                          ggetho::stat_bar_tile_etho()+
+                          ggplot2::facet_grid(Cabinet ~ ., space = "free", scales = "free_y")+
+                          ggplot2::ylab("")+
+                          ggplot2::ggtitle("Actogram", subtitle = "Splitted by cabinet")
+                        self$Actograms$acto4[[1]] <- plot
+                      }
+                      # self$cacheKeys[1,2] <- data.table::copy(x$env2$Custom_tables$cacheKeys[1,2])
+                    },
+
+#' plot_DPactogram
+#'
+#' @param x aa
+#' @param type ss 
+#'
+#' @return
+#' @export
+                    plot_DPactogram = function(x, type){ #"total", "sex", "genotype", "cabinet", "individual"
+                      data <- x$env2$Custom_tables$table1
+                      len <- as.numeric(length(x$App_settings$dataList$name))
+                      lenD <-  14#x$Custom_tables$metadata$Data_length[1]/1440
+                      Llpha <- (0.4 / (len*lenD))
+                      LDcond <- x$LDcondition
+                      # browser()
+                      if(type == "total"){
+                        plot <- ggetho(data, ggplot2::aes(x = t, z = Activity), multiplot = 2, summary_time_window = 120)+
+                          LDcond$DPLD+
+                          LDcond$DPDD1+
+                          LDcond$DPDD2+
+                          # ld1+
+                          # dd1+
+                          # dd2+
+                          # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
+                          stat_bar_tile_etho()+
+                          facet_wrap(~id+sex+Genotype, ncol = 4, labeller = label_wrap_gen(multi_line=FALSE))+
+                          ylab("")+
+                         ggplot2::ggtitle("Double plotted actogram", subtitle = "splitted by ID")
+                        self$DPActograms[1][[1]] <- plot
+                      }else if(type == "sex"){
+                        plot <- ggetho(data, ggplot2::aes(x = t, z=Activity),
+                                       summary_time_window = 120,
+                                       multiplot = 2) +
+                          LDcond$DPLD+
+                          LDcond$DPDD1+
+                          LDcond$DPDD2+
+                          # ld1+
+                          # dd1+
+                          # dd2+
+                          # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
+                          stat_bar_tile_etho()+
+                          facet_grid(sex~Genotype)+
+                          ylab("")+
+                         ggplot2::ggtitle("Double plotted actogram", subtitle = "averaged by sex vs genotype, time window per each bin is 5'")
+                        self$DPActograms[2][[1]] <- plot
+                      }else if(type == "genotype"){
+                        plot <- ggetho(data,ggplot2::aes(x = t, z=Activity),
+                                       summary_time_window = 120,
+                                       multiplot = 2)+
+                          LDcond$DPLD+
+                          LDcond$DPDD1+
+                          LDcond$DPDD2+
+                          # ld1+
+                          # dd1+
+                          # dd2+
+                          # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
+                          stat_bar_tile_etho()+
+                          facet_grid(Cabinet~Genotype)+
+                          ylab("")+
+                         ggplot2::ggtitle("Double plotted actogram", subtitle = "averaged by cabinet vs genotype, time window per each bin is 5'")
+                        self$DPActograms[3][[1]] <- plot
+                      }else if(type == "cabinet"){
+                        plot <- ggetho(data,ggplot2::aes(x = t, z=Activity),
+                                       summary_time_window = 120,
+                                       multiplot = 2)+
+                          LDcond$DPLD+
+                          LDcond$DPDD1+
+                          LDcond$DPDD2+
+                          # ld1+
+                          # dd1+
+                          # dd2+
+                          # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
+                          stat_bar_tile_etho()+
+                          facet_grid(Cabinet~sex)+
+                          ylab("")+
+                         ggplot2::ggtitle("Double plotted actogram", subtitle = "averaged by cabinet vs sex, time window per each bin is 5'")
+                        self$DPActograms[4][[1]] <- plot
+                      }else if(type == "individual"){
+
+                      }
+                    },
+
+                    plot_DAct = function(x, type){
+                      activity <- x$env3$Custom_tables$table2 #get activity file from Custom_tables
+
+                      if (type == "~gen"){
+                        G_eff <- activity %>%
+                          dplyr::group_by(Genotype, Day) %>%
+                          dplyr::summarise(Activity = mean(Activity))
+                        std_gen <- activity %>% 
+                          dplyr::group_by(Genotype, Day) %>% 
+                          dplyr::summarise(std = sd(Activity))
+                        G_eff <- dplyr::tibble(Genotype = G_eff$Genotype,
+                                        Day = G_eff$Day,
+                                        Activity = G_eff$Activity,
+                                        Std = std_gen$std)
+
+                        plot <- ggplot2::ggplot(G_eff)+
+                         ggplot2::geom_line(
+                           ggplot2::aes(
+                             Day, Activity, colour = Genotype), size = 1)+
+                         ggplot2::geom_errorbar(
+                           ggplot2::aes(
+                             x = Day, ymin=Activity-Std, ymax=Activity+Std, colour=Genotype), width=.2,
+                                        position=ggplot2::position_dodge(0.05))+
+                          ggplot2::ggtitle("Mean activity across genotype")
+                        self$DAct_plots[1][[1]] <- plot
+                      }else if (type == "~sex"){
+                        S_eff <- activity %>%
+                          dplyr::group_by(Sex, Day) %>%
+                          dplyr::summarise(Activity = mean(Activity))
+                        std_sex <- activity %>% 
+                          dplyr::group_by(Sex, Day)%>% 
+                          dplyr::summarise(std = sd(Activity))
+                        S_eff <- dplyr::tibble(Sex = S_eff$Sex,
+                                        Day = S_eff$Day,
+                                        Activity = S_eff$Activity,
+                                        Std = std_sex$std)
+
+                        plot <- ggplot2::ggplot(S_eff)+
+                         ggplot2::geom_line(
+                           ggplot2::aes(
+                             Day, Activity, colour = Sex), size = 1)+
+                         ggplot2::geom_errorbar(
+                           ggplot2::aes(
+                             x = Day, ymin=Activity-Std, ymax=Activity+Std, colour=Sex), width=.2,
+                                        position=ggplot2::position_dodge(0.05))+
+                          ggplot2::ggtitle("Mean activity across sex")
+                        self$DAct_plots[2][[1]] <- plot
+                      }else if (type == "individual"){
+                        G_eff <- activity %>%
+                          dplyr::group_by(Genotype, Day) %>%
+                          dplyr::summarise(Activity = mean(Activity))
+                        std_gen <- activity %>% 
+                          dplyr::group_by(Genotype, Day) %>% 
+                          dplyr::summarise(std = sd(Activity))
+                        G_eff <- dplyr::tibble(Genotype = G_eff$Genotype,
+                                        Day = G_eff$Day,
+                                        Activity = G_eff$Activity,
+                                        Std = std_gen$std)
+
+                        plot <- ggplot2::ggplot()+
+                         ggplot2::geom_line(
+                           data = activity,ggplot2::aes(
+                             Day, Activity, colour = id))+
+                         ggplot2::geom_line(
+                           data = G_eff,ggplot2::aes(Day, Activity), size = 1)+
+                         ggplot2::geom_point(
+                           data = G_eff,ggplot2::aes(Day, Activity), size = 2)+
+                         ggplot2::geom_errorbar(
+                           data = G_eff,ggplot2::aes(
+                             x = Day, ymin=Activity-Std, ymax=Activity+Std), width=.2, position=ggplot2::position_dodge(0.05))+
+                          ggplot2::facet_wrap(~Genotype, ncol = 2)+
+                         ggplot2::ggtitle("Activity compared between genotypes", subtitle =  "mean activity for both genotypes in black")
+                        self$DAct_plots[3][[1]] <- plot
+                      }else if (type == "gen~sex"){
+                        GS_eff <- activity %>%
+                          dplyr::group_by(Genotype, Sex, Day) %>%
+                          dplyr::summarise(Activity = mean(Activity))
+                        std_gs <- activity %>% 
+                          dplyr::group_by(Genotype, Sex, Day) %>% 
+                          dplyr::summarise(std = sd(Activity))
+                        GS_eff <-dplyr::tibble(Genotype = GS_eff$Genotype,
+                                         Sex = GS_eff$Sex,
+                                         Day = GS_eff$Day,
+                                         Activity = GS_eff$Activity,
+                                         Std = std_gs$std)
+
+                        plot <- ggplot2::ggplot()+
+                         ggplot2::geom_line(
+                           data = GS_eff,ggplot2::aes(
+                             Day, Activity, colour = Sex), size = 1)+
+                         ggplot2::geom_point(
+                           data = GS_eff,ggplot2::aes(
+                             Day, Activity, colour = Sex), size = 2)+
+                         ggplot2::geom_errorbar(
+                           data = GS_eff,ggplot2::aes(
+                             x = Day, ymin=Activity-Std, ymax=Activity+Std, colour = Sex), width=.2, position=ggplot2::position_dodge(0.05))+
+                          ggplot2::facet_wrap(~Genotype)+
+                         ggplot2::ggtitle("Mean activity for Male and Females across genotypes")
+                        self$DAct_plots[4][[1]] <- plot
+                      }else if (type == "indiv+sex~gen"){
+                        GS_eff <- activity %>%
+                          dplyr::group_by(Genotype, Sex, Day) %>%
+                          dplyr::summarise(Activity = mean(Activity))
+                        std_gs <- activity %>% 
+                          dplyr::group_by(Genotype, Sex, Day) %>% 
+                          dplyr::summarise(std = sd(Activity))
+                        GS_eff <-dplyr::tibble(Genotype = GS_eff$Genotype,
+                                         Sex = GS_eff$Sex,
+                                         Day = GS_eff$Day,
+                                         Activity = GS_eff$Activity,
+                                         Std = std_gs$std)
+
+                        plot <- ggplot2::ggplot()+
+                         ggplot2::geom_line(
+                           data = activity,ggplot2::aes(
+                             Day, Activity, group = id, colour = Genotype))+
+                         ggplot2::geom_line(
+                           data = GS_eff, ggplot2::aes(
+                             Day, Activity, colour = Genotype), linetype = "dashed", size = 1.5)+
+                         ggplot2::geom_errorbar(
+                           data = GS_eff, ggplot2::aes(
+                             x = Day, ymin=Activity-Std, ymax=Activity+Std, colour = Genotype), width=.2, position=ggplot2::position_dodge(0.05))+
+                          ggplot2::facet_wrap(~Sex)+
+                         ggplot2::ggtitle("Activity divided across sex and genotype", subtitle =  "mean activity as dashed lines")
+                        self$DAct_plots[5][[1]] <- plot
+                      }else if (type == "indiv+cab~gen"){
+                        G_eff <- activity %>%
+                          dplyr::group_by(Genotype, Day) %>%
+                          dplyr::summarise(Activity = mean(Activity))
+                        std_gen <- activity %>% 
+                          dplyr::group_by(Genotype, Day) %>% 
+                          dplyr::summarise(std = sd(Activity))
+                        G_eff <-dplyr::tibble(Genotype = G_eff$Genotype,
+                                        Day = G_eff$Day,
+                                        Activity = G_eff$Activity,
+                                        Std = std_gen$std)
+
+                        plot <- ggplot2::ggplot()+
+                         ggplot2::geom_line(data = activity,ggplot2::aes(Day, Activity, group = id, colour = Genotype))+
+                         ggplot2::geom_line(data = G_eff,ggplot2::aes(Day, Activity, colour = Genotype), size = 1.5)+
+                         ggplot2::geom_point(data = G_eff,ggplot2::aes(Day, Activity, colour = Genotype), size = 2)+
+                         ggplot2::geom_errorbar(data = G_eff,ggplot2::aes(x = Day, ymin=Activity-Std, ymax=Activity+Std, colour = Genotype), width=.2, position=ggplot2::position_dodge(0.05))+
+                          ggplot2::facet_wrap(~Cabinet)+
+                         ggplot2::ggtitle("Activity compared between cabinets", subtitle =  "Activity grouped by genotypes and mean for M / F")
+                        self$DAct_plots[6][[1]] <- plot
+                      }
                     }#,
-#                     
-#                     plot_actogram = function(x, type){   #access data to env2 (where custom_tables object is stored). env2 should contain myCleanMice objects
-#                       data <- x$env2$Custom_tables$table1
-#                       len <- length(x$App_settings$dataList$name)
-#                       Llpha <- (0.4 / len)
-#                       LDcond <- x$LDcondition
-#                       # browser()
-#                       if(type == "total"){
-#                         plot <- ggetho(data, mapping = aes(x = t, y = id, z = Activity), summary_time_window = 180)+
-#                           stat_bar_tile_etho()+
-#                           LDcond$SLLD+
-#                           LDcond$SLDD+
-#                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
-#                           ggtitle("Full length actogram ")
-#                         self$Actograms$acto1[[1]] <- plot
-#                       }else if(type == "sex"){
-#                         plot <- ggetho(data, aes(x = t, y = id, z = Activity), summary_time_window = 180) +
-#                           LDcond$SLLD+
-#                           LDcond$SLDD+
-#                           # ld1+
-#                           # dd1+
-#                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
-#                           stat_bar_tile_etho()+
-#                           facet_grid(sex ~ ., space = "free", scales = "free_y")+
-#                           ylab("")+
-#                           ggtitle("Actogram", subtitle = "Splitted by sex")
-#                         self$Actograms$acto2[[1]] <- plot
-#                       }else if(type == "genotype"){
-#                         plot <- ggetho(data, aes(x = t, y = id, z = Activity), summary_time_window = 180) +
-#                           stat_bar_tile_etho()+
-#                           facet_grid(Genotype ~ ., space = "free", scales = "free_y")+
-#                           ylab("")+
-#                           LDcond$SLLD+
-#                           LDcond$SLDD+
-#                           # ld1+
-#                           # dd1+
-#                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
-#                           ggtitle("Actogram", subtitle = "Splitted by genotype")
-#                         self$Actograms$acto3[[1]] <- plot
-#                       }else if(type == "cabinet"){
-#                         plot <- ggetho(data, aes(x = t, y = id, z = Activity), summary_time_window = 180) +
-#                           LDcond$SLLD+
-#                           LDcond$SLDD+
-#                           # ld1+
-#                           # dd1+
-#                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
-#                           stat_bar_tile_etho()+
-#                           facet_grid(Cabinet ~ ., space = "free", scales = "free_y")+
-#                           ylab("")+
-#                           ggtitle("Actogram", subtitle = "Splitted by cabinet")
-#                         self$Actograms$acto4[[1]] <- plot
-#                       }
-#                       self$cacheKeys[1,2] <- copy(x$env2$Custom_tables$cacheKeys[1,2])
-#                     },
-#                     
-#                     plot_DPactogram = function(x, type){ #"total", "sex", "genotype", "cabinet", "individual"
-#                       data <- x$env2$Custom_tables$table1
-#                       len <- as.numeric(length(x$App_settings$dataList$name))
-#                       lenD <-  14#x$Custom_tables$metadata$Data_length[1]/1440
-#                       Llpha <- (0.4 / (len*lenD))
-#                       LDcond <- x$LDcondition
-#                       # browser()
-#                       if(type == "total"){
-#                         plot <- ggetho(data, aes(x = t, z = Activity), multiplot = 2, summary_time_window = 120)+
-#                           LDcond$DPLD+
-#                           LDcond$DPDD1+
-#                           LDcond$DPDD2+
-#                           # ld1+
-#                           # dd1+
-#                           # dd2+
-#                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
-#                           stat_bar_tile_etho()+
-#                           facet_wrap(~id+sex+Genotype, ncol = 4, labeller = label_wrap_gen(multi_line=FALSE))+
-#                           ylab("")+
-#                           ggtitle("Double plotted actogram", subtitle = "splitted by ID")
-#                         self$DPActograms[1][[1]] <- plot
-#                       }else if(type == "sex"){
-#                         plot <- ggetho(data, aes(x = t, z=Activity),
-#                                        summary_time_window = 120,
-#                                        multiplot = 2) +
-#                           LDcond$DPLD+
-#                           LDcond$DPDD1+
-#                           LDcond$DPDD2+
-#                           # ld1+
-#                           # dd1+
-#                           # dd2+
-#                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
-#                           stat_bar_tile_etho()+
-#                           facet_grid(sex~Genotype)+
-#                           ylab("")+
-#                           ggtitle("Double plotted actogram", subtitle = "averaged by sex vs genotype, time window per each bin is 5'")
-#                         self$DPActograms[2][[1]] <- plot
-#                       }else if(type == "genotype"){
-#                         plot <- ggetho(data, aes(x = t, z=Activity),
-#                                        summary_time_window = 120,
-#                                        multiplot = 2)+
-#                           LDcond$DPLD+
-#                           LDcond$DPDD1+
-#                           LDcond$DPDD2+
-#                           # ld1+
-#                           # dd1+
-#                           # dd2+
-#                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
-#                           stat_bar_tile_etho()+
-#                           facet_grid(Cabinet~Genotype)+
-#                           ylab("")+
-#                           ggtitle("Double plotted actogram", subtitle = "averaged by cabinet vs genotype, time window per each bin is 5'")
-#                         self$DPActograms[3][[1]] <- plot
-#                       }else if(type == "cabinet"){
-#                         plot <- ggetho(data, aes(x = t, z=Activity),
-#                                        summary_time_window = 120,
-#                                        multiplot = 2)+
-#                           LDcond$DPLD+
-#                           LDcond$DPDD1+
-#                           LDcond$DPDD2+
-#                           # ld1+
-#                           # dd1+
-#                           # dd2+
-#                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
-#                           stat_bar_tile_etho()+
-#                           facet_grid(Cabinet~sex)+
-#                           ylab("")+
-#                           ggtitle("Double plotted actogram", subtitle = "averaged by cabinet vs sex, time window per each bin is 5'")
-#                         self$DPActograms[4][[1]] <- plot
-#                       }else if(type == "individual"){
-#                         
-#                       }
-#                     },
-#                     
-#                     plot_DAct = function(x, type){
-#                       activity <- x$Custom_tables$table2 #get activity file from Custom_tables
-#                       
-#                       if (type == "~gen"){
-#                         G_eff <- activity %>% 
-#                           group_by(Genotype, Day) %>%
-#                           summarise(Activity = mean(Activity))
-#                         std_gen <- activity %>% group_by(Genotype, Day) %>% summarise(std = sd(Activity))
-#                         G_eff <- tibble(Genotype = G_eff$Genotype,
-#                                         Day = G_eff$Day,
-#                                         Activity = G_eff$Activity,
-#                                         Std = std_gen$std)
-#                         
-#                         plot <- ggplot(G_eff)+
-#                           geom_line(aes(Day, Activity, colour = Genotype), size = 1)+
-#                           geom_errorbar(aes(x = Day, ymin=Activity-Std, ymax=Activity+Std, colour=Genotype), width=.2,
-#                                         position=position_dodge(0.05))+
-#                           ggtitle("Mean activity across genotype")
-#                         self$DAct_plots[1][[1]] <- plot
-#                       }else if (type == "~sex"){
-#                         S_eff <- activity %>% 
-#                           group_by(Sex, Day) %>%
-#                           summarise(Activity = mean(Activity))
-#                         std_sex <- activity %>% group_by(Sex, Day) %>% summarise(std = sd(Activity))
-#                         S_eff <- tibble(Sex = S_eff$Sex,
-#                                         Day = S_eff$Day,
-#                                         Activity = S_eff$Activity,
-#                                         Std = std_sex$std)
-#                         
-#                         plot <- ggplot(S_eff)+
-#                           geom_line(aes(Day, Activity, colour = Sex), size = 1)+
-#                           geom_errorbar(aes(x = Day, ymin=Activity-Std, ymax=Activity+Std, colour=Sex), width=.2,
-#                                         position=position_dodge(0.05))+
-#                           ggtitle("Mean activity across sex")
-#                         self$DAct_plots[2][[1]] <- plot
-#                       }else if (type == "individual"){
-#                         G_eff <- activity %>% 
-#                           group_by(Genotype, Day) %>%
-#                           summarise(Activity = mean(Activity))
-#                         std_gen <- activity %>% group_by(Genotype, Day) %>% summarise(std = sd(Activity))
-#                         G_eff <- tibble(Genotype = G_eff$Genotype,
-#                                         Day = G_eff$Day,
-#                                         Activity = G_eff$Activity,
-#                                         Std = std_gen$std)
-#                         
-#                         plot <- ggplot()+
-#                           geom_line(data = activity, aes(Day, Activity, colour = id))+
-#                           geom_line(data = G_eff, aes(Day, Activity), size = 1)+
-#                           geom_point(data = G_eff, aes(Day, Activity), size = 2)+
-#                           geom_errorbar(data = G_eff, aes(x = Day, ymin=Activity-Std, ymax=Activity+Std), width=.2, position=position_dodge(0.05))+
-#                           facet_wrap(~Genotype, ncol = 2)+
-#                           ggtitle("Activity compared between genotypes", subtitle =  "mean activity for both genotypes in black")
-#                         self$DAct_plots[3][[1]] <- plot
-#                       }else if (type == "gen~sex"){
-#                         GS_eff <- activity %>% 
-#                           group_by(Genotype, Sex, Day) %>%
-#                           summarise(Activity = mean(Activity))
-#                         std_gs <- activity %>% group_by(Genotype, Sex, Day) %>% summarise(std = sd(Activity))
-#                         GS_eff <- tibble(Genotype = GS_eff$Genotype,
-#                                          Sex = GS_eff$Sex,
-#                                          Day = GS_eff$Day,
-#                                          Activity = GS_eff$Activity,
-#                                          Std = std_gs$std)
-#                         
-#                         plot <- ggplot()+
-#                           geom_line(data = GS_eff, aes(Day, Activity, colour = Sex), size = 1)+
-#                           geom_point(data = GS_eff, aes(Day, Activity, colour = Sex), size = 2)+
-#                           geom_errorbar(data = GS_eff, aes(x = Day, ymin=Activity-Std, ymax=Activity+Std, colour = Sex), width=.2, position=position_dodge(0.05))+
-#                           facet_wrap(~Genotype)+
-#                           ggtitle("Mean activity for Male and Females across genotypes")
-#                         self$DAct_plots[4][[1]] <- plot
-#                       }else if (type == "indiv+sex~gen"){
-#                         GS_eff <- activity %>% 
-#                           group_by(Genotype, Sex, Day) %>%
-#                           summarise(Activity = mean(Activity))
-#                         std_gs <- activity %>% group_by(Genotype, Sex, Day) %>% summarise(std = sd(Activity))
-#                         GS_eff <- tibble(Genotype = GS_eff$Genotype,
-#                                          Sex = GS_eff$Sex,
-#                                          Day = GS_eff$Day,
-#                                          Activity = GS_eff$Activity,
-#                                          Std = std_gs$std)
-#                         
-#                         plot <- ggplot()+
-#                           geom_line(data = activity, aes(Day, Activity, group = id, colour = Genotype))+
-#                           geom_line(data = GS_eff, aes(Day, Activity, colour = Genotype), linetype = "dashed", size = 1.5)+
-#                           geom_errorbar(data = GS_eff, aes(x = Day, ymin=Activity-Std, ymax=Activity+Std, colour = Genotype), width=.2, position=position_dodge(0.05))+
-#                           facet_wrap(~Sex)+
-#                           ggtitle("Activity divided across sex and genotype", subtitle =  "mean activity as dashed lines")
-#                         self$DAct_plots[5][[1]] <- plot
-#                       }else if (type == "indiv+cab~gen"){
-#                         G_eff <- activity %>% 
-#                           group_by(Genotype, Day) %>%
-#                           summarise(Activity = mean(Activity))
-#                         std_gen <- activity %>% group_by(Genotype, Day) %>% summarise(std = sd(Activity))
-#                         G_eff <- tibble(Genotype = G_eff$Genotype,
-#                                         Day = G_eff$Day,
-#                                         Activity = G_eff$Activity,
-#                                         Std = std_gen$std)
-#                         
-#                         plot <- ggplot()+
-#                           geom_line(data = activity, aes(Day, Activity, group = id, colour = Genotype))+
-#                           geom_line(data = G_eff, aes(Day, Activity, colour = Genotype), size = 1.5)+
-#                           geom_point(data = G_eff, aes(Day, Activity, colour = Genotype), size = 2)+
-#                           geom_errorbar(data = G_eff, aes(x = Day, ymin=Activity-Std, ymax=Activity+Std, colour = Genotype), width=.2, position=position_dodge(0.05))+
-#                           facet_wrap(~Cabinet)+
-#                           ggtitle("Activity compared between cabinets", subtitle =  "Activity grouped by genotypes and mean for M / F")
-#                         self$DAct_plots[6][[1]] <- plot
-#                       }
-#                     },
 #                     
 #                     plot_periodogram = function(funEnv, plotType){
 #                       data <- funEnv$Custom_tables$table4
 #                       if ("total" %in% plotType){
-#                         plot <- ggperio(data, mapping = aes(y = power, peak = peak))+
-#                           geom_line(aes(group = id))+
-#                           geom_line(aes(y = signif_threshold), colour = "red", alpha = 0.4)+
-#                           geom_peak()
+#                         plot <- #reference package ggetho::ggperio(data, mapping =ggplot2::aes(y = power, peak = peak))+
+#                          ggplot2::geom_line(ggplot2::aes(group = id))+
+#                          ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
+#                          ggplot2::geom_peak()
 #                         self$period_plots[1][[1]] <- plot
 #                       }
 #                       if ("faceted" %in% plotType){
-#                         plot <- ggperio(data, mapping = aes(y = power, peak = peak))+
-#                           geom_line(aes(group = id))+
-#                           geom_line(aes(y = signif_threshold), colour = "red", alpha = 0.4)+
-#                           geom_peak()+
+#                         plot <- ggetho::ggperio(data, mapping =ggplot2::aes(y = power, peak = peak))+
+#                          ggplot2::geom_line(ggplot2::aes(group = id))+
+#                          ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
+#                          ggplot2::geom_peak()+
 #                           facet_wrap(~id, ncol = 6, labeller = label_wrap_gen(multi_line=FALSE))
 #                         self$period_plots[2][[1]] <- plot
 #                       }
 #                       if ("sex" %in% plotType){
-#                         plot <- ggperio(data, mapping = aes(y = power, peak = peak))+
-#                           geom_line(aes(group = id))+
-#                           geom_line(aes(y = signif_threshold), colour = "red", alpha = 0.4)+
-#                           geom_peak()+
+#                         plot <- ggetho::ggperio(data, mapping =ggplot2::aes(y = power, peak = peak))+
+#                          ggplot2::geom_line(ggplot2::aes(group = id))+
+#                          ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
+#                          ggplot2::geom_peak()+
 #                           facet_wrap(sex ~ ., ncol = 6, labeller = label_wrap_gen(multi_line=FALSE))
 #                         self$period_plots[3][[1]] <- plot
 #                       }
 #                       if ("genotype" %in% plotType){
-#                         plot <- ggperio(data, mapping = aes(y = power, peak = peak))+
-#                           geom_line(aes(group = id))+
-#                           geom_line(aes(y = signif_threshold), colour = "red", alpha = 0.4)+
-#                           geom_peak()+
+#                         plot <- ggetho::ggperio(data, mapping =ggplot2::aes(y = power, peak = peak))+
+#                          ggplot2::geom_line(ggplot2::aes(group = id))+
+#                          ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
+#                          ggplot2::geom_peak()+
 #                           facet_wrap(Genotype ~ ., ncol = 6, labeller = label_wrap_gen(multi_line=FALSE))
 #                         self$period_plots[4][[1]] <- plot
 #                       }
 #                       if ("cabinet" %in% plotType){
-#                         plot <- ggperio(data, mapping = aes(y = power, peak = peak))+
-#                           geom_line(aes(group = id))+
-#                           geom_line(aes(y = signif_threshold), colour = "red", alpha = 0.4)+
-#                           geom_peak()+
+#                         plot <- ggetho::ggperio(data, mapping =ggplot2::aes(y = power, peak = peak))+
+#                          ggplot2::geom_line(ggplot2::aes(group = id))+
+#                          ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
+#                          ggplot2::geom_peak()+
 #                           facet_wrap(Cabinet ~ ., ncol = 6, labeller = label_wrap_gen(multi_line=FALSE))
 #                         self$period_plots[5][[1]] <- plot
 #                       }

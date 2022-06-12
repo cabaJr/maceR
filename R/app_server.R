@@ -21,16 +21,6 @@ app_server <- function( input, output, session ) {
   App_settings <- App_settings$new()
   # store Messages obj environment in App_settings
   App_settings$env_msg <- pryr::where("Messages")
-  # show help messages 
-  observeEvent(input$help_0_2, {show_help(App_settings, 1)})
-  observeEvent(input$help1_1_1, {show_help(App_settings, 2)})
-  observeEvent(input$help1_1_2, {show_help(App_settings, 3)})
-  observeEvent(input$help2_1, {show_help(App_settings, 4)})
-  observeEvent(input$help2_2, {show_help(App_settings, 5)})
-  observeEvent(input$help1_2_1, {show_help(App_settings, 6)})
-  observeEvent(input$help3_0, {show_help(App_settings, 7)})
-  observeEvent(input$help3_4, {show_help(App_settings, 8)})
-  observeEvent(input$help3_5, {show_help(App_settings, 9)})
   
   # activate Input tab and set it as active tab
   observeEvent(input$new_experiment, {
@@ -38,111 +28,94 @@ app_server <- function( input, output, session ) {
                                         text = "Input",
                                         icon = "upload")
     new_experiment(session, App_settings)
+    
   })
   
-  # Store data
-  observeEvent(input$fileListId, { #add case when user re-uploads different files
-    App_settings$setData(input$fileListId)
-    output$list <- renderTable(App_settings$dataList$name)
-    if(check_uploads(App_settings) == TRUE){
-      output$DataStructure <- render_tabItem_ui(tabname = "DataStructure",
-                                                text = "Data structure",
-                                                icon = "filter")
-      # initialize elements in DS
-      # App_settings$initialize_DS()
-      preload_data(App_settings)
-    }
-  })
-  # Store metadata
-  observeEvent(input$fileMetaId, {
-    App_settings$setMeta(input$fileMetaId)
-    output$metaList <- renderTable(App_settings$metadata$name)
-    if(check_uploads(App_settings) == TRUE){
-      output$DataStructure <- render_tabItem_ui(tabname = "DataStructure",
-                                                text = "Data structure",
-                                                icon = "filter")
-      App_settings$initialize_DS(session)
-      preload_data(App_settings)
+  # get value from mod_input_DF
+  inputDF_out <- mod_Input_DF_server("Input_DF_ui_1", App_settings)
+  
+ # render Data Structure sidebar button
+  observeEvent(inputDF_out(), {
+    if(isTRUE(inputDF_out()) == TRUE){ #to be changed with req()
+  output$DataStructure <- render_tabItem_ui(tabname = "DataStructure",
+                                            text = "Data structure",
+                                            icon = "filter")
     }
   })
   
-  # import parameters into App_settings
-  observeEvent(input$discardFirst, {App_settings$setDiscRow(input$discardFirst)})
-  observeEvent(input$serieType, {App_settings$setTimeDisp(input$serieType)})
-  observeEvent(input$rtStart, {App_settings$setExpstart(input$rtStart)})
-  observeEvent(input$TPduration, {App_settings$setTimepointDur(input$TPduration)})
+  # get return values from mod_data_structure
+  dataStructure_out <- mod_data_structure_server("data_structure_ui_1", App_settings)
   
-  # create Clean_mouse_data object
-  observeEvent(input$go,{
-    load_data(App_settings)
-    # shinyjs::show("chooseM", anim = FALSE)
-    output$YourData <- render_tabItem_ui(tabname = "YourData",
-                                              text = "Your data",
-                                              icon = "database")
-    output$Analysis <- render_tabItem_ui(tabname = "Analysis",
-                                         text = "Analysis",
-                                         icon = "sliders-h")
-    # initialize menù in yourData tab
-    update_DS_ui(session, "serietype", "2")
-    move_tab(session, "YourData")
-    showModal(modalDialog("Your data are ready", title = "Data", easyClose = TRUE))
-    # Create table with metadata
-    App_settings$env2$Annotate$showMeta(App_settings$env2)
-    # show metadata table in Yourdata tab
-    output$metafiltered <- DT::renderDT(App_settings$env2$Annotate$metaTable)
-    shinyjs::show("metafiltered", anim = FALSE)
-    # Upload selector from listMice to choose what data to display in YourData
-    idList <- App_settings$listMice[,2]
-    updateSelectInput(session, "chooseM", choices = c("choose" = "", idList, "All" = "All"), selected = NULL)
+  # render Your Data sidebar button and prepare for user
+  observeEvent(dataStructure_out$YourDataTab(),{
+    if(isTRUE(dataStructure_out$YourDataTab()) == TRUE){ #to be changed with req()
+      output$YourData <- render_tabItem_ui(tabname = "YourData",
+                                           text = "Your data",
+                                           icon = "database")
+      move_tab(session, "YourData")
+      showModal(modalDialog("Your data are ready", title = "Data", easyClose = TRUE))
+      # feed idList as a release trigger signal inside module to update table
+      mod_your_data_server("your_data_ui_1", App_settings, idList = dataStructure_out$idList())
+    }
+  })
+  # render Analysis sidebar button
+  observeEvent(dataStructure_out$AnalysisTab(), {
+    if(isTRUE(dataStructure_out$AnalysisTab()) == TRUE){ #to be changed with req()
+      output$Analysis <- render_tabItem_ui(tabname = "Analysis",
+                                           text = "Analysis",
+                                           icon = "sliders-h")
+      }
   })
   
-  # display data in YourData tab
-  observeEvent(input$chooseM, {
-    #import choosen id and list of ids
-    id <- input$chooseM
-    listMice <- App_settings$listMice
-    if(is.null(App_settings$env2$Annotate) == FALSE){
-      App_settings$env2$Annotate$showData(App_settings$env2, id, listMice)
-      table <- App_settings$env2$Annotate$actTable
-      output$showdata <- DT::renderDT(table, filter = 'top')
-      shinyjs::show("dataTab", anim = FALSE)
-    }else{}
+  # get return values from mod_your_data
+  yourData_out <- mod_your_data_server("your_data_ui_1", App_settings)
+  
+  # get return values from mod_analysis
+  analysis_out <- mod_analysis_server("analysis_ui_1", App_settings)
+  
+  # render Plots sidebar button
+  observeEvent(analysis_out$plotTab(), {
+    if(isTRUE(analysis_out$plotTab()) == TRUE){ #to be changed with req()
+      output$Plots <- render_tabItem_ui(tabname = "Plots",
+                                        text = "Plots", 
+                                        icon = "chart-pie")
+    }
+  }, once = TRUE)
+  
+  #observe when a new actogram is selected and print it
+  observeEvent(analysis_out$actos(), {
+  plots_out_actos <- mod_plots_server("plots_ui_1", App_settings, plot_list = analysis_out$actos())
+  })
+  #observe when a new DP actogram is selected and print it
+  observeEvent(analysis_out$DPactos(), {
+  plots_out_DPactos <- mod_plots_server("plots_ui_1", App_settings, plot_list = analysis_out$DPactos())
+  })
+  #observe when a new daily activity is selected and print it
+  observeEvent(analysis_out$Dact(), {
+  plots_out_Dact <- mod_plots_server("plots_ui_1", App_settings, plot_list = analysis_out$Dact())
+  })
+  #observe when a new periodogram is selected and print it
+  observeEvent(analysis_out$periods(), {
+  plots_out_periods <- mod_plots_server("plots_ui_1", App_settings, plot_list = analysis_out$periods())
   })
   
-  #open/close subsetting parameters in DataStructure tab box 1
-  observeEvent(input$serieType, { 
-    case <- input$serieType
-      switch(case,
-             "Real time" = {update_DS_ui(session, "serietype", 1)},
-             "Time points" = {update_DS_ui(session, "serietype", 2)})
-  })
   
-  observeEvent(input$DFsubsetRT, { #need to add function for closing
-    case <- input$DFsubsetRT
-    switch(case,
-           "Yes" = update_DS_ui(session, "subsetting", "1"),
-           "No" = update_DS_ui(session, "subsetting", "1_hide"))
-  })
+#### To Debug #########
+
   
-  observeEvent(input$DFsubsetTP, {
-    case <- input$DFsubsetTP
-    switch(case,
-           "Yes" = update_DS_ui(session, "subsetting", "2"),
-           "No" = update_DS_ui(session, "subsetting", "2_hide"))
-  })
+  #### DEBUG ########################################
   
-  observeEvent(input$DFsubsetRT2, {
-    case <- input$DFsubsetRT2
-    if(case == "Yes"){
-    switch(input$serietype,
-           "Real time" = {update_DS_ui(session, "subsetting", "3")},
-           "Time points" = {update_DS_ui(session, "subsetting", "4")})
-    }else{update_DS_ui(session, "subsetting", "5")}
-  })
-  
-#### DEBUG ########################################
   #DEBUG in app
   observeEvent(input$debug, {
     browser()
-  })
+  })  
+  
+  
+## add function to display list of ids subset 
+  
+  ## declare the presence of Plot Tab as rective val
+  
+  # eventReactive(input$print, {mod_plots_server("plots_ui_1", App_settings, Acto_list)})
+  
+  
 }

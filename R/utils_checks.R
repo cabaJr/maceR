@@ -15,3 +15,19 @@ check_uploads <- function(App_settings){
   } else {check <- FALSE}
   check
 }
+
+#' checkPlots
+#' 
+#' @description function to check if Plot TabItem is already present, and if
+#'     not it renders the Plots tab.
+#' @param App_settings environment
+#'
+#' @return
+#' @export
+#'
+
+checkPlots <- function(App_settings){
+    App_settings$plotTab <- TRUE
+  } 
+# }
+## add check functions to generate tables
