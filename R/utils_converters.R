@@ -10,6 +10,7 @@
 #' @noRd
 
 convert_time <- function(time){
+  # browser()
   toConvert <- as.character(time)
   if (grepl(pattern = 'am|pm', toConvert, ignore.case = TRUE) == TRUE){
     #convert to 24 hour format

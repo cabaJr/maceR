@@ -48,13 +48,18 @@ Raw_mouse_data <- R6::R6Class("Raw_mouse_data",
                                 #' @export
                                 #'
                                 add = function(datapath, metadatapath){ #function to read from csv files and insert data inside the object
+                                  # browser()
+                                  ## read from the specified datapath (from input button)
                                   datapath1 <- datapath
+                                  ## read from the specified metadatapath (from input button)
                                   metadatapath1 <- metadatapath
                                   data <- read.csv(datapath1, skip = 4, header = FALSE, col.names = c("Day", "Hour", "Minute", "Counts_min", "Lights"), stringsAsFactors = FALSE)
                                   metadata <- read.csv(metadatapath1, header = TRUE, sep = ";")
                                   id <- read.csv(datapath1, skip = 1, nrows = 1, header = FALSE)
-                                  id <- substr(id[1,1], 4, 10)
-                                  filtered <- metadata[metadata$Identifier == id,]
+                                  # browser()
+                                  id_sel <- sapply(strsplit(id[1,1], "_"), function(x) x[(length(x)-1)])
+                                  # id_sel <- substr(id[1,1], 4, 10)
+                                  filtered <- metadata[metadata$Identifier == id_sel,]
                                   startdate <- read.csv(datapath1, skip = 2, nrows = 1, header = FALSE)
                                   day <- startdate[1,1]
                                   hour <- startdate[1,2]
