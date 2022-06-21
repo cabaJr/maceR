@@ -237,8 +237,8 @@ Annotate <- R6::R6Class("Annotate",
                       Llpha <- (0.4 / (len*lenD))
                       LDcond <- x$LDcondition
                       # browser()
-                      if(type == "total"){
-                        plot <- ggetho(data, ggplot2::aes(x = t, z = Activity), multiplot = 2, summary_time_window = 120)+
+                      if(type == "DAtotal"){
+                        plot <- ggetho::ggetho(data, ggplot2::aes(x = t, z = Activity), multiplot = 2, summary_time_window = 120)+
                           LDcond$DPLD+
                           LDcond$DPDD1+
                           LDcond$DPDD2+
@@ -246,13 +246,13 @@ Annotate <- R6::R6Class("Annotate",
                           # dd1+
                           # dd2+
                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
-                          stat_bar_tile_etho()+
-                          facet_wrap(~id+sex+Genotype, ncol = 4, labeller = label_wrap_gen(multi_line=FALSE))+
-                          ylab("")+
+                          ggetho::stat_bar_tile_etho()+
+                          ggplot2::facet_wrap(~id+sex+Genotype, ncol = 4, labeller = ggplot2::label_wrap_gen(multi_line=FALSE))+
+                          ggplot2::ylab("")+
                          ggplot2::ggtitle("Double plotted actogram", subtitle = "splitted by ID")
-                        self$DPActograms[1][[1]] <- plot
-                      }else if(type == "sex"){
-                        plot <- ggetho(data, ggplot2::aes(x = t, z=Activity),
+                        self$DPActograms$DPacto1[[1]] <- plot
+                      }else if(type == "DAsex"){
+                        plot <- ggetho::ggetho(data, ggplot2::aes(x = t, z=Activity),
                                        summary_time_window = 120,
                                        multiplot = 2) +
                           LDcond$DPLD+
@@ -262,13 +262,13 @@ Annotate <- R6::R6Class("Annotate",
                           # dd1+
                           # dd2+
                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
-                          stat_bar_tile_etho()+
-                          facet_grid(sex~Genotype)+
-                          ylab("")+
+                          ggetho::stat_bar_tile_etho()+
+                          ggplot2::facet_grid(sex~Genotype)+
+                          ggplot2::ylab("")+
                          ggplot2::ggtitle("Double plotted actogram", subtitle = "averaged by sex vs genotype, time window per each bin is 5'")
-                        self$DPActograms[2][[1]] <- plot
-                      }else if(type == "genotype"){
-                        plot <- ggetho(data,ggplot2::aes(x = t, z=Activity),
+                        self$DPActograms$DPacto2[[1]] <- plot
+                      }else if(type == "DAgenotype"){
+                        plot <- ggetho::ggetho(data,ggplot2::aes(x = t, z=Activity),
                                        summary_time_window = 120,
                                        multiplot = 2)+
                           LDcond$DPLD+
@@ -278,13 +278,13 @@ Annotate <- R6::R6Class("Annotate",
                           # dd1+
                           # dd2+
                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
-                          stat_bar_tile_etho()+
-                          facet_grid(Cabinet~Genotype)+
-                          ylab("")+
+                          ggetho::stat_bar_tile_etho()+
+                          ggplot2::facet_grid(Cabinet~Genotype)+
+                          ggplot2::ylab("")+
                          ggplot2::ggtitle("Double plotted actogram", subtitle = "averaged by cabinet vs genotype, time window per each bin is 5'")
-                        self$DPActograms[3][[1]] <- plot
-                      }else if(type == "cabinet"){
-                        plot <- ggetho(data,ggplot2::aes(x = t, z=Activity),
+                        self$DPActograms$DPacto3[[1]] <- plot
+                      }else if(type == "DAcabinet"){
+                        plot <- ggetho::ggetho(data,ggplot2::aes(x = t, z=Activity),
                                        summary_time_window = 120,
                                        multiplot = 2)+
                           LDcond$DPLD+
@@ -294,11 +294,11 @@ Annotate <- R6::R6Class("Annotate",
                           # dd1+
                           # dd2+
                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
-                          stat_bar_tile_etho()+
-                          facet_grid(Cabinet~sex)+
-                          ylab("")+
+                          ggetho::stat_bar_tile_etho()+
+                          ggplot2::facet_grid(Cabinet~sex)+
+                          ggplot2::ylab("")+
                          ggplot2::ggtitle("Double plotted actogram", subtitle = "averaged by cabinet vs sex, time window per each bin is 5'")
-                        self$DPActograms[4][[1]] <- plot
+                        self$DPActograms$DPacto4[[1]] <- plot
                       }else if(type == "individual"){
 
                       }
@@ -313,7 +313,7 @@ Annotate <- R6::R6Class("Annotate",
                           dplyr::summarise(Activity = mean(Activity))
                         std_gen <- activity %>% 
                           dplyr::group_by(Genotype, Day) %>% 
-                          dplyr::summarise(std = sd(Activity))
+                          dplyr::summarise(std = std.error(Activity))
                         G_eff <- dplyr::tibble(Genotype = G_eff$Genotype,
                                         Day = G_eff$Day,
                                         Activity = G_eff$Activity,
@@ -335,7 +335,7 @@ Annotate <- R6::R6Class("Annotate",
                           dplyr::summarise(Activity = mean(Activity))
                         std_sex <- activity %>% 
                           dplyr::group_by(Sex, Day)%>% 
-                          dplyr::summarise(std = sd(Activity))
+                          dplyr::summarise(std = std.error(Activity))
                         S_eff <- dplyr::tibble(Sex = S_eff$Sex,
                                         Day = S_eff$Day,
                                         Activity = S_eff$Activity,
@@ -357,7 +357,7 @@ Annotate <- R6::R6Class("Annotate",
                           dplyr::summarise(Activity = mean(Activity))
                         std_gen <- activity %>% 
                           dplyr::group_by(Genotype, Day) %>% 
-                          dplyr::summarise(std = sd(Activity))
+                          dplyr::summarise(std = std.error(Activity))
                         G_eff <- dplyr::tibble(Genotype = G_eff$Genotype,
                                         Day = G_eff$Day,
                                         Activity = G_eff$Activity,
@@ -383,7 +383,7 @@ Annotate <- R6::R6Class("Annotate",
                           dplyr::summarise(Activity = mean(Activity))
                         std_gs <- activity %>% 
                           dplyr::group_by(Genotype, Sex, Day) %>% 
-                          dplyr::summarise(std = sd(Activity))
+                          dplyr::summarise(std = std.error(Activity))
                         GS_eff <-dplyr::tibble(Genotype = GS_eff$Genotype,
                                          Sex = GS_eff$Sex,
                                          Day = GS_eff$Day,
@@ -409,7 +409,7 @@ Annotate <- R6::R6Class("Annotate",
                           dplyr::summarise(Activity = mean(Activity))
                         std_gs <- activity %>% 
                           dplyr::group_by(Genotype, Sex, Day) %>% 
-                          dplyr::summarise(std = sd(Activity))
+                          dplyr::summarise(std = std.error(Activity))
                         GS_eff <-dplyr::tibble(Genotype = GS_eff$Genotype,
                                          Sex = GS_eff$Sex,
                                          Day = GS_eff$Day,
@@ -435,7 +435,7 @@ Annotate <- R6::R6Class("Annotate",
                           dplyr::summarise(Activity = mean(Activity))
                         std_gen <- activity %>% 
                           dplyr::group_by(Genotype, Day) %>% 
-                          dplyr::summarise(std = sd(Activity))
+                          dplyr::summarise(std = std.error(Activity))
                         G_eff <-dplyr::tibble(Genotype = G_eff$Genotype,
                                         Day = G_eff$Day,
                                         Activity = G_eff$Activity,

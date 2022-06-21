@@ -71,21 +71,24 @@ Clean_mouse_data <- R6::R6Class("Clean_mouse_data",
                                 # browser()
                                 discard <- vapply(temp1, function(x){x != "NaN"}, logical(1))
                                 discard1 <- which(discard == FALSE)
+                                # browser()
                                 if(length(discard1)>0){
                                   # data_counts <- setdiff(data_counts, "NaN")
                                   data_counts <- data_counts[-discard1]
                                   realTimeFiltered <- realtime[-discard1]
                                   compareTimeFiltered <- compareTime[-discard1]
-                                }else{}
-                                #discard rows until light On
-                                temp2 <- compareTimeFiltered[1:1440]
-                                lightOn <- self$lightOn
-                                discard2 <- which(temp2 == lightOn)
-                                if (discard2 > 1){
-                                  discard3 <- seq(from = 1, to = (discard2-1))
-                                  data_counts <- data_counts[-discard3]
-                                  realTimeFiltered <- realTimeFiltered[-discard3]
+                                }else{
+                                  realTimeFiltered <- realtime
                                 }
+                                # discard rows until light On
+                                # temp2 <- compareTimeFiltered[1:1440]
+                                # lightOn <- self$lightOn
+                                # discard2 <- which(temp2 == lightOn)
+                                # if (discard2 > 1){
+                                #   discard3 <- seq(from = 1, to = (discard2-1))
+                                #   data_counts <- data_counts[-discard3]
+                                #   realTimeFiltered <- realTimeFiltered[-discard3]
+                                # }
                                 dataLen <- length(data_counts)
                                 #Clean NaN values from data
                                 removeNaN <- vapply(data_counts, function(x){x == "NaN"}, logical(1))#which(data_counts == "105" )#| is.na(data_counts) == TRUE)

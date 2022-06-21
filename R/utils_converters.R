@@ -35,3 +35,7 @@ convert_time <- function(time){
   }
   cleanHour
 }
+
+std.error <- function(x){sd(x)/sqrt(length(x))}
+
+

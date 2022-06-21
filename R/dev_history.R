@@ -140,13 +140,18 @@
 #'
   #' FIXINGS 
 #' 
+#' - Remove the line deleting data until light on and start from midnight
+#'     to obtain the nice double plotted acto in fct_Clean_mouse_data
 #' - fix second click on Print that makes Plot tab disappear
 #' - fix buttons in DataStructure tab
 #' - fix problem with radiobuttons not showing the dot
 #'     (https://github.com/rstudio/rstudio/issues/3751)
 #'     (https://www.javaer101.com/en/article/32265313.html)
 #' 
-#' To do: Below the data subsetting box, create action buttons to start new 
+#' To do: 
+#'     : When plotting Daily activity, let the user decide if to plot SEM or SD
+#' 
+#'     : Below the data subsetting box, create action buttons to start new 
 #'     analyses, like actogram, Daily activity, etc. Use 
 #'     shinydashboardPlus set of new ui objects to make it sexy. Each time a 
 #'     new Analysis is generated, either flip the card and ask for parameters
@@ -154,7 +159,7 @@
 #'     see the output.
 #'     
 #'     : make plot tab as nested moduled with each new horizontal tab is appended 
-#'     next to the previous and contain all the analyses submitted to that plot type.     
+#'     next to the previous and contain all the analyses submitted to that plot type.   
 #'     
 #' Questions:
 #' 
