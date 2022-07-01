@@ -450,53 +450,55 @@ Annotate <- R6::R6Class("Annotate",
                          ggplot2::ggtitle("Activity compared between cabinets", subtitle =  "Activity grouped by genotypes and mean for M / F")
                         self$DAct_plots[6][[1]] <- plot
                       }
+                    },
+
+                    plot_periodogram = function(funEnv, plotType){
+                      data <- funEnv$env3$Custom_tables$table4
+                      # browser()
+                      if ("Pertotal" %in% plotType){#"Pertotal", "Perfaceted", "Persex", "Pergenotype", "Percabinet"
+                        plot <- ggetho::ggperio(data, mapping = ggplot2::aes(y = power, peak = peak))+
+                         ggplot2::geom_line(ggplot2::aes(group = id))+
+                         ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
+                          ggetho::geom_peak()
+                        self$period_plots[1][[1]] <- plot
+                      }
+                      if ("Perfaceted" %in% plotType){
+                        plot <- ggetho::ggperio(data, mapping = ggplot2::aes(y = power, peak = peak))+
+                         ggplot2::geom_line(ggplot2::aes(group = id))+
+                         ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
+                          ggetho::geom_peak()+
+                          ggplot2::facet_wrap(~id, ncol = 6, labeller = ggplot2::label_wrap_gen(multi_line=FALSE))
+                        self$period_plots[2][[1]] <- plot
+                        browser()
+                      }
+                      if ("Persex" %in% plotType){
+                        plot <- ggetho::ggperio(data, mapping = ggplot2::aes(y = power, peak = peak))+
+                         ggplot2::geom_line(ggplot2::aes(group = id))+
+                         ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
+                          ggetho::geom_peak()+
+                          ggplot2::facet_wrap(sex ~ ., ncol = 6, labeller = ggplot2::label_wrap_gen(multi_line=FALSE))
+                        self$period_plots[3][[1]] <- plot
+                      }
+                      if ("Pergenotype" %in% plotType){
+                        plot <- ggetho::ggperio(data, mapping = ggplot2::aes(y = power, peak = peak))+
+                         ggplot2::geom_line(ggplot2::aes(group = id))+
+                         ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
+                          ggetho::geom_peak()+
+                          ggplot2::facet_wrap(Genotype ~ ., ncol = 6, labeller = ggplot2::label_wrap_gen(multi_line=FALSE))
+                        self$period_plots[4][[1]] <- plot
+                      }
+                      if ("Percabinet" %in% plotType){
+                        plot <- ggetho::ggperio(data, mapping = ggplot2::aes(y = power, peak = peak))+
+                         ggplot2::geom_line(ggplot2::aes(group = id))+
+                         ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
+                          ggetho::geom_peak()+
+                          ggplot2::facet_wrap(Cabinet ~ ., ncol = 6, labeller = ggplot2::label_wrap_gen(multi_line=FALSE))
+                        self$period_plots[5][[1]] <- plot
+                      }
                     }#,
-#                     
-#                     plot_periodogram = function(funEnv, plotType){
-#                       data <- funEnv$Custom_tables$table4
-#                       if ("total" %in% plotType){
-#                         plot <- #reference package ggetho::ggperio(data, mapping =ggplot2::aes(y = power, peak = peak))+
-#                          ggplot2::geom_line(ggplot2::aes(group = id))+
-#                          ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
-#                          ggplot2::geom_peak()
-#                         self$period_plots[1][[1]] <- plot
-#                       }
-#                       if ("faceted" %in% plotType){
-#                         plot <- ggetho::ggperio(data, mapping =ggplot2::aes(y = power, peak = peak))+
-#                          ggplot2::geom_line(ggplot2::aes(group = id))+
-#                          ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
-#                          ggplot2::geom_peak()+
-#                           facet_wrap(~id, ncol = 6, labeller = label_wrap_gen(multi_line=FALSE))
-#                         self$period_plots[2][[1]] <- plot
-#                       }
-#                       if ("sex" %in% plotType){
-#                         plot <- ggetho::ggperio(data, mapping =ggplot2::aes(y = power, peak = peak))+
-#                          ggplot2::geom_line(ggplot2::aes(group = id))+
-#                          ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
-#                          ggplot2::geom_peak()+
-#                           facet_wrap(sex ~ ., ncol = 6, labeller = label_wrap_gen(multi_line=FALSE))
-#                         self$period_plots[3][[1]] <- plot
-#                       }
-#                       if ("genotype" %in% plotType){
-#                         plot <- ggetho::ggperio(data, mapping =ggplot2::aes(y = power, peak = peak))+
-#                          ggplot2::geom_line(ggplot2::aes(group = id))+
-#                          ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
-#                          ggplot2::geom_peak()+
-#                           facet_wrap(Genotype ~ ., ncol = 6, labeller = label_wrap_gen(multi_line=FALSE))
-#                         self$period_plots[4][[1]] <- plot
-#                       }
-#                       if ("cabinet" %in% plotType){
-#                         plot <- ggetho::ggperio(data, mapping =ggplot2::aes(y = power, peak = peak))+
-#                          ggplot2::geom_line(ggplot2::aes(group = id))+
-#                          ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
-#                          ggplot2::geom_peak()+
-#                           facet_wrap(Cabinet ~ ., ncol = 6, labeller = label_wrap_gen(multi_line=FALSE))
-#                         self$period_plots[5][[1]] <- plot
-#                       }
-#                     },
-#                     Custom_actogram = function(...){
-#                       
-#                     } 
+                    #  Custom_actogram = function(...){
+                    # 
+                    # }
                     )
 )
 

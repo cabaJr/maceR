@@ -41,6 +41,7 @@ mod_box_plot_server <- function(id, env, acto_selected, count){
    moduleServer( id, function(input, output, session){
       ns <- session$ns
       Annotate <- env$env4$Annotate
+      # browser()
       ## get object containing the corresponding plot from table in Annotate
       plot_location <- eval(parse(text = unlist(acto_selected[count, 3]), n =1))
       ## print the parsed plot  

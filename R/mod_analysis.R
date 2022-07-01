@@ -204,6 +204,35 @@ mod_analysis_server <- function(id, App_settings){
       toReturn$Dact <- plot_choices
     })
     
+    observeEvent(input$periodPrint, {
+      # browser()
+      ## get Custom table object through App_settings
+      Custom_tables <- App_settings$env2$Custom_tables
+      ## check if table1 is already present or calculate it
+      Custom_tables$checkIf(App_settings, input$subsetPlot) #call to checker function that then calls behavrTable
+      ## get user plot choices 
+          plot_choices <- input$periodCho
+          plot_choices <- "Perfaceted"
+      ## get period range
+          periodRange <- input$periodRange
+          periodRange <- c(18,30)
+      ## get function to use
+          periodFun <- input$periodFun
+          periodFun <- "chi_sq_periodogram"
+      Custom_tables$computePer(method = periodFun, periodRange = periodRange, App_settings)
+      ## get annotate environment
+      Annotate <- App_settings$env4$Annotate
+      ## call the function to output the plot for all the selected plot types
+      purrr::map(plot_choices, ~ Annotate$plot_periodogram(funEnv = App_settings, plotType = .x))
+      ## assign value to be returned to activate plot tab
+      if(App_settings$plotTab == FALSE){
+        toReturn$plotTab <- checkPlots(App_settings)
+      }
+      ## assign value of selected plots to be returned
+          # toReturn$periods <- plot_choices
+      toReturn$periods <- plot_choices
+    })
+    
     ## create list with values to return
     analysis_out <- list(
       plotTab = reactive(toReturn$plotTab),

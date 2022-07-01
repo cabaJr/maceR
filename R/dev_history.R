@@ -150,6 +150,9 @@
 #' 
 #' To do: 
 #'     : When plotting Daily activity, let the user decide if to plot SEM or SD
+#'     
+#'     : create a function to filter data based on ZT (i.e. extract only data 
+#'     about the dark phase)
 #' 
 #'     : Below the data subsetting box, create action buttons to start new 
 #'     analyses, like actogram, Daily activity, etc. Use 
@@ -162,6 +165,10 @@
 #'     next to the previous and contain all the analyses submitted to that plot type.   
 #'     
 #' Questions:
+#'  - Is it possible to write automations that bring the app to a specified point?
+#'      Useful for testing (bring the app to a certain state), but the experienced 
+#'      user could use it to chain processes and speed up analyses across platforms. 
+#'      Feature, generator of code for automations in the app sort of Macro recorder.
 #' 
 #' Solved questions:
 #' 

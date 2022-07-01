@@ -83,6 +83,8 @@ Custom_tables <- R6::R6Class("Custom_tables",
                                # split into daily chunks and get the avg
                                d1 <- split(data, ceiling(seq_along(data)/1440))
                                # elongate last chunk to 1440 and substitute NA with 0
+                               ## register the length of missing part and return a 
+                               ## message if too short, amybe discard data
                                toAdd <- replicate((1440-length(d1[[length(d1)]])), 0)
                                d1[[length(d1)]] <- append(d1[[length(d1)]], toAdd)
                                d2 <- Reduce("+", d1)/length(d1)
@@ -236,11 +238,10 @@ Custom_tables <- R6::R6Class("Custom_tables",
                              meta <- self$metadata
                              perFun <- method
                              vals <- periodRange
-                             browser()
                              switch(perFun,
                                     "chi_sq_periodogram" = {
                                       period <- zeitgebr::periodogram(Activity, data, period_range = c(behavr::hours(vals[1]), behavr::hours(vals[2])),
-                                                                      resample_rate = 1/behavr::mins(1), alpha = 0.01, FUN = chi_sq_periodogram)
+                                                                      resample_rate = 1/behavr::mins(1), alpha = 0.01, FUN = zeitgebr::chi_sq_periodogram)
                                     },
                                     "ac_periodogram" = {
                                       period <- zeitgebr::periodogram(Activity, data, period_range = c(behavr::hours(vals[1]), behavr::hours(vals[2])),
@@ -250,9 +251,9 @@ Custom_tables <- R6::R6Class("Custom_tables",
                                       period <- zeitgebr::periodogram(Activity, data, period_range = c(behavr::hours(vals[1]), behavr::hours(vals[2])),
                                                                       resample_rate = 1/behavr::mins(1), alpha = 0.01, FUN = ls_periodogram)
                                     })
-                             periodPeaks <- find_peaks(period, n_peaks = 2)
+                             periodPeaks <- zeitgebr::find_peaks(period, n_peaks = 2)
                              meta <- data.table::setDT(meta, key = "id")
-                             period2 <- behavr(periodPeaks, metadata = meta)
+                             period2 <- behavr::behavr(periodPeaks, metadata = meta)
                              self$table4 <- period2
 
                            }
