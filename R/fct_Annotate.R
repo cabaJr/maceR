@@ -66,6 +66,7 @@ Annotate <- R6::R6Class("Annotate",
                                   "Actogram - split by genotype", "Actogram - split by cabinet",
                                   "Double plotted actogram - all animals", "Double plotted actogram - split by sex",
                                   "Double plotted actogram - split by genotype", "Double plotted actogram - split by cabinet",
+                                  ## add corrected titles for sum of daily activity
                                   "Sum of daily activity - ", "Sum of daily activity - ", 
                                   "Sum of daily activity - ", "Sum of daily activity - ", 
                                   "Sum of daily activity - ", "Sum of daily activity - ", 
@@ -455,7 +456,7 @@ Annotate <- R6::R6Class("Annotate",
                     plot_periodogram = function(funEnv, plotType){
                       data <- funEnv$env3$Custom_tables$table4
                       # browser()
-                      if ("Pertotal" %in% plotType){#"Pertotal", "Perfaceted", "Persex", "Pergenotype", "Percabinet"
+                      if ("Pertotal" %in% plotType){
                         plot <- ggetho::ggperio(data, mapping = ggplot2::aes(y = power, peak = peak))+
                          ggplot2::geom_line(ggplot2::aes(group = id))+
                          ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+

@@ -109,18 +109,20 @@
 #' Activate daily activity plotting
 
   #' 29/06/2022
-#' Activate periodograms
+#' Activate periodograms, still not displaying correctly
 
   #' 07/07/2022
-#'  Activate LD settings
 #'  Fix plot generation
-#'  
+#'  Periodgrams are not generated upon request. Individual periodogram is 
+#'      generated but when called inside mod_box_plot.R it appears as table 
+#'      and cannot be loaded correctly by renderPlot()
 
 
   #' PRIORITIES
 #' - Fix Double plotted actograms
 #' - expand to Periodograms
 #' - activate LD functions
+#' - create download function
 #' - make tables of data available for download
 #' - remake analysis tab with more user friendly flipbox
 #' - update landing page
