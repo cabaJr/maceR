@@ -21,7 +21,7 @@ mod_box_plot_ui <- function(id, plot_title){
                          dropdown_icon = "wrench",
                          fluidRow(
                             column(width = 12,
-                                   plotOutput(ns("plot_hold"))
+                                   shinycssloaders::withSpinner(plotOutput(ns("plot_hold")), id = "spin", type = 4, color = "#2E9AFE", size = 0.65)
                                    )
                             ),
                          fluidRow(
@@ -37,8 +37,8 @@ mod_box_plot_ui <- function(id, plot_title){
 #' box_plot Server Functions
 #'
 #' @noRd 
-mod_box_plot_server <- function(id, env, acto_selected, count){
-   moduleServer( id, function(input, output, session){
+mod_box_plot_server <- function(module_id, env, acto_selected, count){
+   moduleServer(module_id, function(input, output, session){
       ns <- session$ns
       Annotate <- env$env4$Annotate
       # browser()

@@ -104,33 +104,17 @@ mod_plots_ui <- function(id){
 #' plots Server Functions
 #'
 #' @noRd 
-mod_plots_server <- function(id, env, plot_list = reactiveValues(NULL)){
+mod_plots_server <- function(id, env, acto_selected, title, module_id, count, pos){
   
-  moduleServer( 
-    id, 
-    function(input, output, session){#}, placeholder = placeholder, title = title, plotObj = plotObj){
+  moduleServer(
+    id,
+    function(input, output, session){
     ns <- session$ns
     
-    Annotate <- env$env4$Annotate
-
-    plot_list_static <- isolate(plot_list)
-    acto_choices <- Annotate$output_list_acto
-    
-    acto_selected <- acto_choices[acto_choices$handler  %in% plot_list_static, ]
-    # browser()
-    #don't compute when app is started but only after files are uploaded
-    # try with an while cycle, each time deleting one item in the list of plot to compute
-    if(is.null(acto_selected) == FALSE){
-      for(i in seq_len(nrow(acto_selected[, 1]))){
-      title = unlist(acto_selected[i, 4])
-      pos <- unlist(acto_selected[i, 2])
-      module_id <- paste("box_plot_ui_", pos, sep = "")
       output[[pos]] <- renderUI({
         mod_box_plot_ui(NS(id, module_id), title)
       })
-      mod_box_plot_server(module_id, env, acto_selected, i)
-    }
-    }
+      mod_box_plot_server(module_id = module_id, env = env, acto_selected = acto_selected, count = count)
     
 
   })

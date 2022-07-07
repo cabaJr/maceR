@@ -90,9 +90,24 @@ app_server <- function( input, output, session ) {
   observeEvent(analysis_out$DPactos(), {
   plots_out_DPactos <- mod_plots_server("plots_ui_1", App_settings, plot_list = analysis_out$DPactos())
   })
-  #observe when a new daily activity is selected and print it
+  # observe when a new daily activity is selected and print it
+  # use a for cycle to call plot module several times
+  # If it works, create a functions that calls the plot module instead of using 
+      # a for cycle in the server script 
   observeEvent(analysis_out$Dact(), {
-  plots_out_Dact <- mod_plots_server("plots_ui_1", App_settings, plot_list = analysis_out$Dact())
+    Annotate <- App_settings$env4$Annotate
+    plot_list_static <- isolate(analysis_out$Dact())
+    acto_choices <- Annotate$output_list_acto
+    
+    acto_selected <- acto_choices[acto_choices$handler  %in% plot_list_static, ]
+    # browser()
+    if(is.null(acto_selected) == FALSE){
+      for(i in seq_len(nrow(acto_selected[, 1]))){
+        title = unlist(acto_selected[i, 4])
+        pos <- unlist(acto_selected[i, 2])
+        module_id <- paste("box_plot_ui_", pos, sep = "")
+  plots_out_Dact <- mod_plots_server(id = "plots_ui_1", env = App_settings, acto_selected = acto_selected, title = title, module_id = module_id, count = i, pos = pos)
+      }}
   })
   #observe when a new periodogram is selected and print it
   observeEvent(analysis_out$periods(), {
