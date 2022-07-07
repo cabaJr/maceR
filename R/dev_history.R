@@ -108,6 +108,15 @@
   #' 12/06/2022
 #' Activate daily activity plotting
 
+  #' 29/06/2022
+#' Activate periodograms
+
+  #' 07/07/2022
+#'  Activate LD settings
+#'  Fix plot generation
+#'  
+
+
   #' PRIORITIES
 #' - Fix Double plotted actograms
 #' - expand to Periodograms
@@ -150,10 +159,10 @@
 #' 
 #' To do: 
 #'     : When plotting Daily activity, let the user decide if to plot SEM or SD
-#'     
+#' 
 #'     : create a function to filter data based on ZT (i.e. extract only data 
 #'     about the dark phase)
-#' 
+#'     
 #'     : Below the data subsetting box, create action buttons to start new 
 #'     analyses, like actogram, Daily activity, etc. Use 
 #'     shinydashboardPlus set of new ui objects to make it sexy. Each time a 
@@ -165,11 +174,12 @@
 #'     next to the previous and contain all the analyses submitted to that plot type.   
 #'     
 #' Questions:
+#' 
 #'  - Is it possible to write automations that bring the app to a specified point?
 #'      Useful for testing (bring the app to a certain state), but the experienced 
 #'      user could use it to chain processes and speed up analyses across platforms. 
 #'      Feature, generator of code for automations in the app sort of Macro recorder.
-#' 
+#'      
 #' Solved questions:
 #' 
 #' - #' - is it possible to have an observer from inside a module?
