@@ -245,11 +245,11 @@ Custom_tables <- R6::R6Class("Custom_tables",
                                     },
                                     "ac_periodogram" = {
                                       period <- zeitgebr::periodogram(Activity, data, period_range = c(behavr::hours(vals[1]), behavr::hours(vals[2])),
-                                                                      resample_rate = 1/behavr::mins(1), alpha = 0.01, FUN = ac_periodogram)
+                                                                      resample_rate = 1/behavr::mins(1), alpha = 0.01, FUN = zeitgebr::ac_periodogram)
                                     },
                                     "ls_periodogram" = {
                                       period <- zeitgebr::periodogram(Activity, data, period_range = c(behavr::hours(vals[1]), behavr::hours(vals[2])),
-                                                                      resample_rate = 1/behavr::mins(1), alpha = 0.01, FUN = ls_periodogram)
+                                                                      resample_rate = 1/behavr::mins(1), alpha = 0.01, FUN = zeitgebr::ls_periodogram)
                                     })
                              periodPeaks <- zeitgebr::find_peaks(period, n_peaks = 2)
                              meta <- data.table::setDT(meta, key = "id")

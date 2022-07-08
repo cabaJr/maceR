@@ -212,13 +212,10 @@ mod_analysis_server <- function(id, App_settings){
       Custom_tables$checkIf(App_settings, input$subsetPlot) #call to checker function that then calls behavrTable
       ## get user plot choices 
           plot_choices <- input$periodCho
-          plot_choices <- "Perfaceted"
       ## get period range
           periodRange <- input$periodRange
-          periodRange <- c(18,30)
       ## get function to use
           periodFun <- input$periodFun
-          periodFun <- "chi_sq_periodogram"
       Custom_tables$computePer(method = periodFun, periodRange = periodRange, App_settings)
       ## get annotate environment
       Annotate <- App_settings$env4$Annotate

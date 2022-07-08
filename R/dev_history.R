@@ -117,6 +117,9 @@
 #'      generated but when called inside mod_box_plot.R it appears as table 
 #'      and cannot be loaded correctly by renderPlot()
 
+  #' 08/07/2022
+#'  Fixed display of periodograms            
+
 
   #' PRIORITIES
 #' - Fix Double plotted actograms

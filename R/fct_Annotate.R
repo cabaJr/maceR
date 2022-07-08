@@ -59,9 +59,9 @@ Annotate <- R6::R6Class("Annotate",
                                      "Annotate$DAct_plots$DAct3", "Annotate$DAct_plots$DAct4", 
                                      "Annotate$DAct_plots$DAct5", "Annotate$DAct_plots$DAct6", 
                                      ## Periodograms
-                                     "Annotate$period_plots$Per1[[1]]", "Annotate$period_plots$Per2[[1]]", 
-                                     "Annotate$period_plots$Per3[[1]]", "Annotate$period_plots$Per4[[1]]", 
-                                     "Annotate$period_plots$Per5[[1]]"),
+                                     "Annotate$period_plots$Per1", "Annotate$period_plots$Per2", 
+                                     "Annotate$period_plots$Per3", "Annotate$period_plots$Per4", 
+                                     "Annotate$period_plots$Per5"),
                       "title" = c("Actogram - all animals", "Actogram - split by sex",
                                   "Actogram - split by genotype", "Actogram - split by cabinet",
                                   "Double plotted actogram - all animals", "Double plotted actogram - split by sex",
@@ -470,7 +470,6 @@ Annotate <- R6::R6Class("Annotate",
                           ggetho::geom_peak()+
                           ggplot2::facet_wrap(~id, ncol = 6, labeller = ggplot2::label_wrap_gen(multi_line=FALSE))
                         self$period_plots[2][[1]] <- plot
-                        browser()
                       }
                       if ("Persex" %in% plotType){
                         plot <- ggetho::ggperio(data, mapping = ggplot2::aes(y = power, peak = peak))+
