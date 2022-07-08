@@ -118,13 +118,13 @@
 #'      and cannot be loaded correctly by renderPlot()
 
   #' 08/07/2022
-#'  Fixed display of periodograms            
+#'  Fixed display of periodograms
+#'  Fix LD settings      
 
 
   #' PRIORITIES
 #' - Fix Double plotted actograms
-#' - expand to Periodograms
-#' - activate LD functions
+#' - activate functions to display/hide elements in Datastructure tab
 #' - create download function
 #' - make tables of data available for download
 #' - remake analysis tab with more user friendly flipbox
