@@ -124,14 +124,13 @@
   #' 11/07/2022
 #'  make downloadButtons for tables available (data table, behavr Table, sum of 
 #'      daily activity, period data)
-#'  
+#'  Create download function download_obj()
+#'  donwload function not working for plots, still using old function
 
 
   #' PRIORITIES
-#' - make tables of data available for download
 #' - Fix Double plotted actograms
 #' - activate functions to display/hide elements in Datastructure tab
-#' - create download function
 #' - remake analysis tab with more user friendly flipbox
 #' - update landing page
 #' - update help buttons
@@ -140,7 +139,6 @@
   #' CODING
 #' - activate buttons in Analysis tab: Subsetting box and various analyses
 #'     option selection. See mod_analysis for details.
-#' - activate download buttons
 #' - create analysis presets (e.g. 1 periodogram, 1 daily activity, 1 periodogram, etc..)
 #' 
   #' UI
