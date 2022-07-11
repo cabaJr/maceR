@@ -119,16 +119,22 @@
 
   #' 08/07/2022
 #'  Fixed display of periodograms
-#'  Fix LD settings      
+#'  Fix LD settings
+
+  #' 11/07/2022
+#'  make downloadButtons for tables available (data table, behavr Table, sum of 
+#'      daily activity, period data)
+#'  
 
 
   #' PRIORITIES
+#' - make tables of data available for download
 #' - Fix Double plotted actograms
 #' - activate functions to display/hide elements in Datastructure tab
 #' - create download function
-#' - make tables of data available for download
 #' - remake analysis tab with more user friendly flipbox
 #' - update landing page
+#' - update help buttons
 #' - RMarkdown document
 
   #' CODING

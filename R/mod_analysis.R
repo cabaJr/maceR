@@ -41,7 +41,7 @@ mod_analysis_ui <- function(id){
                                                     choiceNames = c("Total Actogram", "Splitted by sex", "Splitted by genotype", "Splitted by cabinet"),
                                                     choiceValues = c("total", "sex", "genotype", "cabinet"),
                                                     inline = TRUE, width = "80%"),
-                                 actionButton(inputId = ns("print"), label = "print"), actionButton(inputId = ns("Dl1"), label = "Download")
+                                 actionButton(inputId = ns("print"), label = "print"), downloadButton(outputId = ns("Dl1"), label = "Download")
                  ))
              )
     ),
@@ -134,7 +134,7 @@ mod_analysis_server <- function(id, App_settings){
                                DPactos = NULL,
                                Dact = NULL,
                                periods = NULL)
-    
+    ## SINGLE LINE PERIODOGRAM
     observeEvent(input$print,{
       ## get Custom table object through App_settings
       Custom_tables <- App_settings$env2$Custom_tables
@@ -160,6 +160,12 @@ mod_analysis_server <- function(id, App_settings){
       toReturn$actos <- plot_choices
     })
     
+    ## download handler for behavr table 
+    output$Dl1 <- download_obj(title = "Behavr_table_",
+                               location = App_settings$env2$Custom_tables$table1,
+                               format = "csv")
+    
+    ## DOUBLE PLOTTED PERIODOGRAM
     observeEvent(input$printDP, {
       ## get Custom table object through App_settings
       Custom_tables <- App_settings$env2$Custom_tables
@@ -181,7 +187,8 @@ mod_analysis_server <- function(id, App_settings){
       ## assign value of selected plots to be returned
       toReturn$DPactos <- plot_choices
     })
-
+    
+    ## SUM OF DAILY ACTIVITY
     observeEvent(input$dayAct, {
       # browser()
       ## get Custom table object through App_settings
@@ -204,6 +211,12 @@ mod_analysis_server <- function(id, App_settings){
       toReturn$Dact <- plot_choices
     })
     
+    ## download handler for sum of daily activity 
+    output$Dl2 <- download_obj(title = "Sum_of_daily_activity_",
+                               location = App_settings$env2$Custom_tables$table2,
+                               format = "csv")
+    
+    ## PERIODOGRAMS
     observeEvent(input$periodPrint, {
       # browser()
       ## get Custom table object through App_settings
@@ -229,6 +242,11 @@ mod_analysis_server <- function(id, App_settings){
           # toReturn$periods <- plot_choices
       toReturn$periods <- plot_choices
     })
+    
+    ## download handler for periodogram table 
+    output$Dl3 <- download_obj(title = "Periodogram_table_",
+                               location = App_settings$env2$Custom_tables$table4,
+                               format = "csv")
     
     ## create list with values to return
     analysis_out <- list(

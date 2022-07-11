@@ -84,6 +84,20 @@ mod_your_data_server <- function(id, env, idList = NULL){
       }else{}
     }, ignoreInit = TRUE)
     
+    #download button for activity data table
+
+    output$dataTab <- download_obj(title = "Behavr_Table_data_",
+                                   location = App_settings$env2$Annotate$actTable,
+                                   format = "csv")
+      
+      # downloadHandler( 
+      # filename = function(){paste("Behavr_Table_data_", Sys.Date(), ".csv", sep = "")},
+      # content = function(file){
+      #       write.csv(App_settings$env2$Annotate$actTable, file, quote = FALSE, row.names = FALSE)
+      #     }
+      #   )
+    
+    
     return(
       yourData_out <- reactive(toReturn$var)
       

@@ -26,8 +26,56 @@ load_plots <- function(env, plot_list, session){
                                     count = i,
                                     pos = pos,
                                     session = session)
-      # return(plots_out)
     }
   }
-  # return(plots_out)
+}
+
+#' download_obj
+#'
+#' @param title 
+#' @param location 
+#' @param format 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+download_obj <- function(title, location, format, ...){
+  extension <- paste(".", format, sep = "")
+  object <- downloadHandler(
+          filename = function(){paste(title, Sys.Date(), extension, sep = "")},
+          content = function(file){browser()
+            switch(format,
+                   "csv" = {write.csv(location, file, quote = FALSE, row.names = FALSE)},
+                   "png" = {png(file, width = 1820, height = 787, units = "px")
+                             print(plot_location)
+                             dev.off()
+                             }
+                   )
+            }
+        )
+  
+  ## not functional version of the download switch 
+  # switch(format,
+  #        "csv" = {
+  #          object <- downloadHandler( 
+  #            filename = function(){paste(title, Sys.Date(), extension, sep = "")},
+  #            content = function(file){write.csv(location, file, quote = FALSE, row.names = FALSE)
+  #            }
+  #          )
+  #        },
+  #        "png" = {object <- downloadHandler( 
+  #          filename = function(){paste(title, Sys.Date(), extension, sep = "")},
+  #          content = function(file){
+  #            png(file, width = 1820, height = 787, units = "px")
+  #             print(plot_location)
+  #             dev.off()
+  #          }
+  #        )
+  #        }
+  #        )
+
+  
+
+  return(object)
 }

@@ -69,7 +69,7 @@ mod_plots_server <- function(id, env, acto_selected, title, module_id, count, po
       output[[pos]] <- renderUI({
         mod_box_plot_ui(NS(id, module_id), title)
       })
-      mod_box_plot_server(module_id = module_id, env = env, acto_selected = acto_selected, count = count)
+      mod_box_plot_server(module_id = module_id, env = env, acto_selected = acto_selected, count = count, title = title)
     
 
   })

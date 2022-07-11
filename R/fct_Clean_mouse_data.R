@@ -80,7 +80,7 @@ Clean_mouse_data <- R6::R6Class("Clean_mouse_data",
                                 }else{
                                   realTimeFiltered <- realtime
                                 }
-                                # discard rows until light On
+                                # discard rows until half of light Off period
                                 # temp2 <- compareTimeFiltered[1:1440]
                                 # lightOn <- self$lightOn
                                 # discard2 <- which(temp2 == lightOn)
