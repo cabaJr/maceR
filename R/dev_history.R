@@ -130,11 +130,14 @@
 
   #' PRIORITIES
 #' - Fix Double plotted actograms
+#' - create metadata or upload with Rhandsontable
+#' - activate exporting of parameters in tables (period power and length)
 #' - activate functions to display/hide elements in Datastructure tab
 #' - remake analysis tab with more user friendly flipbox
 #' - update landing page
 #' - update help buttons
 #' - RMarkdown document
+#' - Filtering for analysis of activity only at specific times of day
 
   #' CODING
 #' - activate buttons in Analysis tab: Subsetting box and various analyses

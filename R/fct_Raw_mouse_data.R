@@ -48,7 +48,7 @@ Raw_mouse_data <- R6::R6Class("Raw_mouse_data",
                                 #' @export
                                 #'
                                 add = function(datapath, metadatapath){ #function to read from csv files and insert data inside the object
-                                  # browser()
+                                  browser()
                                   ## read from the specified datapath (from input button)
                                   datapath1 <- datapath
                                   ## read from the specified metadatapath (from input button)
@@ -67,7 +67,7 @@ Raw_mouse_data <- R6::R6Class("Raw_mouse_data",
                                   # startdate <- as.POSIXct.Date(fulldate, format("%Y-%m-%d %H:%M:%S"))
                                   self$id <- filtered$Identifier
                                   self$sex <- filtered$Sex
-                                  self$genotype <- filtered$Gene
+                                  self$genotype <- filtered$Genotype
                                   self$cabinet <- filtered$Cabinet
                                   self$lightOn <- convert_time(time = filtered$LightsOn)
                                   self$startdate <- startdate

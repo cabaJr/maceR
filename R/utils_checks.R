@@ -13,7 +13,7 @@ check_uploads <- function(App_settings){
   if(is.null(App_settings$dataList) == FALSE && is.null(App_settings$metadata) == FALSE){
     check <- TRUE
   } else {check <- FALSE}
-  check
+  return(check)
 }
 
 #' checkPlots

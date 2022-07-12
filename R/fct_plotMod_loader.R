@@ -44,9 +44,10 @@ download_obj <- function(title, location, format, ...){
   extension <- paste(".", format, sep = "")
   object <- downloadHandler(
           filename = function(){paste(title, Sys.Date(), extension, sep = "")},
-          content = function(file){browser()
+          content = function(file){#browser()
             switch(format,
                    "csv" = {write.csv(location, file, quote = FALSE, row.names = FALSE)},
+                   "2.csv" = {write.csv2(location, file, quote = FALSE, row.names = FALSE)},
                    "png" = {png(file, width = 1820, height = 787, units = "px")
                              print(plot_location)
                              dev.off()
