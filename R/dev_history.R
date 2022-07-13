@@ -108,18 +108,48 @@
   #' 12/06/2022
 #' Activate daily activity plotting
 
+  #' 29/06/2022
+#' Activate periodograms, still not displaying correctly
+
+  #' 07/07/2022
+#'  Fix plot generation
+#'  Periodgrams are not generated upon request. Individual periodogram is 
+#'      generated but when called inside mod_box_plot.R it appears as table 
+#'      and cannot be loaded correctly by renderPlot()
+
+  #' 08/07/2022
+#'  Fixed display of periodograms
+#'  Fix LD settings
+
+  #' 11/07/2022
+#'  make downloadButtons for tables available (data table, behavr Table, sum of 
+#'      daily activity, period data)
+#'  Create download function download_obj()
+#'  donwload function not working for plots, still using old function
+
+  #' 12/07/2022  
+#'  Create custom Rhandsontable to write and download metadata
+
+  #' 13/07/2022
+#'  Fix double plotted actos
+#'  fix help buttons
+#'  think Landing page
+
+
   #' PRIORITIES
 #' - Fix Double plotted actograms
-#' - expand to Periodograms
-#' - activate LD functions
-#' - make tables of data available for download
+#' - activate exporting of parameters in tables (period power and length)
+#' - change all buttons to pretty buttons
+#' - activate functions to display/hide elements in Datastructure tab
 #' - remake analysis tab with more user friendly flipbox
+#' - update landing page
+#' - update help buttons
 #' - RMarkdown document
+#' - Filtering for analysis of activity only at specific times of day
 
   #' CODING
 #' - activate buttons in Analysis tab: Subsetting box and various analyses
 #'     option selection. See mod_analysis for details.
-#' - activate download buttons
 #' - create analysis presets (e.g. 1 periodogram, 1 daily activity, 1 periodogram, etc..)
 #' 
   #' UI
@@ -139,13 +169,21 @@
 #'
   #' FIXINGS 
 #' 
+#' - Remove the line deleting data until light on and start from midnight
+#'     to obtain the nice double plotted acto in fct_Clean_mouse_data
 #' - fix second click on Print that makes Plot tab disappear
 #' - fix buttons in DataStructure tab
 #' - fix problem with radiobuttons not showing the dot
 #'     (https://github.com/rstudio/rstudio/issues/3751)
 #'     (https://www.javaer101.com/en/article/32265313.html)
 #' 
-#' To do: Below the data subsetting box, create action buttons to start new 
+#' To do: 
+#'     : When plotting Daily activity, let the user decide if to plot SEM or SD
+#' 
+#'     : create a function to filter data based on ZT (i.e. extract only data 
+#'     about the dark phase)
+#'     
+#'     : Below the data subsetting box, create action buttons to start new 
 #'     analyses, like actogram, Daily activity, etc. Use 
 #'     shinydashboardPlus set of new ui objects to make it sexy. Each time a 
 #'     new Analysis is generated, either flip the card and ask for parameters
@@ -153,10 +191,15 @@
 #'     see the output.
 #'     
 #'     : make plot tab as nested moduled with each new horizontal tab is appended 
-#'     next to the previous and contain all the analyses submitted to that plot type.     
+#'     next to the previous and contain all the analyses submitted to that plot type.   
 #'     
 #' Questions:
 #' 
+#'  - Is it possible to write automations that bring the app to a specified point?
+#'      Useful for testing (bring the app to a certain state), but the experienced 
+#'      user could use it to chain processes and speed up analyses across platforms. 
+#'      Feature, generator of code for automations in the app sort of Macro recorder.
+#'      
 #' Solved questions:
 #' 
 #' - #' - is it possible to have an observer from inside a module?

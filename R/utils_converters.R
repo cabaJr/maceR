@@ -10,6 +10,7 @@
 #' @noRd
 
 convert_time <- function(time){
+  # browser()
   toConvert <- as.character(time)
   if (grepl(pattern = 'am|pm', toConvert, ignore.case = TRUE) == TRUE){
     #convert to 24 hour format
@@ -33,4 +34,9 @@ convert_time <- function(time){
     #check format to be %H%M and assign to attribute
   }
   cleanHour
+  # cleanHour <- strptime(cleanHour, format = "%H:%M")
 }
+
+std.error <- function(x){sd(x)/sqrt(length(x))}
+
+

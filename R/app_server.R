@@ -84,19 +84,23 @@ app_server <- function( input, output, session ) {
   
   #observe when a new actogram is selected and print it
   observeEvent(analysis_out$actos(), {
-  plots_out_actos <- mod_plots_server("plots_ui_1", App_settings, plot_list = analysis_out$actos())
+  # call the lad_plots fun to activate the module for each requested plot  
+  load_plots(env = App_settings, plot_list = analysis_out$actos(), session = session)
   })
   #observe when a new DP actogram is selected and print it
   observeEvent(analysis_out$DPactos(), {
-  plots_out_DPactos <- mod_plots_server("plots_ui_1", App_settings, plot_list = analysis_out$DPactos())
+  # call the lad_plots fun to activate the module for each requested plot  
+  load_plots(env = App_settings, plot_list = analysis_out$DPactos(), session = session)
   })
-  #observe when a new daily activity is selected and print it
+  # observe when a new daily activity is selected and print it
   observeEvent(analysis_out$Dact(), {
-  plots_out_Dact <- mod_plots_server("plots_ui_1", App_settings, plot_list = analysis_out$Dact())
+  # call the lad_plots fun to activate the module for each requested plot  
+  load_plots(env = App_settings, plot_list = analysis_out$Dact(), session = session)
   })
   #observe when a new periodogram is selected and print it
   observeEvent(analysis_out$periods(), {
-  plots_out_periods <- mod_plots_server("plots_ui_1", App_settings, plot_list = analysis_out$periods())
+  # call the lad_plots fun to activate the module for each requested plot  
+  load_plots(env = App_settings, plot_list = analysis_out$periods(), session = session)
   })
   
   

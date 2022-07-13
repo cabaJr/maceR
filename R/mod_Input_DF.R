@@ -13,20 +13,32 @@ mod_Input_DF_ui <- function(id){
  
     fluidRow(style="",
              shinydashboard::box(title= "select files", id = ns("box0_1"), width = 12, solidHeader = TRUE, status = "primary",
+                                 fluidRow(
                                      column(width = 6,
                                             fileInput(inputId = ns("fileListId"), label = "Select files to analyse", multiple = TRUE, div(style = "left" ))),
-                                            # fileInput(inputId = "metadataListId", label = "Select metadata File", multiple = FALSE)),
                                      column(width= 5, offset = 1,
-                                            # actionButton(inputId = "workthis", label = "browser"),
-                                            fileInput(inputId = ns("fileMetaId"), label = "Select metafile", multiple = FALSE)),
-                                            # fileInput(inputId = "metadataListId", label = "Select metadata File", multiple = FALSE)),
+                                            fileInput(inputId = ns("fileMetaId"), label = "Select metafile", multiple = FALSE))),
+                                 fluidRow(
+                                   column(width = 6, offset = 7, 
+                                          actionButton(inputId = ns("createMeta"), label = "Create metadata manually")
+                                   )),
+                                 # fluidRow(
+                                 #   column(width = 11, offset = 1,
+                                 #          shiny::br(),
+                                 #          uiOutput(ns("userMeta")))
+                                 # ),
+                                 fluidRow(
                                      column(width = 4),
                                      column(width = 1, offset = 3,
+                                            shiny::br(),
                                             actionButton(inputId = ns("help_0_2"), label = "HELP",
-                                                         style="color: #fff; background-color: #1e690c; border-color: #1e530c")#,
-                                            # actionButton(inputId = "module", label = "module")
+                                                         style="color: #fff; background-color: #1e690c; border-color: #1e530c")
                                      )
-             )
+                                 )
+             ) #box end
+    ), #fluidrow end
+    fluidRow(style="",
+             uiOutput(ns("userMeta"))
     ),
     fluidRow(style = "",
              shinydashboardPlus::box(title= "Uploaded files", id = ns("box0_2"), width = 12, solidHeader = TRUE, collapsible = TRUE, status = "danger",
@@ -61,14 +73,6 @@ mod_Input_DF_ui <- function(id){
 mod_Input_DF_server <- function(id, env){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
-    # observeEvent(input$module, {
-    # shiny::insertUI(
-    #   selector = "#placeholder",
-    #   where = "afterEnd",
-    #   ui = mod_box_plot_ui(ns("box_plot_ui_1"), title = "title")
-    # )
-    #   
-    # })
     
     # initialize returnable reactiveValue
     toReturn = reactiveValues(ui = NULL)
@@ -97,6 +101,14 @@ mod_Input_DF_server <- function(id, env){
         App_settings$initialize_DS(session)
         preload_data(App_settings)
       }
+    })
+    
+    # activate Rhandsontable to input metadata
+    observeEvent(input$createMeta, {
+      output$userMeta <- renderUI({
+        mod_hot_meta_ui(ns("hot_meta_ui_1"))
+    })
+      mod_hot_meta_server("hot_meta_ui_1", App_settings)
     })
     
     return(
