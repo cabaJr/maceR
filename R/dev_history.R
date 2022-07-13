@@ -127,11 +127,19 @@
 #'  Create download function download_obj()
 #'  donwload function not working for plots, still using old function
 
+  #' 12/07/2022  
+#'  Create custom Rhandsontable to write and download metadata
+
+  #' 13/07/2022
+#'  Fix double plotted actos
+#'  fix help buttons
+#'  think Landing page
+
 
   #' PRIORITIES
 #' - Fix Double plotted actograms
-#' - create metadata or upload with Rhandsontable
 #' - activate exporting of parameters in tables (period power and length)
+#' - change all buttons to pretty buttons
 #' - activate functions to display/hide elements in Datastructure tab
 #' - remake analysis tab with more user friendly flipbox
 #' - update landing page

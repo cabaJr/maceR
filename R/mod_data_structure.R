@@ -278,6 +278,8 @@ mod_data_structure_server <- function(id, env, ...){
     
     # create Clean_mouse_data object
     observeEvent(input$go,{
+      # save LD parameters in App_settings
+      App_settings$saveLDparams(x = App_settings, light = input$LDcond, ddVal = input$DDask, ddStart = input$DDcond)
       # load data inside myCleanMice object
       load_data(App_settings)
       # load LD settings into App_settings

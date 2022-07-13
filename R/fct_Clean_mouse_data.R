@@ -57,30 +57,49 @@ Clean_mouse_data <- R6::R6Class("Clean_mouse_data",
 #' @return
 #' @export
 #'
-                              addData = function(x, App_settings){
+                              addData = function(x, App_settings){ #more comments on these fun
+                                # load day, hour and minute separately
                                 data_day <- x$data[,1]
                                 data_hour <- x$data[,2]
                                 data_minute <- as.character(x$data[,3] )
+                                #make all minutes values two figures
                                 addZero <- which(nchar(data_minute) == 1)
                                 data_minute[addZero] <- paste("0", data_minute[addZero], sep = "")
                                 date <- list(data_day, data_hour, data_minute)
                                 realtime <- paste(data_day, " ", data_hour, ":", data_minute, sep = "")
                                 compareTime <- paste(data_hour, data_minute, sep = ":")
                                 data_counts <- x$data[,4] #vapply(x$data$Counts_min, function(x){x == "NaN"}, logical(1))
+                                
+                                # calculate ZT18
+                                lightLength <- as.double(App_settings$LDparams$light)
+                                lightOn <- strptime(x$lightOn, format = "%H:%M")
+                                
+                                lightOn_interval <- lubridate::interval(
+                                    start = strptime("00:00", format = "%H:%M"),
+                                    end = lightOn)
+                                diffSec <- lubridate::int_length(lightOn_interval)
+                                ZT18 <- lubridate::int_shift(lightOn_interval, lubridate::hours(lightLength*1.5))
+                                ZT0_ZT18 <- lubridate::interval(start = lubridate::int_start(lightOn_interval),
+                                                                end = lubridate::int_end(ZT18))
+                                ZT0_ZT18_diff <- lubridate::int_length(ZT0_ZT18)
+                                discard_ZT18 <- c(1:ZT0_ZT18_diff/60)
+                                data_counts <- data_counts[-discard_ZT18]
+                                realTimeFiltered <- realtime[-discard_ZT18]
+                                compareTimeFiltered <- compareTime[-discard_ZT18]
+                                # Set NaN values to 0
                                 temp1 <- data_counts[1:1200]
-                                # browser()
                                 discard <- vapply(temp1, function(x){x != "NaN"}, logical(1))
                                 discard1 <- which(discard == FALSE)
                                 # browser()
                                 if(length(discard1)>0){
                                   # data_counts <- setdiff(data_counts, "NaN")
-                                  data_counts <- data_counts[-discard1]
-                                  realTimeFiltered <- realtime[-discard1]
-                                  compareTimeFiltered <- compareTime[-discard1]
+                                  data_counts <- data_counts[discard1] == 0
+                                  # realTimeFiltered <- realtime[-discard1]
+                                  # compareTimeFiltered <- compareTime[-discard1]
                                 }else{
                                   realTimeFiltered <- realtime
                                 }
-                                # discard rows until half of light Off period
+                                
                                 # temp2 <- compareTimeFiltered[1:1440]
                                 # lightOn <- self$lightOn
                                 # discard2 <- which(temp2 == lightOn)

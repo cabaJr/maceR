@@ -38,6 +38,13 @@ setListMiceFiltered
 ## Method `App_settings$setListMiceFiltered`
 ## ------------------------------------------------
 
+saveLDparams
+
+
+## ------------------------------------------------
+## Method `App_settings$saveLDparams`
+## ------------------------------------------------
+
 setLD
 
 
@@ -132,6 +139,7 @@ setData}
 \item \href{#method-setMeta}{\code{App_settings$setMeta()}}
 \item \href{#method-setListMice}{\code{App_settings$setListMice()}}
 \item \href{#method-setListMiceFiltered}{\code{App_settings$setListMiceFiltered()}}
+\item \href{#method-saveLDparams}{\code{App_settings$saveLDparams()}}
 \item \href{#method-setLD}{\code{App_settings$setLD()}}
 \item \href{#method-updateTimeRange}{\code{App_settings$updateTimeRange()}}
 \item \href{#method-setDiscRow}{\code{App_settings$setDiscRow()}}
@@ -246,6 +254,40 @@ setData}
 \item{\code{genList}}{list containing mice genotypes}
 
 \item{\code{cabList}}{list containing cabinet numbers}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{saveLDparams
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-saveLDparams"></a>}}
+\if{latex}{\out{\hypertarget{method-saveLDparams}{}}}
+\subsection{Method \code{saveLDparams()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{App_settings$saveLDparams(x, light, ddVal, ddStart)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{App_settings environment}
+
+\item{\code{light}}{ligthOn value}
+
+\item{\code{ddVal}}{Y/N value for DD}
+
+\item{\code{ddStart}}{day in which DD starts}
 }
 \if{html}{\out{</div>}}
 }

@@ -43,6 +43,10 @@ App_settings <- R6::R6Class("App_settings",
                                                  DPDD1 = NULL,
                                                  DPDD2 = NULL
                               ),
+                              LDparams = list(light = NULL,
+                                              DDcheck = NULL,
+                                              DDstart = NULL
+                                              ),
                               plotTab = FALSE,
                               env1 = NULL,
                               env2 = NULL,
@@ -129,6 +133,24 @@ App_settings <- R6::R6Class("App_settings",
                                 # browser()
                                 self$subsetting$miceListFiltered = d3
                               },
+
+#' saveLDparams
+#'
+#' @param x App_settings environment
+#' @param light ligthOn value
+#' @param ddVal Y/N value for DD
+#' @param ddStart day in which DD starts
+#'
+#' @return
+#' @export
+#'
+#' @examples
+                              saveLDparams = function(x, light, ddVal, ddStart){
+                                self$LDparams$light = light
+                                self$LDparams$DDcheck = ddVal
+                                self$LDparams$DDstart = ddStart
+                              },
+                                
                               
 #' setLD
 #'
@@ -141,7 +163,7 @@ App_settings <- R6::R6Class("App_settings",
 #' @export
 #'
 #' @examples
-                              setLD = function(x, light, ddVal, ddStart){
+                              setLD = function(x, light, ddVal, ddStart){ #add more comments
                                 qty <- length(x$env2$myCleanMice)
                                 length1 <- max(x$env2$Annotate$metaTable$Datapoints)*60
                                 per1End <- ddStart*86400
@@ -161,7 +183,7 @@ App_settings <- R6::R6Class("App_settings",
                                 SLDD <- switch(ddVal,
                                                "Yes" = {ggetho::stat_ld_annotations(height = 1, alpha = Llpha1, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(0), x_limits = c(per1End, length1), phase = 0, ld_colours = c(NA, "black"))},
                                                "No" = {NULL})
-                                DPLD <- ggetho::stat_ld_annotations(height = 1, alpha = Llpha2, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(light), phase = 0, ld_colours = c(NA, "black"))
+                                DPLD <- ggetho::stat_ld_annotations(height = 1, alpha = Llpha2, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(light), phase = behavr::hours(6), ld_colours = c(NA, "black"))
                                 DPDD1 <- switch(ddVal,
                                                 "Yes" = {ggetho::stat_ld_annotations(height = DDStart1, alpha = Llpha2, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(DDlength), x_limits = c(behavr::hours(0), behavr::hours(24)), phase = behavr::hours(12), ld_colours = c(NA, "black"))},
                                                 "No" = {NULL})
