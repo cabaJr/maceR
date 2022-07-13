@@ -169,7 +169,6 @@ App_settings <- R6::R6Class("App_settings",
                                 per1End <- ddStart*86400
                                 Llpha1 <- (0.4 / qty)
                                 Llpha2 <- 0.02
-                                # browser()
                                 # define DDstart and DDlength
                                 DDday <- as.numeric(ddStart)
                                 dataLen <- (length1%/%86400)-2
@@ -185,10 +184,10 @@ App_settings <- R6::R6Class("App_settings",
                                                "No" = {NULL})
                                 DPLD <- ggetho::stat_ld_annotations(height = 1, alpha = Llpha2, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(light), phase = behavr::hours(6), ld_colours = c(NA, "black"))
                                 DPDD1 <- switch(ddVal,
-                                                "Yes" = {ggetho::stat_ld_annotations(height = DDStart1, alpha = Llpha2, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(DDlength), x_limits = c(behavr::hours(0), behavr::hours(24)), phase = behavr::hours(12), ld_colours = c(NA, "black"))},
+                                                "Yes" = {ggetho::stat_ld_annotations(height = DDStart1, alpha = Llpha2, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(DDlength), x_limits = c(behavr::hours(0), behavr::hours(24)), phase = behavr::hours(18), ld_colours = c(NA, "black"))},
                                                 "No" = {NULL})
                                 DPDD2 <- switch(ddVal,
-                                                "Yes" = {ggetho::stat_ld_annotations(height = DDStart2, alpha = Llpha2, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(DDlength), x_limits = c(behavr::hours(24), behavr::hours(48)), phase = behavr::hours(12), ld_colours = c(NA, "black"))},
+                                                "Yes" = {ggetho::stat_ld_annotations(height = DDStart2, alpha = Llpha2, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(DDlength), x_limits = c(behavr::hours(24), behavr::hours(48)), phase = behavr::hours(18), ld_colours = c(NA, "black"))},
                                                 "No" = {NULL})
                                 self$LDcondition$SLLD = SLLD
                                 self$LDcondition$SLDD = SLDD

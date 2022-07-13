@@ -53,7 +53,7 @@ Annotate <- R6::R6Class("Annotate",
                                      "Annotate$Actograms$acto3[[1]]", "Annotate$Actograms$acto4[[1]]",
                                      ## DPActograms
                                      "Annotate$DPActograms$DPacto1[[1]]", "Annotate$DPActograms$DPacto2[[1]]", 
-                                     "Annotate$DPActograms$DPacto4[[1]]", "Annotate$DPActograms$DPacto4[[1]]", 
+                                     "Annotate$DPActograms$DPacto3[[1]]", "Annotate$DPActograms$DPacto4[[1]]", 
                                      ## Daily activity
                                      "Annotate$DAct_plots$DAct1", "Annotate$DAct_plots$DAct2", 
                                      "Annotate$DAct_plots$DAct3", "Annotate$DAct_plots$DAct4", 
