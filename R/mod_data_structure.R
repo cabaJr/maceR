@@ -18,10 +18,10 @@ mod_data_structure_ui <- function(id){
                           numericInput(inputId = ns("discardFirst"),
                                        label = "Insert number of row to discard upfront: ",
                                        min = 0, value = 3),
-                          radioButtons(inputId = ns("serieType"), label = "", inline = TRUE,
+                         shinyWidgets::prettyRadioButtons(inputId = ns("serieType"), label = "", inline = TRUE,
                                        choices = c("Real time", "Time points"), selected = "Time points"),
                           ######## second time window analysis ######################
-                          radioButtons(inputId = ns("DFsubsetRT2"), label = "Do you want to a second time window?", inline = TRUE,
+                         shinyWidgets::prettyRadioButtons(inputId = ns("DFsubsetRT2"), label = "Do you want to a second time window?", inline = TRUE,
                                        choices = c("Yes", "No"), selected = "No"),
                           #Real Time
                           dateInput(inputId = ns("timeFrame3"), label = "Second window"), dateInput(inputId = "timeFrame4", label = ""),
@@ -43,14 +43,14 @@ mod_data_structure_ui <- function(id){
                           textInput(ns("rtStarthour"), label = "Insert experiment start hour", value = "00:00:00"),
                           numericInput(inputId = ns("TPduration"), label = "Insert timepoint duration (sec):", min = 1, value = 60),
                           #optional
-                          radioButtons(inputId = ns("DFsubsetRT"), label = "Do you want to analyse a particular time window?", inline = TRUE,
+                         shinyWidgets::prettyRadioButtons(inputId = ns("DFsubsetRT"), label = "Do you want to analyse a particular time window?", inline = TRUE,
                                        choices = c("Yes", "No"), selected = "No"),
                           dateInput(inputId = ns("timeFrame1"), label = "Days to be analysed (default = all): "), dateInput(inputId = "timeFrame2", label = ""),
                           textInput(ns("RTanalysis_starttime"), label = "Insert the time when you want to start analyse your data: ",
                                     placeholder = "hh:mm:ss"),
                           textInput(ns("RTanalysis_endtime"), label = "Insert the time when you want to end your analysis: ",
                                     placeholder = "hh:mm:ss"),
-                          radioButtons(inputId = ns("DFsubsetTP"), label = "Do you want to analyse a particular time window?", inline = TRUE,
+                         shinyWidgets::prettyRadioButtons(inputId = ns("DFsubsetTP"), label = "Do you want to analyse a particular time window?", inline = TRUE,
                                        choices = c("Yes", "No"), selected = "No"),
                           numericInput(ns("TPanalysis_starttime"), label = "Insert the timepoint when you want to start analyse your data: ", min = 0, value = 0),
                           numericInput(ns("TPanalysis_endtime"), label = "Insert the timepoint when you want to end your analysis: ", min = 0, value = 0),
@@ -65,7 +65,7 @@ mod_data_structure_ui <- function(id){
              #                                                     # shinydashboardPlus::box1_1_2<- box(title = "Time alignment - data head", solidHeader = TRUE, width = 12, status = "primary", collapsible = TRUE,  collapsed = TRUE,
              #                                                     #                fluidRow(
              #                                                     #                  column(width = 5,
-             #                                                     #                         radioButtons('expstartck', label = 'have you started recording all your cabinet at the same time?',
+             #                                                     #                        shinyWidgets::prettyRadioButtons('expstartck', label = 'have you started recording all your cabinet at the same time?',
              #                                                     #                                      choices = c('Yes', 'No'), selected = 'Yes', inline = TRUE)
              #                                                     #                  ),
              #                                                     # 
@@ -79,7 +79,7 @@ mod_data_structure_ui <- function(id){
              #                                                     #                  column(width = 3, numericInput('delayCab4', 'Cabinet 4', min = 0, width = 100, value = 0))
              #                                                     #                ),
              #                                                     #                fluidRow(
-             #                                                     #                  column(width = 5, radioButtons('hourFormat', label = "Select the hour format in metadata/light on",
+             #                                                     #                  column(width = 5,shinyWidgets::prettyRadioButtons('hourFormat', label = "Select the hour format in metadata/light on",
              #                                                     #                                                 choices = c('12h', '24h'), selected = '12h'),#selected = character(0)),
              #                                                     #                         # DT::DTOutput('converted'), DT::DTOutput('sorted')
              #                                                     #                         # textOutput('sorted')
@@ -98,7 +98,7 @@ mod_data_structure_ui <- function(id){
              #                                                     # shinydashboardPlus::box1_1_3<- box(title = "Time alignment - data tail", solidHeader = TRUE, width = 12, status = "primary", collapsible = TRUE, collapsed = TRUE,
              #                                                     #                fluidRow(
              #                                                     #                  column(width = 7,
-             #                                                     #                         radioButtons('dataCrop', label = 'Do you want to crop all dataset to the same length or to have different lengths?',
+             #                                                     #                        shinyWidgets::prettyRadioButtons('dataCrop', label = 'Do you want to crop all dataset to the same length or to have different lengths?',
              #                                                     #                                      choices = c('Same length', 'Different length'), inline = TRUE, selected = 'Different length'))
              #                                                     #                )
              #                                                     # ),
@@ -165,7 +165,7 @@ mod_data_structure_ui <- function(id){
                    # )
                  ),
                  fluidRow(column(width = 4,
-                                 radioButtons(inputId = ns("DDask"), label = "Do you want to set a DD period?",inline = TRUE, choices = c("Yes", "No"), selected = "No"))
+                                shinyWidgets::prettyRadioButtons(inputId = ns("DDask"), label = "Do you want to set a DD period?",inline = TRUE, choices = c("Yes", "No"), selected = "No"))
                  ),
                  fluidRow(
                    column(width = 4,
@@ -188,7 +188,7 @@ mod_data_structure_ui <- function(id){
     #                                            # fluidRow(div(style = "margin:30px;"),
     #                                            #          shinydashboardPlus::box1_2_1 <- box(title = "Metadata file structure", width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary", 
     #                                            #                          fluidRow(column(width = 12, textOutput("notStandard")),
-    #                                            #                                   column(width = 12, radioButtons(inputId = "nonStdMeta", label = "", choices = c("Standard", "Custom"), selected = "Standard", inline = TRUE ))
+    #                                            #                                   column(width = 12,shinyWidgets::prettyRadioButtons(inputId = "nonStdMeta", label = "", choices = c("Standard", "Custom"), selected = "Standard", inline = TRUE ))
     #                                            #                          ),
     #                                            #                          fluidRow(column(width = 3, selectizeInput(inputId = "idCol", label = "Select Id column", choices = c("choose" = "", "1" = "1", "2" = "2", "3" = "3", "4" = "4"), multiple = FALSE, width = 100)),
     #                                            #                                   column(width = 3, selectizeInput(inputId = "sexCol", label = "Select Sex column", choices = c("choose" = "", "1" = "1", "2" = "2", "3" = "3", "4" = "4"), multiple = FALSE, width = 110)),

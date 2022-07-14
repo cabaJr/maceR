@@ -127,6 +127,7 @@ Annotate <- R6::R6Class("Annotate",
                           "Genotype" = as.character(),
                           "Real time" = as.character(),
                           "Time point" = as.character(),
+                          "Days" = as.character(),
                           "Activity" = as.character()
                         )
                         if (id == "All"){
@@ -137,6 +138,7 @@ Annotate <- R6::R6Class("Annotate",
                             "Genotype" = myCleanMice[[h]]$genotype,
                             "Real time" = myCleanMice[[h]]$realTime,
                             "Time point" = myCleanMice[[h]]$timepoint,
+                            "Days" = round(((myCleanMice[[h]]$timepoint)/86400), 2),
                             "Activity" = myCleanMice[[h]]$countsMinute
                           )
                           d2 <- rbind(d2, d1)
@@ -146,7 +148,6 @@ Annotate <- R6::R6Class("Annotate",
 
                       }else{
                         id <- id
-                        # browser()
                         miceList <- miceList
                         y <- which(miceList$id == id)
                         h <- as.numeric(miceList[y, 1])
@@ -156,6 +157,7 @@ Annotate <- R6::R6Class("Annotate",
                           "Genotype" = myCleanMice[[h]]$genotype,
                           "Real time" = myCleanMice[[h]]$realTime,
                           "Time point" = myCleanMice[[h]]$timepoint,
+                          "Days" = round(((myCleanMice[[h]]$timepoint)/86400), 2),
                           "Activity" = myCleanMice[[h]]$countsMinute
                         )
                       }

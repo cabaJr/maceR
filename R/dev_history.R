@@ -132,14 +132,15 @@
 
   #' 13/07/2022
 #'  Fix double plotted actos
-#'  fix help buttons
-#'  think Landing page
+#'  fix DD plotting
+
+  #' 14/07/2022  
+#'  fixed data table not displaying data correctly
+#'  changed buttons to prettyRadioButtons
 
 
   #' PRIORITIES
-#' - Fix Double plotted actograms
 #' - activate exporting of parameters in tables (period power and length)
-#' - change all buttons to pretty buttons
 #' - activate functions to display/hide elements in Datastructure tab
 #' - remake analysis tab with more user friendly flipbox
 #' - update landing page
@@ -150,7 +151,9 @@
   #' CODING
 #' - activate buttons in Analysis tab: Subsetting box and various analyses
 #'     option selection. See mod_analysis for details.
+#' - activate option when plotting individual plots to select for ids
 #' - create analysis presets (e.g. 1 periodogram, 1 daily activity, 1 periodogram, etc..)
+#' - In plots, hide tabs that do not contain any plot
 #' 
   #' UI
 #' 
@@ -169,13 +172,9 @@
 #'
   #' FIXINGS 
 #' 
-#' - Remove the line deleting data until light on and start from midnight
-#'     to obtain the nice double plotted acto in fct_Clean_mouse_data
+#' - All boxes display the same title
 #' - fix second click on Print that makes Plot tab disappear
 #' - fix buttons in DataStructure tab
-#' - fix problem with radiobuttons not showing the dot
-#'     (https://github.com/rstudio/rstudio/issues/3751)
-#'     (https://www.javaer101.com/en/article/32265313.html)
 #' 
 #' To do: 
 #'     : When plotting Daily activity, let the user decide if to plot SEM or SD

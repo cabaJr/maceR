@@ -14,7 +14,7 @@ mod_your_data_ui <- function(id){
     fluidRow(style = "",
              shinydashboardPlus::box(title= "Uploaded metafiles", id = ns("box2_1"), width = 12, solidHeader = TRUE, collapsible = TRUE, status = "danger",
                  fluidRow(
-                   column(width = 8, radioButtons(inputId = ns('tablemetafilter'), label = '', choiceNames = c('Display full metadata table', 'Display metadata of uploaded files only'),
+                   column(width = 8, shinyWidgets::prettyRadioButtons(inputId = ns('tablemetafilter'), label = '', choiceNames = c('Display full metadata table', 'Display metadata of uploaded files only'),
                                                   choiceValues = c('Y', 'N'), inline = TRUE, selected = 'Y')),
                    column(width = 3, offset = 1, actionButton(ns('help2_1'), label = 'Help',
                                                               style="color: #fff; background-color: #1e690c; border-color: #1e530c;"))

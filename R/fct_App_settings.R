@@ -176,8 +176,8 @@ App_settings <- R6::R6Class("App_settings",
                                 DDStart2 <- (1-((DDday-2)/dataLen))
                                 DDlength <- 24-as.numeric(light)
                                 SLLD <- switch(ddVal,
-                                               "Yes" = {ggetho::stat_ld_annotations(height = 1, alpha = Llpha1, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(light), x_limits = c(0, per1End), phase = 0, ld_colours = c(NA, "black"))},
-                                               "No" = {ggetho::stat_ld_annotations(height = 1, alpha = Llpha1, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(light), phase = 0, ld_colours = c(NA, "black"))})
+                                               "Yes" = {ggetho::stat_ld_annotations(height = 1, alpha = Llpha1, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(light), x_limits = c(0, per1End), phase = behavr::hours(6), ld_colours = c(NA, "black"))},
+                                               "No" = {ggetho::stat_ld_annotations(height = 1, alpha = Llpha1, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(light), phase = behavr::hours(6), ld_colours = c(NA, "black"))})
                                 # check the rest of the function from here + implement value gathering inside server and function call
                                 SLDD <- switch(ddVal,
                                                "Yes" = {ggetho::stat_ld_annotations(height = 1, alpha = Llpha1, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(0), x_limits = c(per1End, length1), phase = 0, ld_colours = c(NA, "black"))},
