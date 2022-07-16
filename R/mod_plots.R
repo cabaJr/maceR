@@ -1,6 +1,8 @@
 #' plots UI Function
 #'
-#' @description A shiny Module.
+#' @description Shiny Module to display the plots generated upon user request.
+#'     Each plot type is displayed in a separate tab. Tabs for different plots
+#'     are made available after the app has loaded the plot.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'

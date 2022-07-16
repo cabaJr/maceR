@@ -1,6 +1,7 @@
 #' Annotate 
 #'
-#' @description A fct function
+#' @description R6 class object used for storing plots and other processed data.
+#'     It is accessed internally to display data.
 #'
 #' @return The return value, if any, from executing the function.
 #'

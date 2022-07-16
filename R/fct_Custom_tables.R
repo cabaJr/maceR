@@ -2,8 +2,9 @@
 #'
 #' @title Custom_tables
 #'
-#' @description A fct function
-#' container of R6 objects generator
+#' @description A R6 object that contains methods to analyse the uploaded data.
+#'     The secondary data that are generated are stored inside the object.
+#' 
 #' @return The return value, if any, from executing the function.
 
 
@@ -29,9 +30,12 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #' compile
 #'
 #' @param env App_settings object to access the env containing myCleanMice obj
+#' 
+#' @details method to generate a metadata table, integrating the metadata file
+#'     uploaded from the user with computing of each raw data file in the 
+#'     dataset.
 #'
-#' @return
-#' @export
+#' @return Metadata table to be stored inside the Custom_tables R6 object.
 #'
                            compile = function(env){ #requires myClean mice to exist, therefore
 
@@ -68,23 +72,24 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #' @description function to create tibble with mouse activity daily grouped in 
 #'     30 minutes bins
 #' @param env App_settings environment
-#' @return
-#' @export
+#' @return A table with the sum 
 #'
 #' @examples HHActivity(env)
                            HHActivity = function(env){ #handle NA values to avoid dropping of values
                              myCleanMice <- env$env2$myCleanMice
                              d6 <- NULL
                              for (i in seq_len(length(myCleanMice))){
+                               browser()
+                               # write.csv(App_settings$env3$Custom_tables$table3, file, quote = FALSE, row.names = FALSE)
                                data <- myCleanMice[[i]]$countsMinute
                                id <- as.factor(myCleanMice[[i]]$id)
                                sex <- as.character(myCleanMice[[i]]$sex)
                                genotype <- as.character(myCleanMice[[i]]$genotype)
-                               # split into daily chunks and get the avg
+                               # split into daily chunks and divide into columnsa
                                d1 <- split(data, ceiling(seq_along(data)/1440))
                                # elongate last chunk to 1440 and substitute NA with 0
                                ## register the length of missing part and return a 
-                               ## message if too short, amybe discard data
+                               ## message if too short, maybe discard data
                                toAdd <- replicate((1440-length(d1[[length(d1)]])), 0)
                                d1[[length(d1)]] <- append(d1[[length(d1)]], toAdd)
                                d2 <- Reduce("+", d1)/length(d1)

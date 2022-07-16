@@ -138,6 +138,9 @@
 #'  fixed data table not displaying data correctly
 #'  changed buttons to prettyRadioButtons
 
+  #'  16/07/2022
+#'  review HHactivity function
+
 
   #' PRIORITIES
 #' - activate exporting of parameters in tables (period power and length)

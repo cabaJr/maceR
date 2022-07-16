@@ -1,6 +1,9 @@
 #' your_data UI Function
 #'
-#' @description A shiny Module.
+#' @description Shiny Module to display the uploaded data using data.tables.
+#'     Metadata are displayed in the top box and data for each animal are
+#'     displayed at the bottom in a second box. It is possible to filter the
+#'     dataset using table filtering functions from the DT package. 
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'

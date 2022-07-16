@@ -1,6 +1,7 @@
 #' box_plot UI Function
 #'
-#' @description A shiny Module.
+#' @description Shiny module to generate a box with a plot inside of it. It
+#'     includes a download button and the plot title as Box title.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'

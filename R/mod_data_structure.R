@@ -1,6 +1,8 @@
 #' data_structure UI Function
 #'
-#' @description A shiny Module.
+#' @description Shiny module to set the parameters of your dataset. It allows
+#'     a pre-processing step that ensures your data are interpreted correctly by
+#'     the loading functions.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'

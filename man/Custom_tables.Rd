@@ -7,11 +7,15 @@
 The return value, if any, from executing the function.
 }
 \description{
-A fct function
-container of R6 objects generator
+A R6 object that contains methods to analyse the uploaded data.
+    The secondary data that are generated are stored inside the object.
 }
 \details{
 Custom_tables
+
+method to generate a metadata table, integrating the metadata file
+    uploaded from the user with computing of each raw data file in the 
+    dataset.
 }
 \examples{
 
@@ -103,7 +107,9 @@ compile}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+Metadata table to be stored inside the Custom_tables R6 object.
 
+HHActivity
 }
 }
 \if{html}{\out{<hr>}}
@@ -124,7 +130,7 @@ function to create tibble with mouse activity daily grouped in
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-
+A table with the sum
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}

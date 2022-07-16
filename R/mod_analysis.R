@@ -1,6 +1,17 @@
 #' analysis UI Function
 #'
-#' @description A shiny Module.
+#' @description Shiny module to let the user decide what actions to perform
+#'     with the data.
+#'     
+#' @details Each box is responsible for subsetting the data or to submit an
+#'     analysis or subset the data. Box 3_0 allows the subsetting of data based 
+#'     on factors or individual id. Box 3_1 allows the user to generate single 
+#'     line actograms using the ggetho package. If not already present, it calls
+#'     the generation of the behavr table containing data to generate actograms.
+#'     Box 3_2 allows the selection of which Double plotted actograms to generate.
+#'     Box 3_3 calls the generation of line plots showing the sum of daily 
+#'     activity. Box 3_4 calls the generation of periodograms. All plots can be 
+#'     grouped based on id, sex, genotype or cabinet where the animals are housed.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
