@@ -22,11 +22,6 @@ mod_Input_DF_ui <- function(id){
                                    column(width = 6, offset = 7, 
                                           actionButton(inputId = ns("createMeta"), label = "Create metadata manually")
                                    )),
-                                 # fluidRow(
-                                 #   column(width = 11, offset = 1,
-                                 #          shiny::br(),
-                                 #          uiOutput(ns("userMeta")))
-                                 # ),
                                  fluidRow(
                                      column(width = 4),
                                      column(width = 1, offset = 3,

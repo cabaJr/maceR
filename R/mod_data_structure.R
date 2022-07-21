@@ -13,7 +13,7 @@ mod_data_structure_ui <- function(id){
   ns <- NS(id)
   tagList(
  
-    fluidRow(div(style = "margin:30px;"),
+    fluidRow(div(style = ""),
              shinydashboard::box(title = "Data files settings", id = ns("box1_1_1"), solidHeader = TRUE, width = 12, status = "primary", collapsible = TRUE,
                  fluidRow(
                    column(5, #serieType DFsubsetRT
@@ -63,7 +63,6 @@ mod_data_structure_ui <- function(id){
                  )
              ),
     ), #end fluidRow
-    fluidRow(div(style = "margin:30px;"),
              #                                                     # shinydashboardPlus::box1_1_2<- box(title = "Time alignment - data head", solidHeader = TRUE, width = 12, status = "primary", collapsible = TRUE,  collapsed = TRUE,
              #                                                     #                fluidRow(
              #                                                     #                  column(width = 5,
@@ -153,7 +152,14 @@ mod_data_structure_ui <- function(id){
              #                                                     #                )
              #                                                     # ),
              #### LD settings #####
-             shinydashboard::box(title = "LD cycle - Advanced", id = ns("box1_1_4"), solidHeader = TRUE, width = 12, status = "primary", collapsible = TRUE, collapsed = TRUE,
+    fluidRow(div(style = ""),         
+    shinydashboard::box(title = "LD cycle - Advanced",
+                        id = ns("box1_1_4"),
+                        solidHeader = TRUE,
+                        width = 12,
+                        status = "primary",
+                        collapsible = TRUE,
+                        collapsed = TRUE,
                  fluidRow(
                    column(width = 4,
                           numericInput(inputId = ns("LDcond"),
@@ -203,18 +209,6 @@ mod_data_structure_ui <- function(id){
     #                                            #                          ),
     #                                            #          
     #                                            # ),
-    fluidRow(div(style = "margin:30px;"),
-             shinydashboard::box(title= " ", id = ns("box1_2_2"), width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
-                 fluidRow(
-                   column(width = 8, #radioButtons('cabinets', label = "Cabinet settings", inline = TRUE,
-                          #choices = c('Automatic', 'Do not align data'), selected = 'Automatic'),# selected = character(0)),
-                          DT::DTOutput(ns('cabinetShift')), actionButton(ns('debug'), label = "Debug")#, textInput('light_on_record', label = "Add the time when light is switched on in the cabinet", placeholder = "HH:MM" ),
-                          # actionButton('addRecord', label = "Add"), actionButton('rmvRecord', label = "Remove"),
-                          # DT::DTOutput('lightOnTb')
-                   ),
-                 )
-             )
-    )
     
   )
 }
@@ -337,14 +331,7 @@ mod_data_structure_server <- function(id, env, ...){
         
       }
     })
-    
-    ### DEBUG ########################################
-    
-    #DEBUG in app
-    observeEvent(input$debug, {
-      browser()
-    })  
-    
+
   ## Create list to be returned
   dataStructure_out <- list(YourDataTab = reactive(toReturn$YourDataTab),
                             AnalysisTab = reactive(toReturn$AnalysisTab),

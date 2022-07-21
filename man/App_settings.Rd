@@ -114,7 +114,9 @@ Initialize_DS
 
 \item{\code{subsetting}}{list containing info about data subsetting}
 
-\item{\code{LDcondition}}{list containing info on LD conditions}
+\item{\code{LDcondition}}{list containing code to generate LD shading in actograms}
+
+\item{\code{LDparams}}{list containing user defined LD condition settings}
 
 \item{\code{plotTab}}{TRUE/FALSE value to know if the plot tab has been activated}
 

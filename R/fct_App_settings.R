@@ -18,7 +18,8 @@ App_settings <- R6::R6Class("App_settings",
 #' @field ExpStart what day and hour does the experiment starts?
 #' @field timepointDur what is the sampling frequency?
 #' @field subsetting list containing info about data subsetting
-#' @field LDcondition list containing info on LD conditions
+#' @field LDcondition list containing code to generate LD shading in actograms
+#' @field LDparams list containing user defined LD condition settings
 #' @field plotTab TRUE/FALSE value to know if the plot tab has been activated
 #' @field env1 contains environment#1
 #' @field env2 contains environment#2

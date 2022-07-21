@@ -11,7 +11,13 @@ mod_hot_meta_ui <- function(id){
   ns <- NS(id)
   tagList(
  
-    shinydashboard::box(title= "Create metadata", id = ns("box0_4"), width = 12, solidHeader = TRUE, status = "primary", collapsible = TRUE,
+    shinydashboardPlus::box(title= "Create metadata",
+                            id = ns("box0_4"),
+                            width = 12,
+                            solidHeader = TRUE,
+                            status = "primary",
+                            collapsible = TRUE,
+                            closable = TRUE,
                         fluidRow(
                           shiny::br(),
                           # p(shiny::HTML("<h4 style=font-size:12>Paste your metadata here</h4>")),
@@ -42,7 +48,7 @@ mod_hot_meta_server <- function(id, env){
     #initialize metadata obj
     metadata <- NULL
     #create dataframe from Rhandsontable
-    startvalue <- reactiveVal(value = data.frame(Identifier = 1:12,
+    startvalue <- reactiveVal(value = data.frame(Identifier = 1:6,
                                                  Cabinet = "1",
                                                  Sex = c("F", "M"),
                                                  Genotype = "wt",

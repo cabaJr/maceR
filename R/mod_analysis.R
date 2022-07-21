@@ -23,7 +23,7 @@ mod_analysis_ui <- function(id){
   ns <- NS(id)
   tagList(
  
-    fluidRow(div(style = "margin:30px;"),
+    fluidRow(div(style = ""),
              
              shinydashboard::box(title= "Subset data to visualize", id = "box3_0", width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
                  fluidRow(column(width = 8,
@@ -44,7 +44,18 @@ mod_analysis_ui <- function(id){
                                  sliderInput(inputId = ns("timeSubset"), label = "Select time window to visualize", min = 0, max = 34, step = 0.125, value = c(0, 10), width = '90%')))
              )
     ),
-    fluidRow(div(style = "margin:30px;"),
+    fluidRow(div(style = ""),
+             shinydashboard::box(title= "Actogram", id = "box3_2", width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
+                                 fluidRow(column(width = 12,
+                                                 shinyWidgets::prettyCheckboxGroup(inputId = ns("DPActogram"), label = "Select the desired plots:",
+                                                                                   choiceNames = c("Cumulative", "Averaged by sex", "Averaged by genotype", "Averaged by cabinet"),# "Individual"),
+                                                                                   choiceValues = c("DAtotal", "DAsex", "DAgenotype", "DAcabinet"),#, "individual"),
+                                                                                   inline = TRUE, width = "80%"), selectizeInput(inputId = ns("chooseId"), label = NULL, choices = c("choose" = "", levels(unique)), width = 85, multiple = FALSE),
+                                                 actionButton(inputId = ns("printDP"), label = "print")
+                                 ))
+             )
+    ),
+    fluidRow(div(style = ""),
              
              shinydashboard::box(title= "Single line actogram", id = ns("box3_1"), width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
                  fluidRow(column(width = 12,
@@ -56,18 +67,7 @@ mod_analysis_ui <- function(id){
                  ))
              )
     ),
-    fluidRow(div(style = "margin:30px;"),
-             shinydashboard::box(title= "Actogram", id = "box3_2", width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
-                 fluidRow(column(width = 12,
-                                 shinyWidgets::prettyCheckboxGroup(inputId = ns("DPActogram"), label = "Select the desired plots:",
-                                                    choiceNames = c("Cumulative", "Averaged by sex", "Averaged by genotype", "Averaged by cabinet"),# "Individual"),
-                                                    choiceValues = c("DAtotal", "DAsex", "DAgenotype", "DAcabinet"),#, "individual"),
-                                                    inline = TRUE, width = "80%"), selectizeInput(inputId = ns("chooseId"), label = NULL, choices = c("choose" = "", levels(unique)), width = 85, multiple = FALSE),
-                                 actionButton(inputId = ns("printDP"), label = "print")
-                 ))
-             )
-    ),
-    fluidRow(div(style = "margin:30px;"),
+    fluidRow(div(style = ""),
              shinydashboard::box(title= "Sum of daily activity", id = ns("box3_3"), width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
                  fluidRow(column(width = 12,
                                  shinyWidgets::prettyCheckboxGroup(inputId = ns("DAsum"), label = "Select the desired plots:",
@@ -98,7 +98,7 @@ mod_analysis_ui <- function(id){
     #                                                     style="color: #fff; background-color: #1e690c; border-color: #1e530c;")))
     #          )
     # ),
-    fluidRow(div(style = "margin:30px;"),
+    fluidRow(div(style = ""),
              shinydashboard::box(title= "Periodogram", id = ns("box3_5"), width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
                  fluidRow(column(width = 6,
                                  sliderInput(inputId = ns("periodRange"), label = "Select period range", min = 12, max = 34, step = 1, value = c(20, 28), width = '90%'),
@@ -120,7 +120,7 @@ mod_analysis_ui <- function(id){
                  )
              )
     ),
-    fluidRow(div(style = "margin:30px;"),
+    fluidRow(div(style = ""),
              # shiny::uiOutput("plot_box")
     )
     

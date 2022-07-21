@@ -87,16 +87,19 @@ app_server <- function( input, output, session ) {
   # call the lad_plots fun to activate the module for each requested plot  
   load_plots(env = App_settings, plot_list = analysis_out$actos(), session = session)
   })
+  
   #observe when a new DP actogram is selected and print it
   observeEvent(analysis_out$DPactos(), {
   # call the lad_plots fun to activate the module for each requested plot  
   load_plots(env = App_settings, plot_list = analysis_out$DPactos(), session = session)
   })
+  
   # observe when a new daily activity is selected and print it
   observeEvent(analysis_out$Dact(), {
   # call the lad_plots fun to activate the module for each requested plot  
   load_plots(env = App_settings, plot_list = analysis_out$Dact(), session = session)
   })
+  
   #observe when a new periodogram is selected and print it
   observeEvent(analysis_out$periods(), {
   # call the lad_plots fun to activate the module for each requested plot  

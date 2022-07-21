@@ -28,7 +28,10 @@ mod_box_plot_ui <- function(id, plot_title){
                          fluidRow(
                             column(width = 2, 
                                    offset = 7,
-                                   downloadButton(outputId = ns("download_1"), label = "Download"))
+                                   downloadButton(outputId = ns("download_1"), label = "Download plot")),
+                            column(width = 2, 
+                                   offset = 0,
+                                   downloadButton(outputId = ns("download_2"), label = "Download data"))
                             )
  )
  
@@ -42,6 +45,7 @@ mod_box_plot_server <- function(module_id, env, acto_selected, count, title){
    moduleServer(module_id, function(input, output, session){
       ns <- session$ns
       Annotate <- env$env4$Annotate
+      Custom_tables <- env$env3$Custom_tables
       ## get object containing the corresponding plot from table in Annotate
       plot_location <- eval(parse(text = unlist(acto_selected[count, 3]), n =1))
       plot_path <- unlist(acto_selected[count, 3])
@@ -61,6 +65,9 @@ mod_box_plot_server <- function(module_id, env, acto_selected, count, title){
                dev.off()
              }
            )
+         output$download_2 <- download_obj(title = acto_selected[count, 6],
+                                           location = eval(parse(text = unlist(acto_selected[count, 5]), n =1)),
+                                           format = "csv")
            
          
          

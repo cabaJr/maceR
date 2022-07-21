@@ -141,6 +141,11 @@
   #'  16/07/2022
 #'  review HHactivity function
 
+  #'  20/07/2022
+#'  add download buttons for data in mod_box_plot
+
+#'  activate HHActivity fun plotting
+
 
   #' PRIORITIES
 #' - activate exporting of parameters in tables (period power and length)
