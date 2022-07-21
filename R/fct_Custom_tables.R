@@ -70,35 +70,37 @@ Custom_tables <- R6::R6Class("Custom_tables",
 
 #' HHActivity
 #' @description function to create tibble with mouse activity daily grouped in 
-#'     30 minutes bins
+#'     15 minutes bins
 #' @param env App_settings environment
 #' @return A table with the sum 
 #'
 #' @examples HHActivity(env)
-                           HHActivity = function(env){ #handle NA values to avoid dropping of values
+                           AvgDay = function(env){ #handle NA values to avoid dropping of values
                              myCleanMice <- env$env2$myCleanMice
                              d6 <- NULL
                              for (i in seq_len(length(myCleanMice))){
-                               browser()
+                               # browser()
                                # write.csv(App_settings$env3$Custom_tables$table3, file, quote = FALSE, row.names = FALSE)
                                data <- myCleanMice[[i]]$countsMinute
                                id <- as.factor(myCleanMice[[i]]$id)
                                sex <- as.character(myCleanMice[[i]]$sex)
                                genotype <- as.character(myCleanMice[[i]]$genotype)
-                               # split into daily chunks and divide into columnsa
+                               # split into daily chunks and divide into columns
+                               # add option to split data based on animal period length
                                d1 <- split(data, ceiling(seq_along(data)/1440))
                                # elongate last chunk to 1440 and substitute NA with 0
                                ## register the length of missing part and return a 
                                ## message if too short, maybe discard data
                                toAdd <- replicate((1440-length(d1[[length(d1)]])), 0)
                                d1[[length(d1)]] <- append(d1[[length(d1)]], toAdd)
-                               d2 <- Reduce("+", d1)/length(d1)
-                               # reduce and get the sum of half hour chunks
-                               d3 <- split(d2, ceiling(seq_along(d2)/30))
+                               ## compute mean across days
+                               d2 <- rowMeans(do.call(cbind, d1), na.rm = TRUE)
+                               # reduce and get the sum of 15 minutes chunks
+                               d3 <- split(d2, ceiling(seq_along(d2)/15))
                                # from list of vectors of length 1 get the atomic values into a vector
                                d4 <- unlist(lapply(d3, sum), recursive = TRUE, use.names = FALSE)
-                               d5 <- data.frame(c(1:48), id,  d4, sex, genotype)
-                               d6 <- rbind(d6, d5)# d4 <- data.frame(d1)
+                               d5 <- data.frame(c(1:96), id,  d4, sex, genotype)
+                               d6 <- rbind(d6, d5)
                              }
                              d7 <- dplyr::tibble("time" = d6[,1],
                                           "mouse" = d6$id,
@@ -117,7 +119,8 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #' @export
 #'
 #' @examples write examples
-                           checkIf = function(funEnv, subsetPlot){
+                           checkIf = function(funEnv, subsetPlot){#to add option to check for presence of different tables
+                             
                              # if(is.null(self$table1) == TRUE){ #add conditions to see if values changed and it's necessary to recalculate the table
                              # if(funEnv$env2$Annotate$cacheKeys[1, 2] != self$cacheKeys[1, 2]){
                              self$behavrTable(funEnv, subsetPlot)

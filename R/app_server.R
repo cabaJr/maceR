@@ -106,6 +106,12 @@ app_server <- function( input, output, session ) {
   load_plots(env = App_settings, plot_list = analysis_out$periods(), session = session)
   })
   
+  #observe when a new periodogram is selected and print it
+  observeEvent(analysis_out$avgDay(), {
+    # call the lad_plots fun to activate the module for each requested plot  
+    load_plots(env = App_settings, plot_list = analysis_out$avgDay(), session = session)
+  })
+  
   
 #### To Debug #########
 

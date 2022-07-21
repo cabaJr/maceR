@@ -39,15 +39,20 @@ Annotate <- R6::R6Class("Annotate",
                                         Per4 = list(),
                                         Per5 = list()
                     ),
+                    avg_day_plots = list(AvgDay1 = list()
+                      
+                    ),
                     output_list_acto = dplyr::tibble(
                       "handler" = c("total", "sex", "genotype", "cabinet",
                                     "DAtotal", "DAsex", "DAgenotype", "DAcabinet",
                                     "~gen", "~sex", "individual", "gen~sex", "indiv+sex~gen", "indiv+cab~gen",
-                                    "Pertotal", "Perfaceted", "Persex", "Pergenotype", "Percabinet"),
+                                    "Pertotal", "Perfaceted", "Persex", "Pergenotype", "Percabinet",
+                                    "AvgDay1"),
                       "destination" = c("acto1", "acto2", "acto3", "acto4",
                                         "DPacto1", "DPacto2", "DPacto3", "DPacto4",
                                         "DAct1", "DAct2", "DAct3", "DAct4", "DAct5", "DAct6",
-                                        "Per1", "Per2", "Per3", "Per4", "Per5"),
+                                        "Per1", "Per2", "Per3", "Per4", "Per5",
+                                        "AvgDay1"),
                       ## list containing the location of each plot in Annotate$ 
                       "location" = list(## Actograms
                                      "Annotate$Actograms$acto1[[1]]", "Annotate$Actograms$acto2[[1]]",
@@ -62,7 +67,10 @@ Annotate <- R6::R6Class("Annotate",
                                      ## Periodograms
                                      "Annotate$period_plots$Per1", "Annotate$period_plots$Per2", 
                                      "Annotate$period_plots$Per3", "Annotate$period_plots$Per4", 
-                                     "Annotate$period_plots$Per5"),
+                                     "Annotate$period_plots$Per5",
+                                     ## Average daily activity
+                                     "Annotate$avg_day_plots$AvgDay1"
+                                     ),
                       "title" = c("Actogram - all animals", "Actogram - split by sex",
                                   "Actogram - split by genotype", "Actogram - split by cabinet",
                                   "Double plotted actogram - all animals", "Double plotted actogram - split by sex",
@@ -73,19 +81,22 @@ Annotate <- R6::R6Class("Annotate",
                                   "Sum of daily activity - ", "Sum of daily activity - ", 
                                   "Periodogram - cumulative", "Periodogram - individual", 
                                   "Periodogram - by sex", "Periodogram - by genotype", 
-                                  "Periodogram - by cabinet"),
+                                  "Periodogram - by cabinet",
+                                  "Average daily Activity"),
                       "data" = c("Custom_tables$table1", "Custom_tables$table1", "Custom_tables$table1", "Custom_tables$table1",
                                  "Custom_tables$table1", "Custom_tables$table1", "Custom_tables$table1", "Custom_tables$table1",
                                  "Custom_tables$table2", "Custom_tables$table2", "Custom_tables$table2",
                                  "Custom_tables$table2", "Custom_tables$table2", "Custom_tables$table2",
                                  "Custom_tables$table4", "Custom_tables$table4", "Custom_tables$table4",
-                                 "Custom_tables$table4", "Custom_tables$table4"),
+                                 "Custom_tables$table4", "Custom_tables$table4",
+                                 "Custom_tables$table3"),
                       "file_label" = c("Counts_table", "Counts_table", "Counts_table", "Counts_table",
                                        "Counts_table", "Counts_table", "Counts_table", "Counts_table",
                                        "Total_daily_act", "Total_daily_act", "Total_daily_act",
                                        "Total_daily_act", "Total_daily_act", "Total_daily_act",
                                        "Period_peaks", "Period_peaks", "Period_peaks", 
-                                       "Period_peaks", "Period_peaks")
+                                       "Period_peaks", "Period_peaks",
+                                       "Average_day")
                     ),
                     actTable = NULL,
                     metaTable = NULL,
@@ -510,10 +521,22 @@ Annotate <- R6::R6Class("Annotate",
                           ggplot2::facet_wrap(Cabinet ~ ., ncol = 6, labeller = ggplot2::label_wrap_gen(multi_line=FALSE))
                         self$period_plots[5][[1]] <- plot
                       }
-                    }#,
+                    },
                     #  Custom_actogram = function(...){
                     # 
                     # }
+
+                    #### trial
+                    plot_avg_day = function(funenv){
+                      activity <- funenv$env3$Custom_tables$table3 #get activity file from Custom_tables
+                      plot <- ggplot2::ggplot()+
+                        ggplot2::geom_line(
+                        data = activity,ggplot2::aes(
+                        time, activity, colour = mouse))+
+                        ggplot2::ggtitle("Individual average activity", subtitle =  "")  
+                      self$avg_day_plots[1][[1]] <- plot
+                    }
+                    ###
                     )
 )
 

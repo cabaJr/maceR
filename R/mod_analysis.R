@@ -121,7 +121,21 @@ mod_analysis_ui <- function(id){
              )
     ),
     fluidRow(div(style = ""),
-             # shiny::uiOutput("plot_box")
+             shinydashboard::box(title= "Average day", id = ns("box3_6"), width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
+                                 fluidRow(),
+                                 
+                                 fluidRow(column(width = 3,
+                                                 offset = 7, 
+                                                 actionButton(inputId = ns("AvgDayPrint"), label = "Print"),
+                                                 downloadButton(outputId = ns("Dl4"), label = "Download")
+                                                 )
+                                 ),
+                                 column(width = 2,
+                                        offset = 0, 
+                                        actionButton(ns('help3_5'), label = 'Help',
+                                                     style="color: #fff; background-color: #1e690c; border-color: #1e530c;")
+                                 )
+             )
     )
     
   )
@@ -259,13 +273,42 @@ mod_analysis_server <- function(id, App_settings){
                                location = App_settings$env2$Custom_tables$table4,
                                format = "csv")
     
+    ## AVERAGE DAY OF ACTIVITY
+    observeEvent(input$AvgDayPrint, {
+      ## get Custom table object through App_settings
+      Custom_tables <- App_settings$env2$Custom_tables
+      ## check if table3 is already present or calculate it
+      # Custom_tables$checkIf(App_settings, input$subsetPlot) #call to checker function that then calls behavrTable
+      Custom_tables$AvgDay(App_settings)
+      ## get user plot choices 
+      plot_choices <- "AvgDay1" #input$ add checkboxgroup to select which grouping to use
+      ## get annotate environment
+      Annotate <- App_settings$env4$Annotate
+      ## call the function to output the plot for all the selected plot types
+      # purrr::map(plot_choices, ~ Annotate$plot_periodogram(funEnv = App_settings, plotType = .x))
+      Annotate$plot_avg_day(funenv = App_settings)
+      ## assign value to be returned to activate plot tab
+      if(App_settings$plotTab == FALSE){
+        toReturn$plotTab <- checkPlots(App_settings)
+      }
+      ## assign value of selected plots to be returned
+      toReturn$avgDay <- plot_choices
+    })
+    
+    ## download handler for periodogram table 
+    output$Dl3 <- download_obj(title = "Periodogram_table_",
+                               location = App_settings$env2$Custom_tables$table4,
+                               format = "csv")
+    
+    
     ## create list with values to return
     analysis_out <- list(
       plotTab = reactive(toReturn$plotTab),
       actos = reactive(toReturn$actos),
       DPactos= reactive(toReturn$DPactos),
       Dact = reactive(toReturn$Dact),
-      periods = reactive(toReturn$periods)
+      periods = reactive(toReturn$periods),
+      avgDay = reactive(toReturn$avgDay)
     )
     
     return(analysis_out)

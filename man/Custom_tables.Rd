@@ -20,7 +20,7 @@ method to generate a metadata table, integrating the metadata file
 \examples{
 
 ## ------------------------------------------------
-## Method `Custom_tables$HHActivity`
+## Method `Custom_tables$AvgDay`
 ## ------------------------------------------------
 
 HHActivity(env)
@@ -83,7 +83,7 @@ compile}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-compile}{\code{Custom_tables$compile()}}
-\item \href{#method-HHActivity}{\code{Custom_tables$HHActivity()}}
+\item \href{#method-AvgDay}{\code{Custom_tables$AvgDay()}}
 \item \href{#method-checkIf}{\code{Custom_tables$checkIf()}}
 \item \href{#method-behavrTable}{\code{Custom_tables$behavrTable()}}
 \item \href{#method-dailyAct}{\code{Custom_tables$dailyAct()}}
@@ -113,13 +113,13 @@ HHActivity
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-HHActivity"></a>}}
-\if{latex}{\out{\hypertarget{method-HHActivity}{}}}
-\subsection{Method \code{HHActivity()}}{
+\if{html}{\out{<a id="method-AvgDay"></a>}}
+\if{latex}{\out{\hypertarget{method-AvgDay}{}}}
+\subsection{Method \code{AvgDay()}}{
 function to create tibble with mouse activity daily grouped in 
-    30 minutes bins
+    15 minutes bins
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Custom_tables$HHActivity(env)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Custom_tables$AvgDay(env)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
