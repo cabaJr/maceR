@@ -57,9 +57,9 @@ mod_plots_ui <- function(id){
       tabPanel("Average day",
                fluidRow(
                  shiny::br(),
-                 uiOutput(ns("AvgDay1"))#,
-                 # uiOutput(ns("AvgDay2")),
-                 # uiOutput(ns("AvgDay3")),
+                 uiOutput(ns("AvgDay1")),
+                 uiOutput(ns("AvgDay2")),
+                 uiOutput(ns("AvgDay3"))#,
                  # uiOutput(ns("AvgDay4")),
                  # uiOutput(ns("AvgDay5"))
                )

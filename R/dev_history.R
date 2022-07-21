@@ -144,6 +144,8 @@
   #'  20/07/2022
 #'  add download buttons for data in mod_box_plot
 #'  activate HHActivity fun plotting
+#'  create Avg day of activity divided by id, sex, genotype
+#'  problem with subscript in plotting genotype averaged
 
 
   #' PRIORITIES

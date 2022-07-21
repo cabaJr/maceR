@@ -68,7 +68,12 @@ mod_analysis_ui <- function(id){
              )
     ),
     fluidRow(div(style = ""),
-             shinydashboard::box(title= "Sum of daily activity", id = ns("box3_3"), width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
+             shinydashboard::box(title= "Sum of daily activity",
+                                 id = ns("box3_3"),
+                                 width = 12,
+                                 solidHeader = TRUE,
+                                 collapsible = TRUE,
+                                 status = "primary",
                  fluidRow(column(width = 12,
                                  shinyWidgets::prettyCheckboxGroup(inputId = ns("DAsum"), label = "Select the desired plots:",
                                                     choiceNames = c("Averaged by genotype", "Averaged by sex", "Individual + mean", "Averaged by sex, divided by cabinet", "Individual, divided by sex and genotype + mean", "Individual, divided by cabinet and genotype"),
@@ -122,18 +127,27 @@ mod_analysis_ui <- function(id){
     ),
     fluidRow(div(style = ""),
              shinydashboard::box(title= "Average day", id = ns("box3_6"), width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
-                                 fluidRow(),
+                                 fluidRow(
+                                   column(width = 12,
+                                   shinyWidgets::prettyCheckboxGroup(inputId = ns("Avg_day_cho"), label = "Select the desired plots:",
+                                                                     choiceNames = c("Individual", "Averaged by sex", "Averaged by genotype"),#, "Individual, divided by sex and genotype + mean", "Individual, divided by cabinet and genotype"),
+                                                                     choiceValues = c("individual", "sex", "genotype"),#, "gen~sex", "indiv+sex~gen", "indiv+cab~gen"),
+                                                                     width = "80%"),
+                                 )),
                                  
                                  fluidRow(column(width = 3,
-                                                 offset = 7, 
-                                                 actionButton(inputId = ns("AvgDayPrint"), label = "Print"),
-                                                 downloadButton(outputId = ns("Dl4"), label = "Download")
-                                                 )
-                                 ),
+                                                 offset = 2, 
+                                                 actionButton(inputId = ns("AvgDayPrint"), label = "Print")
+                                                 ),
+                                 
                                  column(width = 2,
-                                        offset = 0, 
+                                        offset = 2, 
                                         actionButton(ns('help3_5'), label = 'Help',
                                                      style="color: #fff; background-color: #1e690c; border-color: #1e530c;")
+                                 ),
+                                 column(width = 2,
+                                        downloadButton(outputId = ns("Dl4"), label = "Download")
+                                 )
                                  )
              )
     )
@@ -279,14 +293,13 @@ mod_analysis_server <- function(id, App_settings){
       Custom_tables <- App_settings$env2$Custom_tables
       ## check if table3 is already present or calculate it
       # Custom_tables$checkIf(App_settings, input$subsetPlot) #call to checker function that then calls behavrTable
-      Custom_tables$AvgDay(App_settings)
+      Custom_tables$AvgDay(App_settings, per_len = 1440)
       ## get user plot choices 
-      plot_choices <- "AvgDay1" #input$ add checkboxgroup to select which grouping to use
+      plot_choices <- input$Avg_day_cho
       ## get annotate environment
       Annotate <- App_settings$env4$Annotate
       ## call the function to output the plot for all the selected plot types
-      # purrr::map(plot_choices, ~ Annotate$plot_periodogram(funEnv = App_settings, plotType = .x))
-      Annotate$plot_avg_day(funenv = App_settings)
+      purrr::map(plot_choices, ~ Annotate$plot_avg_day(funEnv = App_settings, plotType = .x))
       ## assign value to be returned to activate plot tab
       if(App_settings$plotTab == FALSE){
         toReturn$plotTab <- checkPlots(App_settings)

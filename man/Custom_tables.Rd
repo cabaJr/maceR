@@ -119,13 +119,15 @@ HHActivity
 function to create tibble with mouse activity daily grouped in 
     15 minutes bins
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Custom_tables$AvgDay(env)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Custom_tables$AvgDay(env, per_len)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{env}}{App_settings environment}
+
+\item{\code{per_len}}{customizable period length value, used to normalise Circadian day}
 }
 \if{html}{\out{</div>}}
 }

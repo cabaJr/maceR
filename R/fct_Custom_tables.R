@@ -71,11 +71,14 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #' HHActivity
 #' @description function to create tibble with mouse activity daily grouped in 
 #'     15 minutes bins
+#'
+#' @param per_len customizable period length value, used to normalise Circadian day
 #' @param env App_settings environment
+#'
 #' @return A table with the sum 
 #'
 #' @examples HHActivity(env)
-                           AvgDay = function(env){ #handle NA values to avoid dropping of values
+                           AvgDay = function(env, per_len){ #handle NA values to avoid dropping of values
                              myCleanMice <- env$env2$myCleanMice
                              d6 <- NULL
                              for (i in seq_len(length(myCleanMice))){
@@ -87,11 +90,11 @@ Custom_tables <- R6::R6Class("Custom_tables",
                                genotype <- as.character(myCleanMice[[i]]$genotype)
                                # split into daily chunks and divide into columns
                                # add option to split data based on animal period length
-                               d1 <- split(data, ceiling(seq_along(data)/1440))
-                               # elongate last chunk to 1440 and substitute NA with 0
+                               d1 <- split(data, ceiling(seq_along(data)/per_len))
+                               # elongate last chunk to 1440
                                ## register the length of missing part and return a 
                                ## message if too short, maybe discard data
-                               toAdd <- replicate((1440-length(d1[[length(d1)]])), 0)
+                               toAdd <- replicate((per_len-length(d1[[length(d1)]])), 0)
                                d1[[length(d1)]] <- append(d1[[length(d1)]], toAdd)
                                ## compute mean across days
                                d2 <- rowMeans(do.call(cbind, d1), na.rm = TRUE)
@@ -99,10 +102,10 @@ Custom_tables <- R6::R6Class("Custom_tables",
                                d3 <- split(d2, ceiling(seq_along(d2)/15))
                                # from list of vectors of length 1 get the atomic values into a vector
                                d4 <- unlist(lapply(d3, sum), recursive = TRUE, use.names = FALSE)
-                               d5 <- data.frame(c(1:96), id,  d4, sex, genotype)
+                               d5 <- data.frame(seq(0, 23.75, by = 0.25), id,  d4, sex, genotype)
                                d6 <- rbind(d6, d5)
                              }
-                             d7 <- dplyr::tibble("time" = d6[,1],
+                             d7 <- dplyr::tibble("CT" = d6[,1],
                                           "mouse" = d6$id,
                                           "activity" = d6$d4,
                                           "sex" = d6$sex,
