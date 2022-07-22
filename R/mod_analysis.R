@@ -131,7 +131,7 @@ mod_analysis_ui <- function(id){
                                    column(width = 12,
                                    shinyWidgets::prettyCheckboxGroup(inputId = ns("Avg_day_cho"), label = "Select the desired plots:",
                                                                      choiceNames = c("Individual", "Averaged by sex", "Averaged by genotype"),#, "Individual, divided by sex and genotype + mean", "Individual, divided by cabinet and genotype"),
-                                                                     choiceValues = c("individual", "sex", "genotype"),#, "gen~sex", "indiv+sex~gen", "indiv+cab~gen"),
+                                                                     choiceValues = c("individualAvgD", "sexAvgD", "genotypeAvgD"),#, "gen~sex", "indiv+sex~gen", "indiv+cab~gen"),
                                                                      width = "80%"),
                                  )),
                                  

@@ -83,8 +83,12 @@ Custom_tables <- R6::R6Class("Custom_tables",
                              d6 <- NULL
                              for (i in seq_len(length(myCleanMice))){
                                # browser()
-                               # write.csv(App_settings$env3$Custom_tables$table3, file, quote = FALSE, row.names = FALSE)
+                               #get light length
+                               light_len <- env$LDparams$light
+                               # discard half of light_len to align data
+                               discard_first <- (light_len/2)*60
                                data <- myCleanMice[[i]]$countsMinute
+                               data <- data[-(1:discard_first), drop = FALSE]
                                id <- as.factor(myCleanMice[[i]]$id)
                                sex <- as.character(myCleanMice[[i]]$sex)
                                genotype <- as.character(myCleanMice[[i]]$genotype)

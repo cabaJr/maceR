@@ -147,6 +147,11 @@
 #'  create Avg day of activity divided by id, sex, genotype
 #'  problem with subscript in plotting genotype averaged
 
+  #'  21/07/2022
+#'  solve problem with plotting
+#'  align avg day plot to start with lights on
+#'  increased axis labels and titles size
+
 
   #' PRIORITIES
 #' - activate exporting of parameters in tables (period power and length)
