@@ -28,7 +28,6 @@ app_server <- function( input, output, session ) {
                                         text = "Input",
                                         icon = "upload")
     new_experiment(session, App_settings)
-    
   })
   
   # get value from mod_input_DF

@@ -141,16 +141,17 @@
   #'  16/07/2022
 #'  review HHactivity function
 
-  #'  20/07/2022
+  #'  21/07/2022
 #'  add download buttons for data in mod_box_plot
 #'  activate HHActivity fun plotting
 #'  create Avg day of activity divided by id, sex, genotype
 #'  problem with subscript in plotting genotype averaged
 
-  #'  21/07/2022
+  #'  22/07/2022
 #'  solve problem with plotting
 #'  align avg day plot to start with lights on
 #'  increased axis labels and titles size
+#'  activate subsetting of data
 
 
   #' PRIORITIES

@@ -276,5 +276,25 @@ plot_actogram_sup <- function(env, plot_type){
     # shinyjs::show(id = "actogram_4", anim = FALSE)
   }
 }
+
+showSubsetting <- function(...){
+    shinyjs::show(id = "idSubsetList", anim = FALSE)   #hide plot subset settings
+    shinyjs::show(id = "sexSubsetList", anim = FALSE)
+    shinyjs::show(id = "geneSubsetList", anim = FALSE)
+    shinyjs::show(id = "cabSubsetList", anim = FALSE)
+    shinyjs::show(id = "text11", anim = FALSE)
+    shinyjs::show(id = "metaUniqueO", anim = FALSE)
+    shinyjs::show(id = "timeSubset", anim = FALSE)
+}
+
+clearSubsetting <- function(...){
+  shinyjs::hide(id = "idSubsetList", anim = FALSE)   #hide plot subset settings
+    shinyjs::hide(id = "sexSubsetList", anim = FALSE)
+    shinyjs::hide(id = "geneSubsetList", anim = FALSE)
+    shinyjs::hide(id = "cabSubsetList", anim = FALSE)
+    shinyjs::hide(id = "text11", anim = FALSE)
+    shinyjs::hide(id = "metaUniqueO", anim = FALSE)
+    shinyjs::hide(id = "timeSubset", anim = FALSE)
+}
   
 #' @noRd

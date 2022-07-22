@@ -162,6 +162,11 @@ mod_analysis_server <- function(id, App_settings){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
     
+    # clean interface
+    observeEvent(sessionInfo(), ignoreNULL = TRUE, once = TRUE, {
+      clearSubsetting(input_result)
+    })
+    
     ## show help messages 
     observeEvent(input$help3_0, {show_help(App_settings, 7)})
     observeEvent(input$help3_4, {show_help(App_settings, 8)})
@@ -173,7 +178,40 @@ mod_analysis_server <- function(id, App_settings){
                                DPactos = NULL,
                                Dact = NULL,
                                periods = NULL)
-    ## SINGLE LINE PERIODOGRAM
+    
+    #### Data Subsetting ####
+    
+    observeEvent(input$subsetPlot, { #open/close subsetting parameters
+      case <- input$subsetPlot
+      if(is.null(App_settings$env2) == FALSE){
+        switch(case, "Yes" = {showSubsetting(input_result)}, "No" = {clearSubsetting(input_result)})
+      }
+    })
+    ## update selectors
+    observeEvent(input$subsetPlot, {
+      if(input$subsetPlot == "Yes"){
+      upload_subsetting(funEnv = App_settings,
+                        session = session,
+                        input_result = input_result)
+      }
+    })
+
+    #compile vector with list of mice objects
+    observeEvent(c(input$idSubsetList,
+                   input$sexSubsetList,
+                   input$geneSubsetList,
+                   input$cabSubsetList), {
+                     App_settings$setListMiceFiltered(App_settings$env2, input$idSubsetList, input$sexSubsetList, input$geneSubsetList, input$cabSubsetList)
+                     idList <- as.character(App_settings$subsetting$miceListFiltered$id)
+                     output$text11 <- renderText(paste("Selected Id: "))
+                     output$metaUniqueO <- renderText(paste(idList))
+                   })
+    #update min max values
+    observeEvent(input$timeSubset,{
+      App_settings$updateTimeRange(input$timeSubset)
+    })
+    
+    #### SINGLE LINE PERIODOGRAM ####
     observeEvent(input$print,{
       ## get Custom table object through App_settings
       Custom_tables <- App_settings$env2$Custom_tables
@@ -204,7 +242,7 @@ mod_analysis_server <- function(id, App_settings){
                                location = App_settings$env2$Custom_tables$table1,
                                format = "csv")
     
-    ## DOUBLE PLOTTED PERIODOGRAM
+    #### DOUBLE PLOTTED PERIODOGRAM ####
     observeEvent(input$printDP, {
       ## get Custom table object through App_settings
       Custom_tables <- App_settings$env2$Custom_tables
@@ -227,7 +265,7 @@ mod_analysis_server <- function(id, App_settings){
       toReturn$DPactos <- plot_choices
     })
     
-    ## SUM OF DAILY ACTIVITY
+    #### SUM OF DAILY ACTIVITY ####
     observeEvent(input$dayAct, {
       # browser()
       ## get Custom table object through App_settings
@@ -255,7 +293,7 @@ mod_analysis_server <- function(id, App_settings){
                                location = App_settings$env2$Custom_tables$table2,
                                format = "csv")
     
-    ## PERIODOGRAMS
+    #### PERIODOGRAMS ####
     observeEvent(input$periodPrint, {
       # browser()
       ## get Custom table object through App_settings
@@ -287,7 +325,7 @@ mod_analysis_server <- function(id, App_settings){
                                location = App_settings$env2$Custom_tables$table4,
                                format = "csv")
     
-    ## AVERAGE DAY OF ACTIVITY
+    #### AVERAGE DAY OF ACTIVITY ####
     observeEvent(input$AvgDayPrint, {
       ## get Custom table object through App_settings
       Custom_tables <- App_settings$env2$Custom_tables
@@ -323,8 +361,16 @@ mod_analysis_server <- function(id, App_settings){
       periods = reactive(toReturn$periods),
       avgDay = reactive(toReturn$avgDay)
     )
-    
-    return(analysis_out)
+    ## return input values as reactive
+    input_result <- list(
+      subsetPlot = reactive(input$subsetPlot),
+      idSubsetList = reactive(input$idSubsetList),
+      sexSubsetList = reactive(input$sexSubsetList),
+      geneSubsetList = reactive(input$geneSubsetList),
+      cabSubsetList = reactive(input$cabSubsetList),
+      timeSubset = reactive(input$timeSubset)
+    )
+    return(c(analysis_out, input_result))
   })
 }
     
