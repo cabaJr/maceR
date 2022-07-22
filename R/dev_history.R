@@ -151,7 +151,7 @@
 #'  solve problem with plotting
 #'  align avg day plot to start with lights on
 #'  increased axis labels and titles size
-#'  activate subsetting of data
+#'  activate subsetting box
 
 
   #' PRIORITIES
@@ -187,6 +187,9 @@
 #'
   #' FIXINGS 
 #' 
+#' - make download buttons in analysis appear after tables have been generated
+#' - subsetting doesn't work for line plots
+#' - time subsetting causes plot generation to fail
 #' - All boxes display the same title
 #' - fix second click on Print that makes Plot tab disappear
 #' - fix buttons in DataStructure tab
