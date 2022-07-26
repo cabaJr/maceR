@@ -153,6 +153,10 @@
 #'  increased axis labels and titles size
 #'  activate subsetting box
 
+  #'  26/07/2022
+#'  fixed subsetting not working for line plots
+#'  
+
 
   #' PRIORITIES
 #' - activate exporting of parameters in tables (period power and length)

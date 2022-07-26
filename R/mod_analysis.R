@@ -272,7 +272,7 @@ mod_analysis_server <- function(id, App_settings){
       Custom_tables <- App_settings$env2$Custom_tables
       ##compute daily activity table
       ## to add a check that if parameters are the same there is no need to recompute
-      Custom_tables$dailyAct(App_settings)
+      Custom_tables$dailyAct(App_settings, input$subsetPlot)
       ## get annotate environment
       Annotate <- App_settings$env4$Annotate
       ## get user plot choices
@@ -331,7 +331,7 @@ mod_analysis_server <- function(id, App_settings){
       Custom_tables <- App_settings$env2$Custom_tables
       ## check if table3 is already present or calculate it
       # Custom_tables$checkIf(App_settings, input$subsetPlot) #call to checker function that then calls behavrTable
-      Custom_tables$AvgDay(App_settings, per_len = 1440)
+      Custom_tables$AvgDay(App_settings, per_len = 1440, input$subsetPlot)
       ## get user plot choices 
       plot_choices <- input$Avg_day_cho
       ## get annotate environment

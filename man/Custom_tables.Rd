@@ -39,7 +39,7 @@ behavrTable
 ## Method `Custom_tables$behavrTable`
 ## ------------------------------------------------
 
-write expamples of behavrTable application
+write examples of behavrTable application
 dailyAct
 
 
@@ -119,7 +119,7 @@ HHActivity
 function to create tibble with mouse activity daily grouped in 
     15 minutes bins
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Custom_tables$AvgDay(env, per_len)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Custom_tables$AvgDay(env, per_len, subsetVal)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -128,6 +128,8 @@ function to create tibble with mouse activity daily grouped in
 \item{\code{env}}{App_settings environment}
 
 \item{\code{per_len}}{customizable period length value, used to normalise Circadian day}
+
+\item{\code{subsetVal}}{Yes/No value}
 }
 \if{html}{\out{</div>}}
 }
@@ -198,7 +200,7 @@ behavrTable
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{write expamples of behavrTable application
+\preformatted{write examples of behavrTable application
 dailyAct
 
 }
@@ -214,13 +216,15 @@ dailyAct
 function to generate the sum of the activity for each day and
     store it on a table.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Custom_tables$dailyAct(env)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Custom_tables$dailyAct(env, subsetVal)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{env}}{environment containing myCleanMice object}
+
+\item{\code{subsetVal}}{Yes/No value}
 }
 \if{html}{\out{</div>}}
 }
