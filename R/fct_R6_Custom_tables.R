@@ -2,8 +2,9 @@
 #'
 #' @title Custom_tables
 #'
-#' @description A fct function
-#' container of R6 objects generator
+#' @description A R6 object that contains methods to analyse the uploaded data.
+#'     The secondary data that are generated are stored inside the object.
+#' 
 #' @return The return value, if any, from executing the function.
 
 
@@ -29,9 +30,12 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #' compile
 #'
 #' @param env App_settings object to access the env containing myCleanMice obj
+#' 
+#' @details method to generate a metadata table, integrating the metadata file
+#'     uploaded from the user with computing of each raw data file in the 
+#'     dataset.
 #'
-#' @return
-#' @export
+#' @return Metadata table to be stored inside the Custom_tables R6 object.
 #'
                            compile = function(env){ #requires myClean mice to exist, therefore
 
@@ -66,36 +70,65 @@ Custom_tables <- R6::R6Class("Custom_tables",
 
 #' HHActivity
 #' @description function to create tibble with mouse activity daily grouped in 
-#'     30 minutes bins
+#'     15 minutes bins
+#'
+#' @param per_len customizable period length value, used to normalise Circadian day
 #' @param env App_settings environment
-#' @return
-#' @export
+#' @param subsetVal Yes/No value
+#'
+#' @return A table with the sum 
 #'
 #' @examples HHActivity(env)
-                           HHActivity = function(env){ #handle NA values to avoid dropping of values
-                             myCleanMice <- env$env2$myCleanMice
+                           AvgDay = function(env, per_len, subsetVal){ #handle NA values to avoid dropping of values
                              d6 <- NULL
+                             #switch to allow for data subsetting
+                             switch(subsetVal,
+                                    "Yes" = {
+                                      filteredMice <- env$subsetting$miceListFiltered$pos
+                                      range = c((env$subsetting$timespan[1]*1440),(env$subsetting$timespan[2]*1440))
+                                    },
+                                    "No" = {
+                                      filteredMice <- seq_len(length(myCleanMice))
+                                      range = c(0,max(env$env2$Annotate$metaTable$Datapoints))
+                                    })
+                             myCleanMice <- env$env3$myCleanMice[filteredMice]
                              for (i in seq_len(length(myCleanMice))){
-                               data <- myCleanMice[[i]]$countsMinute
+                               #get light length
+                               light_len <- env$LDparams$light
+                               # discard half of light_len to align data
+                               discard_first <- (light_len/2)*60
+                               allData <- myCleanMice[[i]]
+                               
+                               #if condition to handle time subsetting
+                               if(subsetVal == "Yes"){
+                                 range1 <- which(allData$timepoint >= range[1]*60)
+                                 range2 <- which(allData$timepoint <= range[2]*60)
+                                 range3 <- intersect(range1, range2)
+                                 allData$countsMinute <- allData$countsMinute[range3]    #filter based on timepoint
+                               }
+                               data <- allData$countsMinute
+                               data <- data[-(1:discard_first), drop = FALSE]
                                id <- as.factor(myCleanMice[[i]]$id)
                                sex <- as.character(myCleanMice[[i]]$sex)
                                genotype <- as.character(myCleanMice[[i]]$genotype)
-                               # split into daily chunks and get the avg
-                               d1 <- split(data, ceiling(seq_along(data)/1440))
-                               # elongate last chunk to 1440 and substitute NA with 0
+                               # split into daily chunks and divide into columns
+                               # add option to split data based on animal period length
+                               d1 <- split(data, ceiling(seq_along(data)/per_len))
+                               # elongate last chunk to 1440
                                ## register the length of missing part and return a 
-                               ## message if too short, amybe discard data
-                               toAdd <- replicate((1440-length(d1[[length(d1)]])), 0)
+                               ## message if too short, maybe discard data
+                               toAdd <- replicate((per_len-length(d1[[length(d1)]])), 0)
                                d1[[length(d1)]] <- append(d1[[length(d1)]], toAdd)
-                               d2 <- Reduce("+", d1)/length(d1)
-                               # reduce and get the sum of half hour chunks
-                               d3 <- split(d2, ceiling(seq_along(d2)/30))
+                               ## compute mean across days
+                               d2 <- rowMeans(do.call(cbind, d1), na.rm = TRUE)
+                               # reduce and get the sum of 15 minutes chunks
+                               d3 <- split(d2, ceiling(seq_along(d2)/15))
                                # from list of vectors of length 1 get the atomic values into a vector
                                d4 <- unlist(lapply(d3, sum), recursive = TRUE, use.names = FALSE)
-                               d5 <- data.frame(c(1:48), id,  d4, sex, genotype)
-                               d6 <- rbind(d6, d5)# d4 <- data.frame(d1)
+                               d5 <- data.frame(seq(0, 23.75, by = 0.25), id,  d4, sex, genotype)
+                               d6 <- rbind(d6, d5)
                              }
-                             d7 <- dplyr::tibble("time" = d6[,1],
+                             d7 <- dplyr::tibble("CT" = d6[,1],
                                           "mouse" = d6$id,
                                           "activity" = d6$d4,
                                           "sex" = d6$sex,
@@ -112,7 +145,8 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #' @export
 #'
 #' @examples write examples
-                           checkIf = function(funEnv, subsetPlot){
+                           checkIf = function(funEnv, subsetPlot){#to add option to check for presence of different tables
+                             
                              # if(is.null(self$table1) == TRUE){ #add conditions to see if values changed and it's necessary to recalculate the table
                              # if(funEnv$env2$Annotate$cacheKeys[1, 2] != self$cacheKeys[1, 2]){
                              self$behavrTable(funEnv, subsetPlot)
@@ -127,7 +161,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #' @return
 #' @export
 #'
-#' @examples write expamples of behavrTable application
+#' @examples write examples of behavrTable application
                            behavrTable = function(x, subsetVal){
                              d2 <- NULL
                              myCleanMice <- x$env2$myCleanMice
@@ -178,15 +212,29 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #                            
 #' dailyAct
 #'
+#' @param subsetVal Yes/No value
 #' @param env environment containing myCleanMice object
+#'
 #' @description function to generate the sum of the activity for each day and
 #'     store it on a table.
 #' @return
 #' @export
 #'
 #' @examples dailyAct(env)
-                           dailyAct = function(env){ #substitute x with env in whole fun
-                             mouseData <- env$env3$myCleanMice
+                           dailyAct = function(env, subsetVal){ #substitute x with env in whole fun
+                             browser()
+                             #switch to allow for data subsetting
+                             switch(subsetVal,
+                                    "Yes" = {
+                                      filteredMice <- env$subsetting$miceListFiltered$pos
+                                      range = c((env$subsetting$timespan[1]*1440),(env$subsetting$timespan[2]*1440))
+                                    },
+                                    "No" = {
+                                      filteredMice <- seq_len(length(env$env2$myCleanMice))
+                                      range = c(0,max(env$env2$Annotate$metaTable$Datapoints))
+                                    })
+                             startDay = range[1]/1440
+                             mouseData <- env$env3$myCleanMice[filteredMice]
                              number <- 86400/env$App_settings$timepointDur #number of timepoints in a day
 
                              activity <- dplyr::tibble("id" = as.character(), #resolve similarity between table name and field Activity
@@ -195,11 +243,20 @@ Custom_tables <- R6::R6Class("Custom_tables",
                                                 "Cabinet" = as.numeric(),
                                                 "Sex" = as.character(),
                                                 "Genotype" = as.character())
-                             for (h in seq_len(length(mouseData))){
+                             for (h in seq_len(length(filteredMice))){
+                               #if condition to handle time subsetting
+                               if(subsetVal == "Yes"){
+                                 range1 <- which(mouseData[[h]]$timepoint >= range[1]*60)
+                                 range2 <- which(mouseData[[h]]$timepoint <= range[2]*60)
+                                 range3 <- intersect(range1, range2)
+                                 mouseData[[h]]$countsMinute <- mouseData[[h]]$countsMinute[range3]    #filter based on timepoint
+                                 mouseData[[h]]$timepoint <- mouseData[[h]]$timepoint[range3]  #filter based on timepoint
+                                 mouseData[[h]]$realTime <- mouseData[[h]]$realTime[range3]    #filter based on timepoint
+                               }
                                d1 <- split(mouseData[[h]]$countsMinute, ceiling(seq_along(mouseData[[1]]$countsMinute)/1440))
                                d2 <- lapply(d1, sum)
                                d3 <- dplyr::tibble("id" = mouseData[[h]]$id,
-                                            "Day" = seq_len(length(d2)),
+                                            "Day" = seq(from = startDay, length.out = length(d2)),
                                             "Activity" = unlist(d2),
                                             "Cabinet" = mouseData[[h]]$cabinet,
                                             "Sex" = mouseData[[h]]$sex,
@@ -234,6 +291,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #'     period analyses available with different params
 #'     
                            computePer = function(method, periodRange, funenv) {
+                             # browser()
                              data <- self$table1
                              meta <- self$metadata
                              perFun <- method
@@ -241,20 +299,32 @@ Custom_tables <- R6::R6Class("Custom_tables",
                              switch(perFun,
                                     "chi_sq_periodogram" = {
                                       period <- zeitgebr::periodogram(Activity, data, period_range = c(behavr::hours(vals[1]), behavr::hours(vals[2])),
-                                                                      resample_rate = 1/behavr::mins(1), alpha = 0.01, FUN = zeitgebr::chi_sq_periodogram)
+                                                                      resample_rate = 1/behavr::mins(5), alpha = 0.05, FUN = zeitgebr::chi_sq_periodogram)
                                     },
                                     "ac_periodogram" = {
                                       period <- zeitgebr::periodogram(Activity, data, period_range = c(behavr::hours(vals[1]), behavr::hours(vals[2])),
-                                                                      resample_rate = 1/behavr::mins(1), alpha = 0.01, FUN = zeitgebr::ac_periodogram)
+                                                                      resample_rate = 1/behavr::mins(5), alpha = 0.05, FUN = zeitgebr::ac_periodogram)
                                     },
                                     "ls_periodogram" = {
                                       period <- zeitgebr::periodogram(Activity, data, period_range = c(behavr::hours(vals[1]), behavr::hours(vals[2])),
-                                                                      resample_rate = 1/behavr::mins(1), alpha = 0.01, FUN = zeitgebr::ls_periodogram)
-                                    })
+                                                                      resample_rate = 1/behavr::mins(5), alpha = 0.05, FUN = zeitgebr::ls_periodogram)
+                                    },
+                                    "fourier_periodogram" = {
+                                      period <- zeitgebr::periodogram(Activity, data, period_range = c(behavr::hours(vals[1]), behavr::hours(vals[2])),
+                                                                      resample_rate = 1/behavr::mins(5), alpha = 0.05, FUN = zeitgebr::fourier_periodogram)
+                                    },
+                                    "cwt_periodogram" = {
+                                      period <- zeitgebr::periodogram(Activity, data, period_range = c(behavr::hours(vals[1]), behavr::hours(vals[2])),
+                                                                      resample_rate = 1/behavr::mins(10), alpha = 0.05, FUN = zeitgebr::cwt_periodogram)
+                                    }
+                                    )
                              periodPeaks <- zeitgebr::find_peaks(period, n_peaks = 2)
                              meta <- data.table::setDT(meta, key = "id")
                              period2 <- behavr::behavr(periodPeaks, metadata = meta)
                              self$table4 <- period2
+                             #add table to store only peaks
+                             
+                             # self$table5 <- firstpeaks
 
                            }
 #                            

@@ -1,6 +1,7 @@
 #' Annotate 
 #'
-#' @description A fct function
+#' @description R6 class object used for storing plots and other processed data.
+#'     It is accessed internally to display data.
 #'
 #' @return The return value, if any, from executing the function.
 #'
@@ -38,22 +39,27 @@ Annotate <- R6::R6Class("Annotate",
                                         Per4 = list(),
                                         Per5 = list()
                     ),
+                    avg_day_plots = list(AvgDay1 = list()
+                      
+                    ),
                     output_list_acto = dplyr::tibble(
                       "handler" = c("total", "sex", "genotype", "cabinet",
                                     "DAtotal", "DAsex", "DAgenotype", "DAcabinet",
                                     "~gen", "~sex", "individual", "gen~sex", "indiv+sex~gen", "indiv+cab~gen",
-                                    "Pertotal", "Perfaceted", "Persex", "Pergenotype", "Percabinet"),
+                                    "Pertotal", "Perfaceted", "Persex", "Pergenotype", "Percabinet",
+                                    "individualAvgD", "sexAvgD", "genotypeAvgD"),
                       "destination" = c("acto1", "acto2", "acto3", "acto4",
                                         "DPacto1", "DPacto2", "DPacto3", "DPacto4",
                                         "DAct1", "DAct2", "DAct3", "DAct4", "DAct5", "DAct6",
-                                        "Per1", "Per2", "Per3", "Per4", "Per5"),
+                                        "Per1", "Per2", "Per3", "Per4", "Per5",
+                                        "AvgDay1", "AvgDay2", "AvgDay3"),
                       ## list containing the location of each plot in Annotate$ 
                       "location" = list(## Actograms
                                      "Annotate$Actograms$acto1[[1]]", "Annotate$Actograms$acto2[[1]]",
                                      "Annotate$Actograms$acto3[[1]]", "Annotate$Actograms$acto4[[1]]",
                                      ## DPActograms
                                      "Annotate$DPActograms$DPacto1[[1]]", "Annotate$DPActograms$DPacto2[[1]]", 
-                                     "Annotate$DPActograms$DPacto4[[1]]", "Annotate$DPActograms$DPacto4[[1]]", 
+                                     "Annotate$DPActograms$DPacto3[[1]]", "Annotate$DPActograms$DPacto4[[1]]", 
                                      ## Daily activity
                                      "Annotate$DAct_plots$DAct1", "Annotate$DAct_plots$DAct2", 
                                      "Annotate$DAct_plots$DAct3", "Annotate$DAct_plots$DAct4", 
@@ -61,7 +67,11 @@ Annotate <- R6::R6Class("Annotate",
                                      ## Periodograms
                                      "Annotate$period_plots$Per1", "Annotate$period_plots$Per2", 
                                      "Annotate$period_plots$Per3", "Annotate$period_plots$Per4", 
-                                     "Annotate$period_plots$Per5"),
+                                     "Annotate$period_plots$Per5",
+                                     ## Average daily activity
+                                     "Annotate$avg_day_plots[1][[1]]", "Annotate$avg_day_plots[2][[1]]",
+                                     "Annotate$avg_day_plots[3][[1]]"
+                                     ),
                       "title" = c("Actogram - all animals", "Actogram - split by sex",
                                   "Actogram - split by genotype", "Actogram - split by cabinet",
                                   "Double plotted actogram - all animals", "Double plotted actogram - split by sex",
@@ -72,7 +82,25 @@ Annotate <- R6::R6Class("Annotate",
                                   "Sum of daily activity - ", "Sum of daily activity - ", 
                                   "Periodogram - cumulative", "Periodogram - individual", 
                                   "Periodogram - by sex", "Periodogram - by genotype", 
-                                  "Periodogram - by cabinet")
+                                  "Periodogram - by cabinet",
+                                  "Average daily Activity - Individual", "Average daily Activity - Sex",
+                                  "Average daily Activity - Genotype"),
+                      "data" = c("Custom_tables$table1", "Custom_tables$table1", "Custom_tables$table1", "Custom_tables$table1",
+                                 "Custom_tables$table1", "Custom_tables$table1", "Custom_tables$table1", "Custom_tables$table1",
+                                 "Custom_tables$table2", "Custom_tables$table2", "Custom_tables$table2",
+                                 "Custom_tables$table2", "Custom_tables$table2", "Custom_tables$table2",
+                                 "Custom_tables$table4", "Custom_tables$table4", "Custom_tables$table4",
+                                 "Custom_tables$table4", "Custom_tables$table4",
+                                 "Custom_tables$table3",  "Custom_tables$table3",
+                                 "Custom_tables$table3"),
+                      "file_label" = c("Counts_table", "Counts_table", "Counts_table", "Counts_table",
+                                       "Counts_table", "Counts_table", "Counts_table", "Counts_table",
+                                       "Total_daily_act", "Total_daily_act", "Total_daily_act",
+                                       "Total_daily_act", "Total_daily_act", "Total_daily_act",
+                                       "Period_peaks", "Period_peaks", "Period_peaks", 
+                                       "Period_peaks", "Period_peaks",
+                                       "Average_day", "Average_day",
+                                       "Average_day")
                     ),
                     actTable = NULL,
                     metaTable = NULL,
@@ -127,6 +155,7 @@ Annotate <- R6::R6Class("Annotate",
                           "Genotype" = as.character(),
                           "Real time" = as.character(),
                           "Time point" = as.character(),
+                          "Days" = as.character(),
                           "Activity" = as.character()
                         )
                         if (id == "All"){
@@ -137,6 +166,7 @@ Annotate <- R6::R6Class("Annotate",
                             "Genotype" = myCleanMice[[h]]$genotype,
                             "Real time" = myCleanMice[[h]]$realTime,
                             "Time point" = myCleanMice[[h]]$timepoint,
+                            "Days" = round(((myCleanMice[[h]]$timepoint)/86400), 2),
                             "Activity" = myCleanMice[[h]]$countsMinute
                           )
                           d2 <- rbind(d2, d1)
@@ -146,7 +176,6 @@ Annotate <- R6::R6Class("Annotate",
 
                       }else{
                         id <- id
-                        # browser()
                         miceList <- miceList
                         y <- which(miceList$id == id)
                         h <- as.numeric(miceList[y, 1])
@@ -156,6 +185,7 @@ Annotate <- R6::R6Class("Annotate",
                           "Genotype" = myCleanMice[[h]]$genotype,
                           "Real time" = myCleanMice[[h]]$realTime,
                           "Time point" = myCleanMice[[h]]$timepoint,
+                          "Days" = round(((myCleanMice[[h]]$timepoint)/86400), 2),
                           "Activity" = myCleanMice[[h]]$countsMinute
                         )
                       }
@@ -328,6 +358,8 @@ Annotate <- R6::R6Class("Annotate",
                            ggplot2::aes(
                              x = Day, ymin=Activity-Std, ymax=Activity+Std, colour=Genotype), width=.2,
                                         position=ggplot2::position_dodge(0.05))+
+                          ggplot2::theme(axis.text = ggplot2::element_text(size = 15))+
+                          ggplot2::theme(axis.title = ggplot2::element_text(size = 15))+
                           ggplot2::ggtitle("Mean activity across genotype")
                         self$DAct_plots[1][[1]] <- plot
                       }else if (type == "~sex"){
@@ -350,6 +382,8 @@ Annotate <- R6::R6Class("Annotate",
                            ggplot2::aes(
                              x = Day, ymin=Activity-Std, ymax=Activity+Std, colour=Sex), width=.2,
                                         position=ggplot2::position_dodge(0.05))+
+                          ggplot2::theme(axis.text = ggplot2::element_text(size = 15))+
+                          ggplot2::theme(axis.title = ggplot2::element_text(size = 15))+
                           ggplot2::ggtitle("Mean activity across sex")
                         self$DAct_plots[2][[1]] <- plot
                       }else if (type == "individual"){
@@ -376,6 +410,8 @@ Annotate <- R6::R6Class("Annotate",
                            data = G_eff,ggplot2::aes(
                              x = Day, ymin=Activity-Std, ymax=Activity+Std), width=.2, position=ggplot2::position_dodge(0.05))+
                           ggplot2::facet_wrap(~Genotype, ncol = 2)+
+                          ggplot2::theme(axis.text = ggplot2::element_text(size = 15))+
+                          ggplot2::theme(axis.title = ggplot2::element_text(size = 15))+
                          ggplot2::ggtitle("Activity compared between genotypes", subtitle =  "mean activity for both genotypes in black")
                         self$DAct_plots[3][[1]] <- plot
                       }else if (type == "gen~sex"){
@@ -402,6 +438,8 @@ Annotate <- R6::R6Class("Annotate",
                            data = GS_eff,ggplot2::aes(
                              x = Day, ymin=Activity-Std, ymax=Activity+Std, colour = Sex), width=.2, position=ggplot2::position_dodge(0.05))+
                           ggplot2::facet_wrap(~Genotype)+
+                          ggplot2::theme(axis.text = ggplot2::element_text(size = 15))+
+                          ggplot2::theme(axis.title = ggplot2::element_text(size = 15))+
                          ggplot2::ggtitle("Mean activity for Male and Females across genotypes")
                         self$DAct_plots[4][[1]] <- plot
                       }else if (type == "indiv+sex~gen"){
@@ -428,6 +466,8 @@ Annotate <- R6::R6Class("Annotate",
                            data = GS_eff, ggplot2::aes(
                              x = Day, ymin=Activity-Std, ymax=Activity+Std, colour = Genotype), width=.2, position=ggplot2::position_dodge(0.05))+
                           ggplot2::facet_wrap(~Sex)+
+                          ggplot2::theme(axis.text = ggplot2::element_text(size = 15))+
+                          ggplot2::theme(axis.title = ggplot2::element_text(size = 15))+
                          ggplot2::ggtitle("Activity divided across sex and genotype", subtitle =  "mean activity as dashed lines")
                         self$DAct_plots[5][[1]] <- plot
                       }else if (type == "indiv+cab~gen"){
@@ -448,6 +488,8 @@ Annotate <- R6::R6Class("Annotate",
                          ggplot2::geom_point(data = G_eff,ggplot2::aes(Day, Activity, colour = Genotype), size = 2)+
                          ggplot2::geom_errorbar(data = G_eff,ggplot2::aes(x = Day, ymin=Activity-Std, ymax=Activity+Std, colour = Genotype), width=.2, position=ggplot2::position_dodge(0.05))+
                           ggplot2::facet_wrap(~Cabinet)+
+                          ggplot2::theme(axis.text = ggplot2::element_text(size = 15))+
+                          ggplot2::theme(axis.title = ggplot2::element_text(size = 15))+
                          ggplot2::ggtitle("Activity compared between cabinets", subtitle =  "Activity grouped by genotypes and mean for M / F")
                         self$DAct_plots[6][[1]] <- plot
                       }
@@ -455,7 +497,6 @@ Annotate <- R6::R6Class("Annotate",
 
                     plot_periodogram = function(funEnv, plotType){
                       data <- funEnv$env3$Custom_tables$table4
-                      # browser()
                       if ("Pertotal" %in% plotType){
                         plot <- ggetho::ggperio(data, mapping = ggplot2::aes(y = power, peak = peak))+
                          ggplot2::geom_line(ggplot2::aes(group = id))+
@@ -468,7 +509,7 @@ Annotate <- R6::R6Class("Annotate",
                          ggplot2::geom_line(ggplot2::aes(group = id))+
                          ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
                           ggetho::geom_peak()+
-                          ggplot2::facet_wrap(~id, ncol = 6, labeller = ggplot2::label_wrap_gen(multi_line=FALSE))
+                          ggplot2::facet_wrap(~id+sex+Genotype, ncol = 6, labeller = ggplot2::label_wrap_gen(multi_line=FALSE))
                         self$period_plots[2][[1]] <- plot
                       }
                       if ("Persex" %in% plotType){
@@ -476,7 +517,7 @@ Annotate <- R6::R6Class("Annotate",
                          ggplot2::geom_line(ggplot2::aes(group = id))+
                          ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
                           ggetho::geom_peak()+
-                          ggplot2::facet_wrap(sex ~ ., ncol = 6, labeller = ggplot2::label_wrap_gen(multi_line=FALSE))
+                          ggplot2::facet_wrap(sex ~ Genotype, ncol = 6, labeller = ggplot2::label_wrap_gen(multi_line=FALSE))
                         self$period_plots[3][[1]] <- plot
                       }
                       if ("Pergenotype" %in% plotType){
@@ -495,10 +536,93 @@ Annotate <- R6::R6Class("Annotate",
                           ggplot2::facet_wrap(Cabinet ~ ., ncol = 6, labeller = ggplot2::label_wrap_gen(multi_line=FALSE))
                         self$period_plots[5][[1]] <- plot
                       }
-                    }#,
-                    #  Custom_actogram = function(...){
-                    # 
-                    # }
+                    },
+                  
+#' plot_avg_day
+#'
+#' @param funenv App_settings environment
+#' @param type plot type
+#'
+#' @return
+#' @export
+#'
+                    plot_avg_day = function(funEnv, plotType){
+                      activity <- funEnv$env3$Custom_tables$table3 #get activity file from Custom_tables
+                      if ("individualAvgD" %in% plotType){
+                      # generate plot
+                      plot <- ggplot2::ggplot()+
+                        ggplot2::geom_line(
+                        data = activity,ggplot2::aes(
+                        CT, activity, colour = mouse))+
+                        ggplot2::scale_x_continuous(breaks = seq(0,24, by = 2))+
+                        ggplot2::theme(axis.text = ggplot2::element_text(size = 15))+
+                        ggplot2::theme(axis.title = ggplot2::element_text(size = 15))+
+                        ggplot2::ggtitle("Individual average activity", subtitle =  "")
+                      # store plot in Annotate
+                      self$avg_day_plots[1][[1]] <- plot
+                      }
+                      if ("sexAvgD" %in% plotType){
+                        # group data by sex
+                        S_eff <- activity %>%
+                          dplyr::group_by(sex, CT) %>%
+                          dplyr::summarise(activity = mean(activity))
+                        # compute standard deviation of data
+                        std_sex <- activity %>% 
+                          dplyr::group_by(sex, CT)%>% 
+                          dplyr::summarise(std = std.error(activity))
+                        # create table with info necessary for plotting
+                        S_eff <- dplyr::tibble(sex = S_eff$sex,
+                                               CT = S_eff$CT,
+                                               activity = S_eff$activity,
+                                               std = std_sex$std)
+                        # generate plot
+                        plot <- ggplot2::ggplot(S_eff)+
+                          ggplot2::geom_line(
+                            ggplot2::aes(
+                              CT, activity, colour = sex), size = 1)+
+                          ggplot2::geom_errorbar(
+                            ggplot2::aes(
+                              x = CT, ymin=activity-std, ymax=activity+std, colour=sex), width=.2,
+                            position=ggplot2::position_dodge(0.05))+
+                          ggplot2::scale_x_continuous(breaks = seq(0,24, by = 2))+
+                          ggplot2::theme(axis.text = ggplot2::element_text(size = 15))+
+                          ggplot2::theme(axis.title = ggplot2::element_text(size = 15))+
+                          ggplot2::ggtitle("Average day - grouped by sex", subtitle =  "")  
+                        # store plot in Annotate
+                        self$avg_day_plots[2][[1]] <- plot
+                      }
+                      if ("genotypeAvgD" %in% plotType){
+                        # group data by sex
+                        G_eff <- activity %>%
+                          dplyr::group_by(genotype, CT) %>%
+                          dplyr::summarise(activity = mean(activity))
+                        # compute standard deviation of data
+                        std_gen <- activity %>% 
+                          dplyr::group_by(genotype, CT)%>% 
+                          dplyr::summarise(std = std.error(activity))
+                        # create table with info necessary for plotting
+                        G_eff <- dplyr::tibble(genotype = G_eff$genotype,
+                                               CT = G_eff$CT,
+                                               activity = G_eff$activity,
+                                               std = std_gen$std)
+                        # generate plot
+                        plot <- ggplot2::ggplot(G_eff)+
+                          ggplot2::geom_line(
+                            ggplot2::aes(
+                              CT, activity, colour = genotype), size = 1)+
+                          ggplot2::geom_errorbar(
+                            ggplot2::aes(
+                              x = CT, ymin=activity-std, ymax=activity+std, colour=genotype), width=.2,
+                            position=ggplot2::position_dodge(0.05))+
+                          ggplot2::scale_x_continuous(breaks = seq(0,24, by = 2))+
+                          ggplot2::theme(axis.text = ggplot2::element_text(size = 15))+
+                          ggplot2::theme(axis.title = ggplot2::element_text(size = 15))+
+                          ggplot2::ggtitle("Average day averaged by genotype", subtitle =  "")  
+                        # store plot in Annotate
+                        self$avg_day_plots[3][[1]] <- plot
+                      }
+                    }
+                    ###
                     )
 )
 

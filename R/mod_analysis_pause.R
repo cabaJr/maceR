@@ -56,32 +56,35 @@ mod_analysis_ui <- function(id){
              )
     ),
     # fluidRow(div(style = ""),
-    #          fluidRow(
-    #            column(
-    #              width = 6,
-    #              shinydashboardPlus::flipBox(
-    #                id = "myflipbox2",
-    #                width = 12,
-    #                front = div(
-    #                  class = "text-center",
-    #                  h1("Flip on click"),
-    #                  img(
-    #                    src = "inst/app/www/DP_acto.png",
+    #          br(),
+    #            fluidRow(
+    #              column(
+    #                width = 6,
+    #                shinydashboardPlus::flipBox(
+    #                  id = "myflipbox2",
+    #                  width = 6,
+    #                  front = div(
+    #                    class = "text-center",
+    #                    h1("Actograms"),
+    #                    p("click on the flipbox to select which actogram to generate")
+    #                  ),
+    #                  back = div(
+    #                    class = "text-center",
     #                    height = "300px",
-    #                    width = "100%"
+    #                    width = "100%",
+    #                    h1("Flip on click"),
+    #                    p("please select which actogram you want to generate"),
+    #                    fluidRow(column(width = 6,
+    #                                    shinyWidgets::prettyCheckboxGroup(inputId = ns("DPActogram"), label = "Select the desired plots:",
+    #                                                                      choiceNames = c("Cumulative", "Averaged by sex", "Averaged by genotype", "Averaged by cabinet"),# "Individual"),
+    #                                                                      choiceValues = c("DAtotal", "DAsex", "DAgenotype", "DAcabinet"),#, "individual"),
+    #                                                                      inline = TRUE, width = "80%"), selectizeInput(inputId = ns("chooseId"), label = NULL, choices = c("choose" = "", levels(unique)), width = 85, multiple = FALSE),
+    #                                    actionButton(inputId = ns("printDP"), label = "print")))
     #                  )
-    #                ),
-    #                back = div(
-    #                  class = "text-center",
-    #                  height = "300px",
-    #                  width = "100%",
-    #                  h1("Flip on click"),
-    #                  p("More information....")
     #                )
     #              )
     #            )
-    #          )
-    #          ),
+    # ),
     fluidRow(div(style = ""),
              
              shinydashboard::box(title= "Single line actogram", id = ns("box3_1"), width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
@@ -138,12 +141,10 @@ mod_analysis_ui <- function(id){
                  column(width = 5, offset = 1,
                         selectizeInput(inputId = ns("periodFun"), label = "Select function", choices = c("choose" = "",
                                                                                                          "Chi square" = "chi_sq_periodogram",
+                                                                                                         "Autocorrelated" = "ac_periodogram",
                                                                                                          "Fourier" = "fourier_periodogram",
                                                                                                          "Wavelet" = "cwt_periodogram",
-                                                                                                         "Autocorrelated" = "ac_periodogram",
                                                                                                          "Lomb-Scargle" = "ls_periodogram"),
-                                                                                                         # "Fourier" = "fourier_periodogram",
-                                                                                                         # "Wavelet" = "cwt_periodogram"),
                                        multiple = FALSE, width = '70%')),
                  ),
                  fluidRow(column(width = 8,

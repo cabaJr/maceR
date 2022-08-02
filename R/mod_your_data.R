@@ -1,6 +1,9 @@
 #' your_data UI Function
 #'
-#' @description A shiny Module.
+#' @description Shiny Module to display the uploaded data using data.tables.
+#'     Metadata are displayed in the top box and data for each animal are
+#'     displayed at the bottom in a second box. It is possible to filter the
+#'     dataset using table filtering functions from the DT package. 
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
@@ -14,7 +17,7 @@ mod_your_data_ui <- function(id){
     fluidRow(style = "",
              shinydashboardPlus::box(title= "Uploaded metafiles", id = ns("box2_1"), width = 12, solidHeader = TRUE, collapsible = TRUE, status = "danger",
                  fluidRow(
-                   column(width = 8, radioButtons(inputId = ns('tablemetafilter'), label = '', choiceNames = c('Display full metadata table', 'Display metadata of uploaded files only'),
+                   column(width = 8, shinyWidgets::prettyRadioButtons(inputId = ns('tablemetafilter'), label = '', choiceNames = c('Display full metadata table', 'Display metadata of uploaded files only'),
                                                   choiceValues = c('Y', 'N'), inline = TRUE, selected = 'Y')),
                    column(width = 3, offset = 1, actionButton(ns('help2_1'), label = 'Help',
                                                               style="color: #fff; background-color: #1e690c; border-color: #1e530c;"))

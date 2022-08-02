@@ -7,15 +7,18 @@
 download_obj(title, location, format, ...)
 }
 \arguments{
-\item{title}{}
+\item{title}{Title of the document to download}
 
-\item{location}{}
+\item{location}{path to object location}
 
-\item{format}{}
+\item{format}{extension of the file to output ("csv", "png", "2.csv")}
 }
 \value{
-
+a file to be saved locally
 }
 \description{
-download_obj
+Function to download data tables and plots
+}
+\examples{
+download_obj(title = "Plot_1", location = Histo_plot, format = "csv")
 }

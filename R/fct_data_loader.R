@@ -41,4 +41,28 @@ load_data <- function(env){
     App_settings$env3 <- pryr::where("Custom_tables")
       Annotate <- Annotate$new()
     App_settings$env4 <- pryr::where("Annotate")
-  }
+}
+
+#' upload_subsetting
+#'
+#' @param funEnv connects to App_settings object
+#' @param session session object
+#'
+#' @examples upload_subsetting(App_settings)
+upload_subsetting <- function(funEnv, session, input_result){
+  App_settings <- funEnv
+  #import data
+  listMice <- App_settings$listMice[,2]
+  metadata <- App_settings$env2$Annotate$metaTable
+  #update subsetting fields
+  updateSelectInput(session, "idSubsetList", choice = c("choose" = "", listMice), selected = NULL)
+  listSex <- unique(metadata$Sex)
+  updateSelectInput(session, "sexSubsetList", choices = c("choose" = "", listSex), selected = NULL)
+  listGenotype <- unique(metadata$Genotype)
+  updateSelectInput(session, "geneSubsetList", choices = c("choose" = "", listGenotype), selected = NULL)
+  listCabinet <- unique(metadata$Cabinet)     #using unique instead of levels because Cabinet is not considered factor
+  updateSelectInput(session, "cabSubsetList", choices = c("choose" = "", listCabinet), selected = NULL)
+  #update subsetting slider
+  max1 <- round((max(metadata$Datapoints)/1440), 3)
+  updateSliderInput(session, "timeSubset", max = max1, value = c(0, max1))
+}

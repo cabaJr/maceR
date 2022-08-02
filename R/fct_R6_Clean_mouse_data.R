@@ -59,6 +59,7 @@ Clean_mouse_data <- R6::R6Class("Clean_mouse_data",
 #'
                               addData = function(x, App_settings){ #more comments on these fun
                                 # load day, hour and minute separately
+                                # browser()
                                 data_day <- x$data[,1]
                                 data_hour <- x$data[,2]
                                 data_minute <- as.character(x$data[,3] )
@@ -82,7 +83,7 @@ Clean_mouse_data <- R6::R6Class("Clean_mouse_data",
                                 ZT0_ZT18 <- lubridate::interval(start = lubridate::int_start(lightOn_interval),
                                                                 end = lubridate::int_end(ZT18))
                                 ZT0_ZT18_diff <- lubridate::int_length(ZT0_ZT18)
-                                discard_ZT18 <- c(1:ZT0_ZT18_diff/60)
+                                discard_ZT18 <- c(1:(ZT0_ZT18_diff/60))
                                 data_counts <- data_counts[-discard_ZT18]
                                 realTimeFiltered <- realtime[-discard_ZT18]
                                 compareTimeFiltered <- compareTime[-discard_ZT18]
@@ -97,7 +98,7 @@ Clean_mouse_data <- R6::R6Class("Clean_mouse_data",
                                   # realTimeFiltered <- realtime[-discard1]
                                   # compareTimeFiltered <- compareTime[-discard1]
                                 }else{
-                                  realTimeFiltered <- realtime
+                                  realTimeFiltered <- realTimeFiltered
                                 }
                                 
                                 # temp2 <- compareTimeFiltered[1:1440]

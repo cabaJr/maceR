@@ -1,6 +1,8 @@
 #' data_structure UI Function
 #'
-#' @description A shiny Module.
+#' @description Shiny module to set the parameters of your dataset. It allows
+#'     a pre-processing step that ensures your data are interpreted correctly by
+#'     the loading functions.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
@@ -11,20 +13,20 @@ mod_data_structure_ui <- function(id){
   ns <- NS(id)
   tagList(
  
-    fluidRow(div(style = "margin:30px;"),
+    fluidRow(div(style = ""),
              shinydashboard::box(title = "Data files settings", id = ns("box1_1_1"), solidHeader = TRUE, width = 12, status = "primary", collapsible = TRUE,
                  fluidRow(
                    column(5, #serieType DFsubsetRT
                           numericInput(inputId = ns("discardFirst"),
                                        label = "Insert number of row to discard upfront: ",
                                        min = 0, value = 3),
-                          radioButtons(inputId = ns("serieType"), label = "", inline = TRUE,
+                         shinyWidgets::prettyRadioButtons(inputId = ns("serieType"), label = "", inline = TRUE, 
                                        choices = c("Real time", "Time points"), selected = "Time points"),
                           ######## second time window analysis ######################
-                          radioButtons(inputId = ns("DFsubsetRT2"), label = "Do you want to a second time window?", inline = TRUE,
+                         shinyWidgets::prettyRadioButtons(inputId = ns("DFsubsetRT2"), label = "Do you want to a second time window?", inline = TRUE,
                                        choices = c("Yes", "No"), selected = "No"),
                           #Real Time
-                          dateInput(inputId = ns("timeFrame3"), label = "Second window"), dateInput(inputId = "timeFrame4", label = ""),
+                          dateInput(inputId = ns("timeFrame3"), label = "Second window"), dateInput(inputId = ns("timeFrame4"), label = ""),
                           textInput(ns("RTanalysis_starttime2"), label = "Insert the time when you want to start analyse your data: ",
                                     placeholder = "hh:mm:ss"),
                           textInput(ns("RTanalysis_endtime2"), label = "Insert the time when you want to end your analysis: ",
@@ -43,14 +45,14 @@ mod_data_structure_ui <- function(id){
                           textInput(ns("rtStarthour"), label = "Insert experiment start hour", value = "00:00:00"),
                           numericInput(inputId = ns("TPduration"), label = "Insert timepoint duration (sec):", min = 1, value = 60),
                           #optional
-                          radioButtons(inputId = ns("DFsubsetRT"), label = "Do you want to analyse a particular time window?", inline = TRUE,
+                         shinyWidgets::prettyRadioButtons(inputId = ns("DFsubsetRT"), label = "Do you want to analyse a particular time window?", inline = TRUE,
                                        choices = c("Yes", "No"), selected = "No"),
-                          dateInput(inputId = ns("timeFrame1"), label = "Days to be analysed (default = all): "), dateInput(inputId = "timeFrame2", label = ""),
+                          dateInput(inputId = ns("timeFrame1"), label = "Days to be analysed (default = all): "), dateInput(inputId = ns("timeFrame2"), label = ""),
                           textInput(ns("RTanalysis_starttime"), label = "Insert the time when you want to start analyse your data: ",
                                     placeholder = "hh:mm:ss"),
                           textInput(ns("RTanalysis_endtime"), label = "Insert the time when you want to end your analysis: ",
                                     placeholder = "hh:mm:ss"),
-                          radioButtons(inputId = ns("DFsubsetTP"), label = "Do you want to analyse a particular time window?", inline = TRUE,
+                         shinyWidgets::prettyRadioButtons(inputId = ns("DFsubsetTP"), label = "Do you want to analyse a particular time window?", inline = TRUE,
                                        choices = c("Yes", "No"), selected = "No"),
                           numericInput(ns("TPanalysis_starttime"), label = "Insert the timepoint when you want to start analyse your data: ", min = 0, value = 0),
                           numericInput(ns("TPanalysis_endtime"), label = "Insert the timepoint when you want to end your analysis: ", min = 0, value = 0),
@@ -61,11 +63,10 @@ mod_data_structure_ui <- function(id){
                  )
              ),
     ), #end fluidRow
-    fluidRow(div(style = "margin:30px;"),
              #                                                     # shinydashboardPlus::box1_1_2<- box(title = "Time alignment - data head", solidHeader = TRUE, width = 12, status = "primary", collapsible = TRUE,  collapsed = TRUE,
              #                                                     #                fluidRow(
              #                                                     #                  column(width = 5,
-             #                                                     #                         radioButtons('expstartck', label = 'have you started recording all your cabinet at the same time?',
+             #                                                     #                        shinyWidgets::prettyRadioButtons('expstartck', label = 'have you started recording all your cabinet at the same time?',
              #                                                     #                                      choices = c('Yes', 'No'), selected = 'Yes', inline = TRUE)
              #                                                     #                  ),
              #                                                     # 
@@ -79,7 +80,7 @@ mod_data_structure_ui <- function(id){
              #                                                     #                  column(width = 3, numericInput('delayCab4', 'Cabinet 4', min = 0, width = 100, value = 0))
              #                                                     #                ),
              #                                                     #                fluidRow(
-             #                                                     #                  column(width = 5, radioButtons('hourFormat', label = "Select the hour format in metadata/light on",
+             #                                                     #                  column(width = 5,shinyWidgets::prettyRadioButtons('hourFormat', label = "Select the hour format in metadata/light on",
              #                                                     #                                                 choices = c('12h', '24h'), selected = '12h'),#selected = character(0)),
              #                                                     #                         # DT::DTOutput('converted'), DT::DTOutput('sorted')
              #                                                     #                         # textOutput('sorted')
@@ -98,7 +99,7 @@ mod_data_structure_ui <- function(id){
              #                                                     # shinydashboardPlus::box1_1_3<- box(title = "Time alignment - data tail", solidHeader = TRUE, width = 12, status = "primary", collapsible = TRUE, collapsed = TRUE,
              #                                                     #                fluidRow(
              #                                                     #                  column(width = 7,
-             #                                                     #                         radioButtons('dataCrop', label = 'Do you want to crop all dataset to the same length or to have different lengths?',
+             #                                                     #                        shinyWidgets::prettyRadioButtons('dataCrop', label = 'Do you want to crop all dataset to the same length or to have different lengths?',
              #                                                     #                                      choices = c('Same length', 'Different length'), inline = TRUE, selected = 'Different length'))
              #                                                     #                )
              #                                                     # ),
@@ -151,7 +152,14 @@ mod_data_structure_ui <- function(id){
              #                                                     #                )
              #                                                     # ),
              #### LD settings #####
-             shinydashboard::box(title = "LD cycle - Advanced", id = ns("box1_1_4"), solidHeader = TRUE, width = 12, status = "primary", collapsible = TRUE, collapsed = TRUE,
+    fluidRow(div(style = ""),         
+    shinydashboard::box(title = "LD cycle - Advanced",
+                        id = ns("box1_1_4"),
+                        solidHeader = TRUE,
+                        width = 12,
+                        status = "primary",
+                        collapsible = TRUE,
+                        collapsed = TRUE,
                  fluidRow(
                    column(width = 4,
                           numericInput(inputId = ns("LDcond"),
@@ -165,12 +173,14 @@ mod_data_structure_ui <- function(id){
                    # )
                  ),
                  fluidRow(column(width = 4,
-                                 radioButtons(inputId = ns("DDask"), label = "Do you want to set a DD period?",inline = TRUE, choices = c("Yes", "No"), selected = "No"))
+                                shinyWidgets::prettyRadioButtons(inputId = ns("DDask"), label = "Do you want to set a DD period?",inline = TRUE, choices = c("Yes", "No"), selected = "No"))
                  ),
                  fluidRow(
                    column(width = 4,
                           numericInput(inputId = ns("DDcond"),label = "On which day does DD starts? ",
-                                       min = 1, value = 1))
+                                       min = 1, value = 1)),
+                   column(width = 4, offset = 2,
+                          actionButton(inputId = "updateLD", label = "Update"))
                  )
              ),
              shinydashboard::box(title = "Load data", id = ns("box1_1_5"), solidHeader = TRUE, width = 12, status = "primary", collapsible = TRUE,
@@ -188,7 +198,7 @@ mod_data_structure_ui <- function(id){
     #                                            # fluidRow(div(style = "margin:30px;"),
     #                                            #          shinydashboardPlus::box1_2_1 <- box(title = "Metadata file structure", width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary", 
     #                                            #                          fluidRow(column(width = 12, textOutput("notStandard")),
-    #                                            #                                   column(width = 12, radioButtons(inputId = "nonStdMeta", label = "", choices = c("Standard", "Custom"), selected = "Standard", inline = TRUE ))
+    #                                            #                                   column(width = 12,shinyWidgets::prettyRadioButtons(inputId = "nonStdMeta", label = "", choices = c("Standard", "Custom"), selected = "Standard", inline = TRUE ))
     #                                            #                          ),
     #                                            #                          fluidRow(column(width = 3, selectizeInput(inputId = "idCol", label = "Select Id column", choices = c("choose" = "", "1" = "1", "2" = "2", "3" = "3", "4" = "4"), multiple = FALSE, width = 100)),
     #                                            #                                   column(width = 3, selectizeInput(inputId = "sexCol", label = "Select Sex column", choices = c("choose" = "", "1" = "1", "2" = "2", "3" = "3", "4" = "4"), multiple = FALSE, width = 110)),
@@ -201,18 +211,6 @@ mod_data_structure_ui <- function(id){
     #                                            #                          ),
     #                                            #          
     #                                            # ),
-    fluidRow(div(style = "margin:30px;"),
-             shinydashboard::box(title= " ", id = ns("box1_2_2"), width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
-                 fluidRow(
-                   column(width = 8, #radioButtons('cabinets', label = "Cabinet settings", inline = TRUE,
-                          #choices = c('Automatic', 'Do not align data'), selected = 'Automatic'),# selected = character(0)),
-                          DT::DTOutput(ns('cabinetShift')), actionButton(ns('debug'), label = "Debug")#, textInput('light_on_record', label = "Add the time when light is switched on in the cabinet", placeholder = "HH:MM" ),
-                          # actionButton('addRecord', label = "Add"), actionButton('rmvRecord', label = "Remove"),
-                          # DT::DTOutput('lightOnTb')
-                   ),
-                 )
-             )
-    )
     
   )
 }
@@ -225,41 +223,17 @@ mod_data_structure_server <- function(id, env, ...){
     ns <- session$ns
     
  App_settings = env
+ 
+ # clean interface
+ observeEvent(sessionInfo(), ignoreNULL = TRUE, once = TRUE, {
+   initialize_datastr_ui(dataStructure_out)
+ })
+ 
  # initialize returnable reactiveValue
  toReturn = reactiveValues(YourDataTab = NULL,
                            AnalysisTab = NULL,
                            idList = NULL
                            )
- 
-    # initialize_DS <- function(){
-        shinyjs::hide(id = "idCol", anim = FALSE)          #hide custom metadata mode
-        shinyjs::hide(id = "sexCol", anim = FALSE)
-        shinyjs::hide(id = "geneCol", anim = FALSE)
-        shinyjs::hide(id = "cabCol", anim = FALSE)
-        shinyjs::hide(id = "metafiltered", anim = FALSE)   #hide filtered metadata table
-        shinyjs::hide(id = "tablemetafilter", anim = FALSE)
-        shinyjs::hide(id = "alignData", anim = FALSE)
-        shinyjs::hide(id = "timeFrame3", anim = FALSE)
-        shinyjs::hide(id = "RTanalysis_starttime2", anim = FALSE)
-        shinyjs::hide(id = "RTanalysis_endtime2", anim = FALSE)
-        shinyjs::hide(id = "TPanalysis_starttime2", anim = FALSE)
-        shinyjs::hide(id = "TPanalysis_endtime2", anim = FALSE)
-        shinyjs::hide(id = "rtStart", anim = FALSE)
-        shinyjs::hide(id = "rtStarthour", anim = FALSE)
-        shinyjs::hide(id = "DFsubsetRT", anim = FALSE)
-        shinyjs::hide(id = "timeFrame1", anim = FALSE)
-        shinyjs::hide(id = "RTanalysis_starttime", anim = FALSE)
-        shinyjs::hide(id = "RTanalysis_endtime", anim = FALSE)
-        shinyjs::hide(id = "TPanalysis_starttime", anim = FALSE)
-        shinyjs::hide(id = "TPanalysis_endtime", anim = FALSE)
-        shinyjs::hide(id = "timeFrame4", anim = FALSE)
-        shinyjs::hide(id = "DFsubsetRT2", anim = FALSE)
-        shinyjs::hide(id = "Dl2", anim = FALSE) #hide download button for table2 before it's created
-        shinyjs::hide(id = "chooseM", anim = FALSE) #HIDE button to select mouse table to display
-        # hide unnecessary buttons in box1_1 #
-        shinyjs::hide(id = "serieType", anim = FALSE)
-        shinyjs::hide(id = "DFsubsetTP", anim = FALSE)
-    # }
     
     # show help messages 
     observeEvent(input$help1_1_1, {show_help(App_settings, 2)})
@@ -268,63 +242,76 @@ mod_data_structure_server <- function(id, env, ...){
     
     #read parameters and enter in App_settings
     observeEvent(input$discardFirst, {App_settings$setDiscRow(input$discardFirst)})
-    observeEvent(input$serieType, {App_settings$setTimeDisp(input$serieType)})
+    observeEvent(input$serieType, {
+      App_settings$setTimeDisp(input$serieType)
+      switch(input$serieType,
+             "Real time" = {update_DS_ui(case = "6", dataStructure_out)},
+             "Time points" = {update_DS_ui(case = "7", dataStructure_out)})
+      })
     observeEvent(input$rtStart, {App_settings$setExpstart(input$rtStart)})
     observeEvent(input$TPduration, {App_settings$setTimepointDur(input$TPduration)})
     #add parameters for LD condition to be registered in App_settings
     
     # initialize menu in DataStructure tab
-    update_DS_ui(session, "serietype", "2") #not working
+    # update_DS_ui(session, "serietype", "2") #not working
+    
+    # update LD settings
+    observeEvent(input$updateLD, {
+      # save LD parameters in App_settings
+      # App_settings$saveLDparams(x = App_settings, light = input$LDcond, ddVal = input$DDask, ddStart = input$DDcond)
+      # load LD settings into App_settings
+      # App_settings$setLD(x = App_settings, light = input$LDcond, ddVal = input$DDask, ddStart = input$DDcond)
+    })
     
     # create Clean_mouse_data object
     observeEvent(input$go,{
-      # save LD parameters in App_settings
+      # save LD parameters in App_settings Change LD params to be updated later
       App_settings$saveLDparams(x = App_settings, light = input$LDcond, ddVal = input$DDask, ddStart = input$DDcond)
       # load data inside myCleanMice object
       load_data(App_settings)
+      # Create table with metadata
+      App_settings$env2$Annotate$showMeta(App_settings$env2)
       # load LD settings into App_settings
       App_settings$setLD(x = App_settings, light = input$LDcond, ddVal = input$DDask, ddStart = input$DDcond)
       # shinyjs::show("chooseM", anim = FALSE)
       toReturn$YourDataTab <- TRUE
       toReturn$AnalysisTab <- TRUE
       # initialize menu in DataStructure tab
-      update_DS_ui(session, "serietype", "2") #not working
-      # Create table with metadata
-      App_settings$env2$Annotate$showMeta(App_settings$env2)
+      # update_DS_ui(session, "serietype", "2") #not working
       # Upload selector from listMice to choose what data to display in YourData
       toReturn$idList <- App_settings$listMice[,2]
     })
     
     ## open/close subsetting parameters in DataStructure tab box 1
-    observeEvent(input$serieType, { 
-      case <- input$serieType
-      switch(case,
-             "Real time" = {update_DS_ui(session, "serietype", 1)},
-             "Time points" = {update_DS_ui(session, "serietype", 2)})
-    })
-    
-    observeEvent(input$DFsubsetRT, { ## need to add function for closing
-      case <- input$DFsubsetRT
-      switch(case,
-             "Yes" = update_DS_ui(session, "subsetting", "1"),
-             "No" = update_DS_ui(session, "subsetting", "1_hide"))
-    })
-    
-    observeEvent(input$DFsubsetTP, {
-      case <- input$DFsubsetTP
-      switch(case,
-             "Yes" = update_DS_ui(session, "subsetting", "2"),
-             "No" = update_DS_ui(session, "subsetting", "2_hide"))
-    })
-    
-    observeEvent(input$DFsubsetRT2, {
-      case <- input$DFsubsetRT2
-      if(case == "Yes"){
-        switch(input$serietype,
-               "Real time" = {update_DS_ui(session, "subsetting", "3")},
-               "Time points" = {update_DS_ui(session, "subsetting", "4")})
-      }else{update_DS_ui(session, "subsetting", "5")}
-    })
+    # observeEvent(input$serieType, { 
+    #   case <- input$serieType
+    #   switch(case,
+    #          "Real time" = {update_DS_ui(session, "serietype", 1)},
+    #          "Time points" = {update_DS_ui(session, "serietype", 2)})
+    # })
+    # 
+    # observeEvent(input$DFsubsetRT, { ## need to add function for closing
+    #   case <- input$DFsubsetRT
+    #   switch(case,
+    #          "Yes" = update_DS_ui(session, "subsetting", "1"),
+    #          "No" = update_DS_ui(session, "subsetting", "1_hide"))
+    # })
+    # 
+    # observeEvent(input$DFsubsetTP, {
+    #   case <- input$DFsubsetTP
+    #   switch(case,
+    #          "Yes" = update_DS_ui(session, "subsetting", "2"),
+    #          "No" = update_DS_ui(session, "subsetting", "2_hide"))
+    # })
+    # 
+    # observeEvent(input$DFsubsetRT2, {
+    #   case <- input$DFsubsetRT2
+    #   if(case == "Yes"){
+    #     switch(input$serietype,
+    #            "Real time" = {update_DS_ui(session, "subsetting", "3")},
+    #            "Time points" = {update_DS_ui(session, "subsetting", "4")})
+    #   }else{update_DS_ui(session, "subsetting", "5")}
+    # })
     
     observeEvent(input$subsetPlot, { ## open/close subsetting parameters
       case <- input$subsetPlot
@@ -335,18 +322,16 @@ mod_data_structure_server <- function(id, env, ...){
         
       }
     })
-    
-    ### DEBUG ########################################
-    
-    #DEBUG in app
-    observeEvent(input$debug, {
-      browser()
-    })  
-    
+
   ## Create list to be returned
   dataStructure_out <- list(YourDataTab = reactive(toReturn$YourDataTab),
                             AnalysisTab = reactive(toReturn$AnalysisTab),
-                            idList = reactive(toReturn$idList))  
+                            idList = reactive(toReturn$idList),
+                            serieType = reactive(input$serieType),
+                            DFsubsetRT2 = reactive(input$DFsubsetRT2),
+                            DFsubsetRT = reactive(input$DFsubsetRT),
+                            DFsubsetTP = reactive(input$DFsubsetTP)
+                            )
     
   return(dataStructure_out)
     

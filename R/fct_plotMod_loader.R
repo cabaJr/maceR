@@ -32,14 +32,16 @@ load_plots <- function(env, plot_list, session){
 
 #' download_obj
 #'
-#' @param title 
-#' @param location 
-#' @param format 
+#'@description Function to download data tables and plots 
 #'
-#' @return
+#' @param title Title of the document to download
+#' @param location path to object location
+#' @param format extension of the file to output ("csv", "png", "2.csv")
+#'
+#' @return a file to be saved locally
 #' @export
 #'
-#' @examples
+#' @examples download_obj(title = "Plot_1", location = Histo_plot, format = "csv")
 download_obj <- function(title, location, format, ...){
   extension <- paste(".", format, sep = "")
   object <- downloadHandler(

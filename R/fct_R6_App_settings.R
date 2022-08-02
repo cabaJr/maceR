@@ -18,7 +18,8 @@ App_settings <- R6::R6Class("App_settings",
 #' @field ExpStart what day and hour does the experiment starts?
 #' @field timepointDur what is the sampling frequency?
 #' @field subsetting list containing info about data subsetting
-#' @field LDcondition list containing info on LD conditions
+#' @field LDcondition list containing code to generate LD shading in actograms
+#' @field LDparams list containing user defined LD condition settings
 #' @field plotTab TRUE/FALSE value to know if the plot tab has been activated
 #' @field env1 contains environment#1
 #' @field env2 contains environment#2
@@ -167,9 +168,8 @@ App_settings <- R6::R6Class("App_settings",
                                 qty <- length(x$env2$myCleanMice)
                                 length1 <- max(x$env2$Annotate$metaTable$Datapoints)*60
                                 per1End <- ddStart*86400
-                                Llpha1 <- (0.4 / qty)
-                                Llpha2 <- 0.02
-                                # browser()
+                                Llpha1 <- (0.2 / qty)
+                                Llpha2 <- 0.01
                                 # define DDstart and DDlength
                                 DDday <- as.numeric(ddStart)
                                 dataLen <- (length1%/%86400)-2
@@ -177,18 +177,18 @@ App_settings <- R6::R6Class("App_settings",
                                 DDStart2 <- (1-((DDday-2)/dataLen))
                                 DDlength <- 24-as.numeric(light)
                                 SLLD <- switch(ddVal,
-                                               "Yes" = {ggetho::stat_ld_annotations(height = 1, alpha = Llpha1, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(light), x_limits = c(0, per1End), phase = 0, ld_colours = c(NA, "black"))},
-                                               "No" = {ggetho::stat_ld_annotations(height = 1, alpha = Llpha1, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(light), phase = 0, ld_colours = c(NA, "black"))})
+                                               "Yes" = {ggetho::stat_ld_annotations(height = 1, alpha = Llpha1, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(light), x_limits = c(0, per1End), phase = behavr::hours(6), ld_colours = c(NA, "black"))},
+                                               "No" = {ggetho::stat_ld_annotations(height = 1, alpha = Llpha1, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(light), phase = behavr::hours(6), ld_colours = c(NA, "black"))})
                                 # check the rest of the function from here + implement value gathering inside server and function call
                                 SLDD <- switch(ddVal,
                                                "Yes" = {ggetho::stat_ld_annotations(height = 1, alpha = Llpha1, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(0), x_limits = c(per1End, length1), phase = 0, ld_colours = c(NA, "black"))},
                                                "No" = {NULL})
                                 DPLD <- ggetho::stat_ld_annotations(height = 1, alpha = Llpha2, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(light), phase = behavr::hours(6), ld_colours = c(NA, "black"))
                                 DPDD1 <- switch(ddVal,
-                                                "Yes" = {ggetho::stat_ld_annotations(height = DDStart1, alpha = Llpha2, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(DDlength), x_limits = c(behavr::hours(0), behavr::hours(24)), phase = behavr::hours(12), ld_colours = c(NA, "black"))},
+                                                "Yes" = {ggetho::stat_ld_annotations(height = DDStart1, alpha = Llpha2, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(DDlength), x_limits = c(behavr::hours(0), behavr::hours(24)), phase = behavr::hours(18), ld_colours = c(NA, "black"))},
                                                 "No" = {NULL})
                                 DPDD2 <- switch(ddVal,
-                                                "Yes" = {ggetho::stat_ld_annotations(height = DDStart2, alpha = Llpha2, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(DDlength), x_limits = c(behavr::hours(24), behavr::hours(48)), phase = behavr::hours(12), ld_colours = c(NA, "black"))},
+                                                "Yes" = {ggetho::stat_ld_annotations(height = DDStart2, alpha = Llpha2, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(DDlength), x_limits = c(behavr::hours(24), behavr::hours(48)), phase = behavr::hours(18), ld_colours = c(NA, "black"))},
                                                 "No" = {NULL})
                                 self$LDcondition$SLLD = SLLD
                                 self$LDcondition$SLDD = SLDD
@@ -396,22 +396,5 @@ App_settings <- R6::R6Class("App_settings",
                               #   hide(id = "spin4_4", anim = FALSE)
                               #   hide(id = "spin4_5", anim = FALSE)
                               # },
-                              # clearSubsetting = function(){
-                              #   shinyjs::hide(id = "idSubsetList", anim = FALSE)   #hide plot subset settings
-                              #   shinyjs::hide(id = "sexSubsetList", anim = FALSE)
-                              #   shinyjs::hide(id = "geneSubsetList", anim = FALSE)
-                              #   shinyjs::hide(id = "cabSubsetList", anim = FALSE)
-                              #   shinyjs::hide(id = "text11", anim = FALSE)
-                              #   shinyjs::hide(id = "metaUniqueO", anim = FALSE)
-                              #   shinyjs::hide(id = "timeSubset", anim = FALSE)
-                              # },
-                              # showSubsetting = function(){
-                              #   shinyjs::show(id = "idSubsetList", anim = FALSE)   #hide plot subset settings
-                              #   shinyjs::show(id = "sexSubsetList", anim = FALSE)
-                              #   shinyjs::show(id = "geneSubsetList", anim = FALSE)
-                              #   shinyjs::show(id = "cabSubsetList", anim = FALSE)
-                              #   shinyjs::show(id = "text11", anim = FALSE)
-                              #   shinyjs::show(id = "metaUniqueO", anim = FALSE)
-                              #   shinyjs::show(id = "timeSubset", anim = FALSE)
                               # }
                             ))

@@ -54,40 +54,59 @@
     
   }
   
-#' hide_dataStr_subset_ui
-#'
-#' @param session 
+#' initialize_datastr_ui
 #'
 #' @return
 #' @export
 #'
-  hide_dataStr_subset_ui <- function(session){
-      shinyjs::hide(id = "idSubsetList", anim = FALSE)   #hide plot subset settings
-      shinyjs::hide(id = "sexSubsetList", anim = FALSE)
-      shinyjs::hide(id = "geneSubsetList", anim = FALSE)
-      shinyjs::hide(id = "cabSubsetList", anim = FALSE)
-      # shinyjs::hide(id = "text11", anim = FALSE)
-      shinyjs::hide(id = "metaUniqueO", anim = FALSE)
-      shinyjs::hide(id = "timeSubset", anim = FALSE)
+  initialize_datastr_ui <- function(...){
+      shinyjs::hide(id = "rtStart", anim = FALSE)
+        shinyjs::hide(id = "rtStarthour", anim = FALSE)
+        shinyjs::hide(id = "TPduration", anim = FALSE)
+        shinyjs::hide(id = "timeFrame1", anim = FALSE)
+        shinyjs::hide(id = "timeFrame2", anim = FALSE)
+        shinyjs::hide(id = "RTanalysis_starttime", anim = FALSE)
+        shinyjs::hide(id = "RTanalysis_endtime", anim = FALSE)
+        shinyjs::hide(id = "DFsubsetRT2", anim = FALSE)
+        shinyjs::hide(id = "timeFrame3", anim = FALSE)
+        shinyjs::hide(id = "timeFrame4", anim = FALSE)
+        shinyjs::hide(id = "RTanalysis_starttime2", anim = FALSE)
+        shinyjs::hide(id = "RTanalysis_endtime2", anim = FALSE)
+        shinyjs::hide(id = "TPanalysis_starttime2", anim = FALSE)
+        shinyjs::hide(id = "TPanalysis_endtime2", anim = FALSE)
+        shinyjs::hide(id = "TPduration", anim = FALSE)
+        shinyjs::hide(id = "DFsubsetRT", anim = FALSE)
+        shinyjs::hide(id = "TPanalysis_starttime", anim = FALSE)
+        shinyjs::hide(id = "TPanalysis_endtime", anim = FALSE)
+        # shinyjs::hide(id = "DFsubsetTP", anim = FALSE)
   }
-  
-#' show_dataStr_subset_ui
-#'
-#' @param session 
-#'
-#' @return
-#' @export
-#'
-  show_dataStr_subset_ui <- function(session){
-    shinyjs::show(id = "idSubsetList", anim = FALSE)   #hide plot subset settings
-      shinyjs::show(id = "sexSubsetList", anim = FALSE)
-      shinyjs::show(id = "geneSubsetList", anim = FALSE)
-      shinyjs::show(id = "cabSubsetList", anim = FALSE)
-      shinyjs::show(id = "text11", anim = FALSE)
-      shinyjs::show(id = "metaUniqueO", anim = FALSE)
-      shinyjs::show(id = "timeSubset", anim = FALSE)
+
+  #' showall_datastr_ui
+  #'
+  #' @return
+  #' @export
+  #'
+  showall_datastr_ui <- function(...){
+    shinyjs::show(id = "rtStart", anim = FALSE)
+    shinyjs::show(id = "rtStarthour", anim = FALSE)
+    shinyjs::show(id = "TPduration", anim = FALSE)
+    shinyjs::show(id = "timeFrame1", anim = FALSE)
+    shinyjs::show(id = "timeFrame2", anim = FALSE)
+    shinyjs::show(id = "RTanalysis_starttime", anim = FALSE)
+    shinyjs::show(id = "RTanalysis_endtime", anim = FALSE)
+    shinyjs::show(id = "DFsubsetRT2", anim = FALSE)
+    shinyjs::show(id = "timeFrame3", anim = FALSE)
+    shinyjs::show(id = "timeFrame4", anim = FALSE)
+    shinyjs::show(id = "RTanalysis_starttime2", anim = FALSE)
+    shinyjs::show(id = "RTanalysis_endtime2", anim = FALSE)
+    shinyjs::show(id = "TPanalysis_starttime2", anim = FALSE)
+    shinyjs::show(id = "TPanalysis_endtime2", anim = FALSE)
+    shinyjs::show(id = "TPduration", anim = FALSE)
+    shinyjs::show(id = "DFsubsetRT", anim = FALSE)
+    shinyjs::show(id = "TPanalysis_starttime", anim = FALSE)
+    shinyjs::show(id = "TPanalysis_endtime", anim = FALSE)
+    # shinyjs::show(id = "DFsubsetTP", anim = FALSE)
   }
-  
   
 #' update_DS_ui
 #'
@@ -99,27 +118,23 @@
 #' @return
 #' @export
 #'
-  update_DS_ui <- function(session, element, case){
-    switch(element, 
-           "serietype" = {
-             switch(case, 
-                    "1" = {
+  update_DS_ui <- function(case, ...){
+    # browser()
+             switch(case,
+                    "6" = {
                       shinyjs::show(id = "rtStart", anim = FALSE)
                       shinyjs::show(id = "rtStartHour", anim = FALSE)
                       shinyjs::show(id = "DFsubsetRT", anim = FALSE)
                       shinyjs::hide(id = "DFsubsetTP", anim = FALSE)
                       shinyjs::hide(id = "tpDuration", anim = FALSE)
                     }, #Timepoints
-                    "2" = {
+                    "7" = {
                       shinyjs::show(id = "tpDuration", anim = FALSE)
                       shinyjs::show(id = "DFsubsetTP", anim = FALSE)
                       shinyjs::hide(id = "DFsubsetRT", anim = FALSE)
                       shinyjs::hide(id = "rtStart", anim = FALSE)
                       shinyjs::hide(id = "rtStartHour", anim = FALSE)
-                    }  #Realtime
-             )
-           "subsetting" = {
-             switch(case, 
+                    },  #Realtime
                     "1" = {
                       shinyjs::show(id = "timeframe1", anim = FALSE)
                       shinyjs::show(id = "timeframe2", anim = FALSE)
@@ -174,11 +189,8 @@
                       shinyjs::hide(id = "RTanalysis_endtime2", anim = FALSE)
                       shinyjs::hide(id = "DFsubsetRT2", anim = FALSE)
                     }  #hide all second window subsetting options
-             )
-           }
-      })
-    
-  }
+      ) # end of outer switch
+  } # update_DS_ui end
   
 #' #' insert_box
 #' #' @description Generates a new box after the placeholder
@@ -275,6 +287,26 @@ plot_actogram_sup <- function(env, plot_type){
     # shinyjs::show(id = "actogram4", anim = FALSE)
     # shinyjs::show(id = "actogram_4", anim = FALSE)
   }
+}
+
+showSubsetting <- function(...){
+    shinyjs::show(id = "idSubsetList", anim = FALSE)   #hide plot subset settings
+    shinyjs::show(id = "sexSubsetList", anim = FALSE)
+    shinyjs::show(id = "geneSubsetList", anim = FALSE)
+    shinyjs::show(id = "cabSubsetList", anim = FALSE)
+    shinyjs::show(id = "text11", anim = FALSE)
+    shinyjs::show(id = "metaUniqueO", anim = FALSE)
+    shinyjs::show(id = "timeSubset", anim = FALSE)
+}
+
+clearSubsetting <- function(...){
+  shinyjs::hide(id = "idSubsetList", anim = FALSE)   #hide plot subset settings
+    shinyjs::hide(id = "sexSubsetList", anim = FALSE)
+    shinyjs::hide(id = "geneSubsetList", anim = FALSE)
+    shinyjs::hide(id = "cabSubsetList", anim = FALSE)
+    shinyjs::hide(id = "text11", anim = FALSE)
+    shinyjs::hide(id = "metaUniqueO", anim = FALSE)
+    shinyjs::hide(id = "timeSubset", anim = FALSE)
 }
   
 #' @noRd
