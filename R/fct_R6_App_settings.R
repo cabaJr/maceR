@@ -168,8 +168,8 @@ App_settings <- R6::R6Class("App_settings",
                                 qty <- length(x$env2$myCleanMice)
                                 length1 <- max(x$env2$Annotate$metaTable$Datapoints)*60
                                 per1End <- ddStart*86400
-                                Llpha1 <- (0.4 / qty)
-                                Llpha2 <- 0.02
+                                Llpha1 <- (0.2 / qty)
+                                Llpha2 <- 0.01
                                 # define DDstart and DDlength
                                 DDday <- as.numeric(ddStart)
                                 dataLen <- (length1%/%86400)-2

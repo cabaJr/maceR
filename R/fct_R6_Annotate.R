@@ -509,7 +509,7 @@ Annotate <- R6::R6Class("Annotate",
                          ggplot2::geom_line(ggplot2::aes(group = id))+
                          ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
                           ggetho::geom_peak()+
-                          ggplot2::facet_wrap(~id, ncol = 6, labeller = ggplot2::label_wrap_gen(multi_line=FALSE))
+                          ggplot2::facet_wrap(~id+sex+Genotype, ncol = 6, labeller = ggplot2::label_wrap_gen(multi_line=FALSE))
                         self$period_plots[2][[1]] <- plot
                       }
                       if ("Persex" %in% plotType){
@@ -517,7 +517,7 @@ Annotate <- R6::R6Class("Annotate",
                          ggplot2::geom_line(ggplot2::aes(group = id))+
                          ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
                           ggetho::geom_peak()+
-                          ggplot2::facet_wrap(sex ~ ., ncol = 6, labeller = ggplot2::label_wrap_gen(multi_line=FALSE))
+                          ggplot2::facet_wrap(sex ~ Genotype, ncol = 6, labeller = ggplot2::label_wrap_gen(multi_line=FALSE))
                         self$period_plots[3][[1]] <- plot
                       }
                       if ("Pergenotype" %in% plotType){

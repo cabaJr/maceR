@@ -160,6 +160,7 @@
 
   #' PRIORITIES
 #' - activate exporting of parameters in tables (period power and length)
+#' - check workflow for data upload
 #' - activate functions to display/hide elements in Datastructure tab
 #' - remake analysis tab with more user friendly flipbox
 #' - update landing page
@@ -191,10 +192,16 @@
 #'
   #' FIXINGS 
 #' 
+#' - add chance to plot SD or sem
+#' - fix updating of LD information
+#' - 
+#' - add error if not selecting any id when subsetting time
+#' - select an option that when plotting individual double plotted actograms caps
+#'     the maximum number to four
+#' - when time subsetting recompute the LD cycle settings accordingly
 #' - make download buttons in analysis appear after tables have been generated
-#' - subsetting doesn't work for line plots
-#' - time subsetting causes plot generation to fail
 #' - All boxes display the same title
+#' - all plots being exported with the same title
 #' - fix second click on Print that makes Plot tab disappear
 #' - fix buttons in DataStructure tab
 #' 

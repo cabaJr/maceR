@@ -222,6 +222,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #'
 #' @examples dailyAct(env)
                            dailyAct = function(env, subsetVal){ #substitute x with env in whole fun
+                             browser()
                              #switch to allow for data subsetting
                              switch(subsetVal,
                                     "Yes" = {
@@ -229,7 +230,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
                                       range = c((env$subsetting$timespan[1]*1440),(env$subsetting$timespan[2]*1440))
                                     },
                                     "No" = {
-                                      filteredMice <- seq_len(length(myCleanMice))
+                                      filteredMice <- seq_len(length(env$env2$myCleanMice))
                                       range = c(0,max(env$env2$Annotate$metaTable$Datapoints))
                                     })
                              startDay = range[1]/1440
@@ -290,6 +291,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #'     period analyses available with different params
 #'     
                            computePer = function(method, periodRange, funenv) {
+                             # browser()
                              data <- self$table1
                              meta <- self$metadata
                              perFun <- method
@@ -297,20 +299,32 @@ Custom_tables <- R6::R6Class("Custom_tables",
                              switch(perFun,
                                     "chi_sq_periodogram" = {
                                       period <- zeitgebr::periodogram(Activity, data, period_range = c(behavr::hours(vals[1]), behavr::hours(vals[2])),
-                                                                      resample_rate = 1/behavr::mins(1), alpha = 0.01, FUN = zeitgebr::chi_sq_periodogram)
+                                                                      resample_rate = 1/behavr::mins(5), alpha = 0.05, FUN = zeitgebr::chi_sq_periodogram)
                                     },
                                     "ac_periodogram" = {
                                       period <- zeitgebr::periodogram(Activity, data, period_range = c(behavr::hours(vals[1]), behavr::hours(vals[2])),
-                                                                      resample_rate = 1/behavr::mins(1), alpha = 0.01, FUN = zeitgebr::ac_periodogram)
+                                                                      resample_rate = 1/behavr::mins(5), alpha = 0.05, FUN = zeitgebr::ac_periodogram)
                                     },
                                     "ls_periodogram" = {
                                       period <- zeitgebr::periodogram(Activity, data, period_range = c(behavr::hours(vals[1]), behavr::hours(vals[2])),
-                                                                      resample_rate = 1/behavr::mins(1), alpha = 0.01, FUN = zeitgebr::ls_periodogram)
-                                    })
+                                                                      resample_rate = 1/behavr::mins(5), alpha = 0.05, FUN = zeitgebr::ls_periodogram)
+                                    },
+                                    "fourier_periodogram" = {
+                                      period <- zeitgebr::periodogram(Activity, data, period_range = c(behavr::hours(vals[1]), behavr::hours(vals[2])),
+                                                                      resample_rate = 1/behavr::mins(5), alpha = 0.05, FUN = zeitgebr::fourier_periodogram)
+                                    },
+                                    "cwt_periodogram" = {
+                                      period <- zeitgebr::periodogram(Activity, data, period_range = c(behavr::hours(vals[1]), behavr::hours(vals[2])),
+                                                                      resample_rate = 1/behavr::mins(10), alpha = 0.05, FUN = zeitgebr::cwt_periodogram)
+                                    }
+                                    )
                              periodPeaks <- zeitgebr::find_peaks(period, n_peaks = 2)
                              meta <- data.table::setDT(meta, key = "id")
                              period2 <- behavr::behavr(periodPeaks, metadata = meta)
                              self$table4 <- period2
+                             #add table to store only peaks
+                             
+                             # self$table5 <- firstpeaks
 
                            }
 #                            

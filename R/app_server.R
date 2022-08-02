@@ -13,15 +13,15 @@ app_server <- function( input, output, session ) {
                                    icon = "calendar")
   # create Messages object
   Messages <- Messages$new()
-  # move active tab to Home tab item
-  move_tab(session, "Home")
-  # server side of landing page module
-  mod_landing_page_server("landing_page_ui_1")
   # create necessary R6 class objects (App_settings and Messages)
   App_settings <- App_settings$new()
   # store Messages obj environment in App_settings
   App_settings$env_msg <- pryr::where("Messages")
   
+  # move active tab to Home tab item
+  move_tab(session, "Home")
+  # server side of landing page module
+  mod_landing_page_server("landing_page_ui_1", env = App_settings)
   # activate Input tab and set it as active tab
   observeEvent(input$new_experiment, {
     output$InputDF <- render_tabItem_ui(tabname = "InputDF",

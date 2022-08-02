@@ -4,14 +4,14 @@
 \alias{update_DS_ui}
 \title{update_DS_ui}
 \usage{
-update_DS_ui(session, element, case)
+update_DS_ui(case, ...)
 }
 \arguments{
+\item{case}{which case to apply}
+
 \item{session}{env}
 
 \item{element}{subsetting or serietype}
-
-\item{case}{which case to apply}
 }
 \value{
 
