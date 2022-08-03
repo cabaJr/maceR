@@ -1,4 +1,4 @@
-Package: MACE
+Package: maceR
 Title: MACE_PGK
 Version: 0.0.0.9000
 Authors@R: 
@@ -10,22 +10,28 @@ Description: App to analyse locomotor activity data from circadian
     cabinets.
 License: LGPL (>= 3)
 Imports: 
-    attachment,
+    behavr,
     config (>= 0.3.1),
+    data.table,
     dplyr,
+    DT,
+    ggetho,
+    ggplot2,
     golem (>= 0.3.1),
     lubridate,
     magrittr,
-    pkgload,
     pryr,
+    purrr,
+    R6,
     rhandsontable,
-    shinipsum,
     shiny (>= 1.6.0),
     shinycssloaders,
     shinydashboard,
     shinydashboardPlus,
     shinyjs,
     shinyWidgets,
+    stringr,
+    tidyr,
     zeitgebr
 Suggests: 
     knitr,
@@ -36,6 +42,6 @@ VignetteBuilder:
     knitr
 Config/testthat/edition: 3
 Encoding: UTF-8
-Language: en-US
+Language: en-UK
 LazyData: true
 RoxygenNote: 7.1.2

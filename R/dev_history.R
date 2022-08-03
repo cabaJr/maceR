@@ -169,11 +169,14 @@
 
   #' 04/08/2022
 #'  activate box in plots only if plots are inside  
-
+#'  activate options to download different table
+#'  activate download button only after plot generation
+#'  clean data structure from unnecessary parts
+#'  link skip row button
+#'  update helpb uttons
 
 
   #' PRIORITIES
-#' - activate exporting of parameters in tables (period power and length)
 #' - check workflow for data upload
 #' - activate functions to display/hide elements in Datastructure tab
 #' - remake analysis tab with more user friendly flipbox
@@ -183,7 +186,6 @@
 #' - Filtering for analysis of activity only at specific times of day
 
   #' CODING
-#' - activate buttons in Analysis tab: Subsetting box and various analyses
 #'     option selection. See mod_analysis for details.
 #' - activate option when plotting individual plots to select for ids
 #' - create analysis presets (e.g. 1 periodogram, 1 daily activity, 1 periodogram, etc..)
@@ -206,9 +208,7 @@
 #'
   #' FIXINGS 
 #' 
-#' - add chance to plot SD or sem
 #' - fix updating of LD information
-#' - 
 #' - add error if not selecting any id when subsetting time
 #' - select an option that when plotting individual double plotted actograms caps
 #'     the maximum number to four
@@ -216,11 +216,8 @@
 #' - make download buttons in analysis appear after tables have been generated
 #' - All boxes display the same title
 #' - all plots being exported with the same title
-#' - fix second click on Print that makes Plot tab disappear
-#' - fix buttons in DataStructure tab
 #' 
 #' To do: 
-#'     : When plotting Daily activity, let the user decide if to plot SEM or SD
 #' 
 #'     : create a function to filter data based on ZT (i.e. extract only data 
 #'     about the dark phase)
