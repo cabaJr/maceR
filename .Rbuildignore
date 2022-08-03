@@ -15,3 +15,5 @@ $run_dev.*
 ^\.circleci/config\.yml$
 ^Makefile$
 ^Jenkinsfile$
+^app\.R$
+^rsconnect$

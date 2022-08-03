@@ -14,15 +14,6 @@ mod_plots_ui <- function(id){
   tagList(
  
     tabsetPanel(
-      tabPanel("Single line actogram",
-               fluidRow(
-                 shiny::br(),
-                 uiOutput(ns("acto1")),
-                 uiOutput(ns("acto2")),
-                 uiOutput(ns("acto3")),
-                 uiOutput(ns("acto4"))
-               ),
-      ),#end actogram panel
       tabPanel("Actogram",
                fluidRow(
                  shiny::br(),
@@ -33,6 +24,15 @@ mod_plots_ui <- function(id){
                  uiOutput(ns("DPacto5"))
                )
       ),#end DP actogram panel
+      tabPanel("Single line actogram",
+               fluidRow(
+                 shiny::br(),
+                 uiOutput(ns("acto1")),
+                 uiOutput(ns("acto2")),
+                 uiOutput(ns("acto3")),
+                 uiOutput(ns("acto4"))
+               ),
+      ),#end actogram panel
       tabPanel("Daily activity",
                fluidRow(
                  shiny::br(),

@@ -222,7 +222,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #'
 #' @examples dailyAct(env)
                            dailyAct = function(env, subsetVal){ #substitute x with env in whole fun
-                             browser()
+                             # browser()
                              #switch to allow for data subsetting
                              switch(subsetVal,
                                     "Yes" = {

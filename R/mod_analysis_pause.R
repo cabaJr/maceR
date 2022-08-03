@@ -104,13 +104,16 @@ mod_analysis_ui <- function(id){
                                  solidHeader = TRUE,
                                  collapsible = TRUE,
                                  status = "primary",
-                 fluidRow(column(width = 12,
+                 fluidRow(column(width = 6,
                                  shinyWidgets::prettyCheckboxGroup(inputId = ns("DAsum"), label = "Select the desired plots:",
                                                     choiceNames = c("Averaged by genotype", "Averaged by sex", "Individual + mean", "Averaged by sex, divided by cabinet", "Individual, divided by sex and genotype + mean", "Individual, divided by cabinet and genotype"),
                                                     choiceValues = c("~gen", "~sex", "individual", "gen~sex", "indiv+sex~gen", "indiv+cab~gen"),
                                                     inline = FALSE, width = "80%"),
                                  actionButton(inputId = ns("dayAct"), label = "Daily activity"),
-                 )),
+                 ),
+                           column(width = 4, 
+                                  shinyWidgets::prettyRadioButtons(inputId = ns("DAct_error"), label = "Do you want to plot SD or Sem?", choices = c("SD", "Sem"), inline = TRUE, selected = "Sem")
+                           )),
                  fluidRow(column(width = 12,
                                  br(),
                                  DT::DTOutput(ns('dailyActivity'))
@@ -314,7 +317,7 @@ mod_analysis_server <- function(id, App_settings){
       ## get user plot choices
       plot_choices <- input$DAsum
       ## call the function to output the plot for all the selected plot types
-      purrr::map(plot_choices, ~ Annotate$plot_DAct(x = App_settings, type = .x))
+      purrr::map(plot_choices, ~ Annotate$plot_DAct(x = App_settings, type = .x, error = input$DAct_error))
       
       ## assign value to be returned to activate plot tab
       if(App_settings$plotTab == FALSE){

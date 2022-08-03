@@ -62,7 +62,7 @@ mod_landing_page_ui <- function(id){
                             <br>
                             
                                                    ")),
-                    shiny::imageOutput(ns("maceR"))
+                    # shiny::imageOutput(ns("maceR"))
              )
     )
   )
@@ -94,13 +94,13 @@ mod_landing_page_server <- function(id, env){
       )
     }, deleteFile = FALSE)
     #right column
-    output$maceR <- shiny::renderImage({
-      filename <- normalizePath(file.path('./inst/app/www/maceR.png'))
-      list(
-        src = filename,
-        width = "100%"
-      )
-    }, deleteFile = FALSE)
+    # output$maceR <- shiny::renderImage({
+    #   filename <- normalizePath(file.path('./inst/app/www/maceR.png'))
+    #   list(
+    #     src = filename,
+    #     width = "100%"
+    #   )
+    # }, deleteFile = FALSE)
     
   })
 }
