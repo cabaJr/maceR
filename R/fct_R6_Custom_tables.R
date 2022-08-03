@@ -18,6 +18,14 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #' @field table3 table 3
 #' @field table4 table 4
 #' @field table5 table 5
+#' @field table6 table 5
+#' @field table7 table 5
+#' @field table8 table 5
+#' @field table9 table 5
+#' @field locomotor_act list containing tables related to actograms
+#' @field daily_act list containing tables related to sum of daily activity
+#' @field average_day list containing tables related to average circadian day
+#' @field periodograms list containing tables related to periodograms
 #' @field cacheKeys table storing the cacheKeys to avoid reloading the same plots
                            metadata = NULL,
                            table1 = NULL,
@@ -25,6 +33,14 @@ Custom_tables <- R6::R6Class("Custom_tables",
                            table3 = NULL,
                            table4 = NULL,
                            table5 = NULL,
+                           table6 = NULL,
+                           table7 = NULL,
+                           table8 = NULL,
+                           table9 = NULL,
+                           locomotor_act = list(),
+                           daily_act = list(),
+                           average_day = list(),
+                           periodograms = list(),
                            cacheKeys = dplyr::tibble("table" = seq(1:8), #table to store keys of hashed tables
                                               "key" = 0),
 #' compile
@@ -318,10 +334,17 @@ Custom_tables <- R6::R6Class("Custom_tables",
                                                                       resample_rate = 1/behavr::mins(10), alpha = 0.05, FUN = zeitgebr::cwt_periodogram)
                                     }
                                     )
+                             browser()
                              periodPeaks <- zeitgebr::find_peaks(period, n_peaks = 2)
                              meta <- data.table::setDT(meta, key = "id")
-                             period2 <- behavr::behavr(periodPeaks, metadata = meta)
-                             self$table4 <- period2
+                             all_periods <- behavr::behavr(periodPeaks, metadata = meta)
+                             first_peak <- periodPeaks[which(periodPeaks$peak == 1),]
+                             first_peak$period <- first_peak$period / 3600
+                             self$table4 <- all_periods
+                             self$table6 <- first_peak
+                             self$periodograms[[1]] <- all_periods
+                             self$periodograms[[2]] <- first_peak
+                             
                              #add table to store only peaks
                              
                              # self$table5 <- firstpeaks

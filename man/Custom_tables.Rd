@@ -74,6 +74,22 @@ provide examples on how to call the function for the different
 
 \item{\code{table5}}{table 5}
 
+\item{\code{table6}}{table 5}
+
+\item{\code{table7}}{table 5}
+
+\item{\code{table8}}{table 5}
+
+\item{\code{table9}}{table 5}
+
+\item{\code{locomotor_act}}{list containing tables related to actograms}
+
+\item{\code{daily_act}}{list containing tables related to sum of daily activity}
+
+\item{\code{average_day}}{list containing tables related to average circadian day}
+
+\item{\code{periodograms}}{list containing tables related to periodograms}
+
 \item{\code{cacheKeys}}{table storing the cacheKeys to avoid reloading the same plots
 compile}
 }
