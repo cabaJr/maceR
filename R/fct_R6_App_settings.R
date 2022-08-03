@@ -322,7 +322,7 @@ App_settings <- R6::R6Class("App_settings",
                                 # shinyjs::hide(id = "TPanalysis_endtime", anim = FALSE)
                                 # shinyjs::hide(id = "timeFrame4", anim = FALSE)
                                 # shinyjs::hide(id = "DFsubsetRT2", anim = FALSE)
-                                # shinyjs::hide(id = "Dl2", anim = FALSE) #hide download button for table2 before it's created
+                                # shinyjs::hide(id = "Dl2", anim = FALSE) #hide download button for daily_act[[1]] before it's created
                                 # shinyjs::hide(id = "chooseM", anim = FALSE) #HIDE button to select mouse table to display
                                 # hide unnecessary buttons in box1_1 #
                                 # shinyjs::hide(id = "serieType", anim = FALSE)

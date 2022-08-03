@@ -85,14 +85,14 @@ Annotate <- R6::R6Class("Annotate",
                                   "Periodogram - by cabinet",
                                   "Average daily Activity - Individual", "Average daily Activity - Sex",
                                   "Average daily Activity - Genotype"),
-                      "data" = c("Custom_tables$table1", "Custom_tables$table1", "Custom_tables$table1", "Custom_tables$table1",
-                                 "Custom_tables$table1", "Custom_tables$table1", "Custom_tables$table1", "Custom_tables$table1",
-                                 "Custom_tables$table2", "Custom_tables$table2", "Custom_tables$table2",
-                                 "Custom_tables$table2", "Custom_tables$table2", "Custom_tables$table2",
-                                 "Custom_tables$table4", "Custom_tables$table4", "Custom_tables$table4",
-                                 "Custom_tables$table4", "Custom_tables$table4",
-                                 "Custom_tables$table3",  "Custom_tables$table3",
-                                 "Custom_tables$table3"),
+                      "data" = c("Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]",
+                                 "Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]",
+                                 "Custom_tables$daily_act[[1]]", "Custom_tables$daily_act[[1]]", "Custom_tables$daily_act[[1]]",
+                                 "Custom_tables$daily_act[[1]]", "Custom_tables$daily_act[[1]]", "Custom_tables$daily_act[[1]]",
+                                 "Custom_tables$periodograms[[1]]", "Custom_tables$periodograms[[1]]", "Custom_tables$periodograms[[1]]",
+                                 "Custom_tables$periodograms[[1]]", "Custom_tables$periodograms[[1]]",
+                                 "Custom_tables$average_day[[1]]",  "Custom_tables$average_day[[1]]",
+                                 "Custom_tables$average_day[[1]]"),
                       "file_label" = c("Counts_table", "Counts_table", "Counts_table", "Counts_table",
                                        "Counts_table", "Counts_table", "Counts_table", "Counts_table",
                                        "Total_daily_act", "Total_daily_act", "Total_daily_act",
@@ -201,7 +201,7 @@ Annotate <- R6::R6Class("Annotate",
 #' @export
 #'
                     plot_actogram = function(x, type){   #access data to env2 (where custom_tables object is stored). env2 should contain myCleanMice objects
-                      data <- x$env2$Custom_tables$table1
+                      data <- x$env2$Custom_tables$locomotor_act[[1]]
                       len <- length(x$App_settings$dataList$name)
                       Llpha <- (0.4 / len)
                       LDcond <- x$LDcondition
@@ -262,7 +262,7 @@ Annotate <- R6::R6Class("Annotate",
 #' @return
 #' @export
                     plot_DPactogram = function(x, type){ #"total", "sex", "genotype", "cabinet", "individual"
-                      data <- x$env2$Custom_tables$table1
+                      data <- x$env2$Custom_tables$locomotor_act[[1]]
                       len <- as.numeric(length(x$App_settings$dataList$name))
                       lenD <-  14#x$Custom_tables$metadata$Data_length[1]/1440
                       Llpha <- (0.4 / (len*lenD))
@@ -336,7 +336,7 @@ Annotate <- R6::R6Class("Annotate",
                     },
 
                     plot_DAct = function(x, type, error = "Sem"){
-                      activity <- x$env3$Custom_tables$table2 #get activity file from Custom_tables
+                      activity <- x$env3$Custom_tables$daily_act[[1]] #get activity file from Custom_tables
 
                       if (type == "~gen"){
                         G_eff <- activity %>%
@@ -599,7 +599,7 @@ Annotate <- R6::R6Class("Annotate",
                     },
 
                     plot_periodogram = function(funEnv, plotType){
-                      data <- funEnv$env3$Custom_tables$table4
+                      data <- funEnv$env3$Custom_tables$periodograms[[1]]
                       if ("Pertotal" %in% plotType){
                         plot <- ggetho::ggperio(data, mapping = ggplot2::aes(y = power, peak = peak))+
                          ggplot2::geom_line(ggplot2::aes(group = id))+
@@ -650,7 +650,7 @@ Annotate <- R6::R6Class("Annotate",
 #' @export
 #'
                     plot_avg_day = function(funEnv, plotType, error = "Sem"){
-                      activity <- funEnv$env3$Custom_tables$table3 #get activity file from Custom_tables
+                      activity <- funEnv$env3$Custom_tables$average_day[[1]] #get activity file from Custom_tables
                       if ("individualAvgD" %in% plotType){
                       # generate plot
                       plot <- ggplot2::ggplot()+

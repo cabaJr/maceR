@@ -56,32 +56,35 @@ mod_analysis_ui <- function(id){
              )
     ),
     # fluidRow(div(style = ""),
-    #          fluidRow(
-    #            column(
-    #              width = 6,
-    #              shinydashboardPlus::flipBox(
-    #                id = "myflipbox2",
-    #                width = 12,
-    #                front = div(
-    #                  class = "text-center",
-    #                  h1("Flip on click"),
-    #                  img(
-    #                    src = "inst/app/www/DP_acto.png",
+    #          br(),
+    #            fluidRow(
+    #              column(
+    #                width = 6,
+    #                shinydashboardPlus::flipBox(
+    #                  id = "myflipbox2",
+    #                  width = 6,
+    #                  front = div(
+    #                    class = "text-center",
+    #                    h1("Actograms"),
+    #                    p("click on the flipbox to select which actogram to generate")
+    #                  ),
+    #                  back = div(
+    #                    class = "text-center",
     #                    height = "300px",
-    #                    width = "100%"
+    #                    width = "100%",
+    #                    h1("Flip on click"),
+    #                    p("please select which actogram you want to generate"),
+    #                    fluidRow(column(width = 6,
+    #                                    shinyWidgets::prettyCheckboxGroup(inputId = ns("DPActogram"), label = "Select the desired plots:",
+    #                                                                      choiceNames = c("Cumulative", "Averaged by sex", "Averaged by genotype", "Averaged by cabinet"),# "Individual"),
+    #                                                                      choiceValues = c("DAtotal", "DAsex", "DAgenotype", "DAcabinet"),#, "individual"),
+    #                                                                      inline = TRUE, width = "80%"), selectizeInput(inputId = ns("chooseId"), label = NULL, choices = c("choose" = "", levels(unique)), width = 85, multiple = FALSE),
+    #                                    actionButton(inputId = ns("printDP"), label = "print")))
     #                  )
-    #                ),
-    #                back = div(
-    #                  class = "text-center",
-    #                  height = "300px",
-    #                  width = "100%",
-    #                  h1("Flip on click"),
-    #                  p("More information....")
     #                )
     #              )
     #            )
-    #          )
-    #          ),
+    # ),
     fluidRow(div(style = ""),
              
              shinydashboard::box(title= "Single line actogram", id = ns("box3_1"), width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
@@ -101,13 +104,16 @@ mod_analysis_ui <- function(id){
                                  solidHeader = TRUE,
                                  collapsible = TRUE,
                                  status = "primary",
-                 fluidRow(column(width = 12,
+                 fluidRow(column(width = 6,
                                  shinyWidgets::prettyCheckboxGroup(inputId = ns("DAsum"), label = "Select the desired plots:",
                                                     choiceNames = c("Averaged by genotype", "Averaged by sex", "Individual + mean", "Averaged by sex, divided by cabinet", "Individual, divided by sex and genotype + mean", "Individual, divided by cabinet and genotype"),
                                                     choiceValues = c("~gen", "~sex", "individual", "gen~sex", "indiv+sex~gen", "indiv+cab~gen"),
                                                     inline = FALSE, width = "80%"),
                                  actionButton(inputId = ns("dayAct"), label = "Daily activity"),
-                 )),
+                 ),
+                           column(width = 4, 
+                                  shinyWidgets::prettyRadioButtons(inputId = ns("DAct_error"), label = "Do you want to plot SD or Sem?", choices = c("SD", "Sem"), inline = TRUE, selected = "Sem")
+                           )),
                  fluidRow(column(width = 12,
                                  br(),
                                  DT::DTOutput(ns('dailyActivity'))
@@ -138,12 +144,10 @@ mod_analysis_ui <- function(id){
                  column(width = 5, offset = 1,
                         selectizeInput(inputId = ns("periodFun"), label = "Select function", choices = c("choose" = "",
                                                                                                          "Chi square" = "chi_sq_periodogram",
+                                                                                                         "Autocorrelated" = "ac_periodogram",
                                                                                                          "Fourier" = "fourier_periodogram",
                                                                                                          "Wavelet" = "cwt_periodogram",
-                                                                                                         "Autocorrelated" = "ac_periodogram",
                                                                                                          "Lomb-Scargle" = "ls_periodogram"),
-                                                                                                         # "Fourier" = "fourier_periodogram",
-                                                                                                         # "Wavelet" = "cwt_periodogram"),
                                        multiple = FALSE, width = '70%')),
                  ),
                  fluidRow(column(width = 8,
@@ -163,11 +167,14 @@ mod_analysis_ui <- function(id){
     fluidRow(div(style = ""),
              shinydashboard::box(title= "Average day", id = ns("box3_6"), width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
                                  fluidRow(
-                                   column(width = 12,
+                                   column(width = 6,
                                    shinyWidgets::prettyCheckboxGroup(inputId = ns("Avg_day_cho"), label = "Select the desired plots:",
                                                                      choiceNames = c("Individual", "Averaged by sex", "Averaged by genotype"),#, "Individual, divided by sex and genotype + mean", "Individual, divided by cabinet and genotype"),
                                                                      choiceValues = c("individualAvgD", "sexAvgD", "genotypeAvgD"),#, "gen~sex", "indiv+sex~gen", "indiv+cab~gen"),
                                                                      width = "80%"),
+                                 ),
+                                 column(width = 4, 
+                                        shinyWidgets::prettyRadioButtons(inputId = ns("AvgDay_error"), label = "Do you want to plot SD or Sem?", choices = c("SD", "Sem"), inline = TRUE, selected = "Sem")
                                  )),
                                  
                                  fluidRow(column(width = 3,
@@ -250,7 +257,7 @@ mod_analysis_server <- function(id, App_settings){
     observeEvent(input$print,{
       ## get Custom table object through App_settings
       Custom_tables <- App_settings$env2$Custom_tables
-      ## check if table1 is already present or calculate it
+      ## check if locomotor_act[[1]] is already present or calculate it
       Custom_tables$checkIf(App_settings, input$subsetPlot) #call to checker function that then calls behavrTable
       ## get annotate environment
       Annotate <- App_settings$env4$Annotate
@@ -274,14 +281,14 @@ mod_analysis_server <- function(id, App_settings){
     
     ## download handler for behavr table 
     output$Dl1 <- download_obj(title = "Behavr_table_",
-                               location = App_settings$env2$Custom_tables$table1,
+                               location = App_settings$env2$Custom_tables$locomotor_act[[1]],
                                format = "csv")
     
     #### DOUBLE PLOTTED PERIODOGRAM ####
     observeEvent(input$printDP, {
       ## get Custom table object through App_settings
       Custom_tables <- App_settings$env2$Custom_tables
-      ## check if table1 is already present or calculate it
+      ## check if locomotor_act[[1]] is already present or calculate it
       Custom_tables$checkIf(App_settings, input$subsetPlot) #call to checker function that then calls behavrTable
       ## get annotate environment
       Annotate <- App_settings$env4$Annotate
@@ -313,7 +320,7 @@ mod_analysis_server <- function(id, App_settings){
       ## get user plot choices
       plot_choices <- input$DAsum
       ## call the function to output the plot for all the selected plot types
-      purrr::map(plot_choices, ~ Annotate$plot_DAct(x = App_settings, type = .x))
+      purrr::map(plot_choices, ~ Annotate$plot_DAct(x = App_settings, type = .x, error = input$DAct_error))
       
       ## assign value to be returned to activate plot tab
       if(App_settings$plotTab == FALSE){
@@ -325,7 +332,7 @@ mod_analysis_server <- function(id, App_settings){
     
     ## download handler for sum of daily activity 
     output$Dl2 <- download_obj(title = "Sum_of_daily_activity_",
-                               location = App_settings$env2$Custom_tables$table2,
+                               location = App_settings$env2$Custom_tables$daily_act[[1]],
                                format = "csv")
     
     #### PERIODOGRAMS ####
@@ -333,7 +340,7 @@ mod_analysis_server <- function(id, App_settings){
       # browser()
       ## get Custom table object through App_settings
       Custom_tables <- App_settings$env2$Custom_tables
-      ## check if table1 is already present or calculate it
+      ## check if locomotor_act[[1]] is already present or calculate it
       Custom_tables$checkIf(App_settings, input$subsetPlot) #call to checker function that then calls behavrTable
       ## get user plot choices 
           plot_choices <- input$periodCho
@@ -357,14 +364,14 @@ mod_analysis_server <- function(id, App_settings){
     
     ## download handler for periodogram table 
     output$Dl3 <- download_obj(title = "Periodogram_table_",
-                               location = App_settings$env2$Custom_tables$table4,
+                               location = App_settings$env2$Custom_tables$periodograms[[1]],
                                format = "csv")
     
     #### AVERAGE DAY OF ACTIVITY ####
     observeEvent(input$AvgDayPrint, {
       ## get Custom table object through App_settings
       Custom_tables <- App_settings$env2$Custom_tables
-      ## check if table3 is already present or calculate it
+      ## check if average_day[[1]] is already present or calculate it
       # Custom_tables$checkIf(App_settings, input$subsetPlot) #call to checker function that then calls behavrTable
       Custom_tables$AvgDay(App_settings, per_len = 1440, input$subsetPlot)
       ## get user plot choices 
@@ -372,7 +379,7 @@ mod_analysis_server <- function(id, App_settings){
       ## get annotate environment
       Annotate <- App_settings$env4$Annotate
       ## call the function to output the plot for all the selected plot types
-      purrr::map(plot_choices, ~ Annotate$plot_avg_day(funEnv = App_settings, plotType = .x))
+      purrr::map(plot_choices, ~ Annotate$plot_avg_day(funEnv = App_settings, plotType = .x, error = input$AvgDay_error))
       ## assign value to be returned to activate plot tab
       if(App_settings$plotTab == FALSE){
         toReturn$plotTab <- checkPlots(App_settings)
@@ -382,8 +389,8 @@ mod_analysis_server <- function(id, App_settings){
     })
     
     ## download handler for periodogram table 
-    output$Dl3 <- download_obj(title = "Periodogram_table_",
-                               location = App_settings$env2$Custom_tables$table4,
+    output$Dl4 <- download_obj(title = "Average_day_table_",
+                               location = App_settings$env2$Custom_tables$average_day[[1]],
                                format = "csv")
     
     

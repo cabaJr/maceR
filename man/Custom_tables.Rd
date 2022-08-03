@@ -64,24 +64,6 @@ provide examples on how to call the function for the different
 \describe{
 \item{\code{metadata}}{list of metadata}
 
-\item{\code{table1}}{table 1}
-
-\item{\code{table2}}{table 2}
-
-\item{\code{table3}}{table 3}
-
-\item{\code{table4}}{table 4}
-
-\item{\code{table5}}{table 5}
-
-\item{\code{table6}}{table 5}
-
-\item{\code{table7}}{table 5}
-
-\item{\code{table8}}{table 5}
-
-\item{\code{table9}}{table 5}
-
 \item{\code{locomotor_act}}{list containing tables related to actograms}
 
 \item{\code{daily_act}}{list containing tables related to sum of daily activity}
