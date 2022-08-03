@@ -118,9 +118,9 @@ app_server <- function( input, output, session ) {
   #### DEBUG ########################################
   
   #DEBUG in app
-  # observeEvent(input$debug, {
-  #   browser()
-  # })  
+  observeEvent(input$debug, {
+    browser()
+  })
   
   
 ## add function to display list of ids subset 

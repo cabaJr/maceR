@@ -82,6 +82,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
                              #switch to allow for data subsetting
                              switch(subsetVal,
                                     "Yes" = {
+                                      # subset_input_check(idlist = App_settings$subsetting$miceListFiltered)
                                       filteredMice <- env$subsetting$miceListFiltered$pos
                                       range = c((env$subsetting$timespan[1]*1440),(env$subsetting$timespan[2]*1440))
                                     },
@@ -132,6 +133,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
                                           "sex" = d6$sex,
                                           "genotype" = d6$genotype)
                              self$average_day[[1]] <- d7
+                             
                            },
 #                            
 #' CheckIf
@@ -263,6 +265,15 @@ Custom_tables <- R6::R6Class("Custom_tables",
                                activity <- rbind(activity, d3)
                              }
                              self$daily_act[[1]] <- activity
+                             #create wide table for export
+                             activity_wide <- activity %>% 
+                               tidyr::pivot_wider(
+                                 names_from = c(id, Genotype, Sex, Cabinet),
+                                 values_from = Activity,
+                                 names_glue = "{id}_{Sex}_{Genotype}_{Cabinet}",
+                                 values_fill = 0
+                                 )
+                             self$daily_act[[2]] <- activity_wide
                            },
 #                            
 #                            checkIf2 = function(funEnv){
