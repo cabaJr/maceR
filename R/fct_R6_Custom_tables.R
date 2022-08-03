@@ -88,7 +88,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
                                       range = c((env$subsetting$timespan[1]*1440),(env$subsetting$timespan[2]*1440))
                                     },
                                     "No" = {
-                                      filteredMice <- seq_len(length(myCleanMice))
+                                      filteredMice <- seq_len(length(env$env2$myCleanMice))
                                       range = c(0,max(env$env2$Annotate$metaTable$Datapoints))
                                     })
                              myCleanMice <- env$env3$myCleanMice[filteredMice]

@@ -167,11 +167,14 @@ mod_analysis_ui <- function(id){
     fluidRow(div(style = ""),
              shinydashboard::box(title= "Average day", id = ns("box3_6"), width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
                                  fluidRow(
-                                   column(width = 12,
+                                   column(width = 6,
                                    shinyWidgets::prettyCheckboxGroup(inputId = ns("Avg_day_cho"), label = "Select the desired plots:",
                                                                      choiceNames = c("Individual", "Averaged by sex", "Averaged by genotype"),#, "Individual, divided by sex and genotype + mean", "Individual, divided by cabinet and genotype"),
                                                                      choiceValues = c("individualAvgD", "sexAvgD", "genotypeAvgD"),#, "gen~sex", "indiv+sex~gen", "indiv+cab~gen"),
                                                                      width = "80%"),
+                                 ),
+                                 column(width = 4, 
+                                        shinyWidgets::prettyRadioButtons(inputId = ns("AvgDay_error"), label = "Do you want to plot SD or Sem?", choices = c("SD", "Sem"), inline = TRUE, selected = "Sem")
                                  )),
                                  
                                  fluidRow(column(width = 3,
@@ -376,7 +379,7 @@ mod_analysis_server <- function(id, App_settings){
       ## get annotate environment
       Annotate <- App_settings$env4$Annotate
       ## call the function to output the plot for all the selected plot types
-      purrr::map(plot_choices, ~ Annotate$plot_avg_day(funEnv = App_settings, plotType = .x))
+      purrr::map(plot_choices, ~ Annotate$plot_avg_day(funEnv = App_settings, plotType = .x, error = input$AvgDay_error))
       ## assign value to be returned to activate plot tab
       if(App_settings$plotTab == FALSE){
         toReturn$plotTab <- checkPlots(App_settings)

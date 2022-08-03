@@ -339,7 +339,6 @@ Annotate <- R6::R6Class("Annotate",
                       activity <- x$env3$Custom_tables$table2 #get activity file from Custom_tables
 
                       if (type == "~gen"){
-                        browser()
                         G_eff <- activity %>%
                           dplyr::group_by(Genotype, Day) %>%
                           dplyr::summarise(Activity = mean(Activity))
@@ -650,7 +649,7 @@ Annotate <- R6::R6Class("Annotate",
 #' @return
 #' @export
 #'
-                    plot_avg_day = function(funEnv, plotType){
+                    plot_avg_day = function(funEnv, plotType, error = "Sem"){
                       activity <- funEnv$env3$Custom_tables$table3 #get activity file from Custom_tables
                       if ("individualAvgD" %in% plotType){
                       # generate plot
@@ -669,24 +668,41 @@ Annotate <- R6::R6Class("Annotate",
                         # group data by sex
                         S_eff <- activity %>%
                           dplyr::group_by(sex, CT) %>%
-                          dplyr::summarise(activity = mean(activity))
-                        # compute standard deviation of data
+                          dplyr::summarise(Activity = mean(activity))
+                        # compute SD and Sem of data
                         std_sex <- activity %>% 
                           dplyr::group_by(sex, CT)%>% 
-                          dplyr::summarise(std = std.error(activity))
-                        # create table with info necessary for plotting
-                        S_eff <- dplyr::tibble(sex = S_eff$sex,
+                          dplyr::summarise(n = dplyr::n(),
+                                           std = sd(activity),
+                                           sem = sd(activity)/sqrt(n))
+                        ## create table with values calculated (maybe not necessary to reorganise table?)
+                        S_eff <- dplyr::tibble(Sex = S_eff$sex,
                                                CT = S_eff$CT,
-                                               activity = S_eff$activity,
-                                               std = std_sex$std)
+                                               Activity = S_eff$Activity,
+                                               Std = std_sex$std,
+                                               Sem = std_sex$sem,
+                                               n = std_sex$n)
+                        
+                        ## decide error to apply based on user choice
+                        # create a new table 'S_eff_use' in which on column is renamed error
+                        switch(error,
+                               "Sem" = {
+                                 S_eff_use <- S_eff
+                                 colnames(S_eff_use) <- c('Sex', 'CT', 'Activity', 'Std', 'error', 'n')
+                               },
+                               "SD" = {
+                                 S_eff_use <- S_eff
+                                 colnames(S_eff_use) <- c('Sex', 'CT', 'Activity', 'error', 'Sem', 'n')
+                               })
+                        
                         # generate plot
-                        plot <- ggplot2::ggplot(S_eff)+
+                        plot <- ggplot2::ggplot(S_eff_use)+
                           ggplot2::geom_line(
                             ggplot2::aes(
-                              CT, activity, colour = sex), size = 1)+
+                              CT, Activity, colour = Sex), size = 1)+
                           ggplot2::geom_errorbar(
                             ggplot2::aes(
-                              x = CT, ymin=activity-std, ymax=activity+std, colour=sex), width=.2,
+                              x = CT, ymin=Activity-error, ymax=Activity+error, colour=Sex), width=.2,
                             position=ggplot2::position_dodge(0.05))+
                           ggplot2::scale_x_continuous(breaks = seq(0,24, by = 2))+
                           ggplot2::theme(axis.text = ggplot2::element_text(size = 15))+
@@ -696,32 +712,49 @@ Annotate <- R6::R6Class("Annotate",
                         self$avg_day_plots[2][[1]] <- plot
                       }
                       if ("genotypeAvgD" %in% plotType){
-                        # group data by sex
+                        # group data by genotype
                         G_eff <- activity %>%
                           dplyr::group_by(genotype, CT) %>%
-                          dplyr::summarise(activity = mean(activity))
-                        # compute standard deviation of data
-                        std_gen <- activity %>% 
-                          dplyr::group_by(genotype, CT)%>% 
-                          dplyr::summarise(std = std.error(activity))
-                        # create table with info necessary for plotting
-                        G_eff <- dplyr::tibble(genotype = G_eff$genotype,
+                          dplyr::summarise(Activity = mean(activity))
+                        # compute SD and Sem of data
+                        std_gen <- activity %>%
+                          dplyr::group_by(genotype, CT) %>%
+                          dplyr::summarise(n = dplyr::n(),
+                                           std = sd(activity),
+                                           sem = sd(activity)/sqrt(n))
+                        
+                        ## create table with values calculated (maybe not necessary to reorganise table?)
+                        G_eff <- dplyr::tibble(Genotype = G_eff$genotype,
                                                CT = G_eff$CT,
-                                               activity = G_eff$activity,
-                                               std = std_gen$std)
+                                               Activity = G_eff$Activity,
+                                               Std = std_gen$std,
+                                               Sem = std_gen$sem,
+                                               n = std_gen$n)
+                        
+                        ## decide error to apply based on user choice
+                        # create a new table 'G_eff_use' in which on column is renamed error
+                        switch(error,
+                               "Sem" = {
+                                 G_eff_use <- G_eff
+                                 colnames(G_eff_use) <- c('Genotype', 'CT', 'Activity', 'Std', 'error', 'n')
+                               },
+                               "SD" = {
+                                 G_eff_use <- G_eff
+                                 colnames(G_eff_use) <- c('Genotype', 'CT', 'Activity', 'error', 'Sem', 'n')
+                               })
                         # generate plot
-                        plot <- ggplot2::ggplot(G_eff)+
+                        plot <- ggplot2::ggplot(G_eff_use)+
                           ggplot2::geom_line(
                             ggplot2::aes(
-                              CT, activity, colour = genotype), size = 1)+
+                              CT, Activity, colour = Genotype), size = 1)+
                           ggplot2::geom_errorbar(
                             ggplot2::aes(
-                              x = CT, ymin=activity-std, ymax=activity+std, colour=genotype), width=.2,
+                              x = CT, ymin=Activity-error, ymax=Activity+error, colour=Genotype), width=.2,
                             position=ggplot2::position_dodge(0.05))+
                           ggplot2::scale_x_continuous(breaks = seq(0,24, by = 2))+
                           ggplot2::theme(axis.text = ggplot2::element_text(size = 15))+
                           ggplot2::theme(axis.title = ggplot2::element_text(size = 15))+
-                          ggplot2::ggtitle("Average day averaged by genotype", subtitle =  "")  
+                          ggplot2::ggtitle("Average day - grouped by Genotype", subtitle =  "")    
                         # store plot in Annotate
                         self$avg_day_plots[3][[1]] <- plot
                       }
