@@ -155,7 +155,21 @@
 
   #'  26/07/2022
 #'  fixed subsetting not working for line plots
-#'  
+
+  #' 02/08/2022
+#'  changed landing page
+
+  #' 03/08/2022  
+#'  create function to export 1st value of periodogram peak (done)
+#'  create exportable wide format total activity table (done)
+#'  export average day of activity table (done)
+#'  SEM vs SD plotting option in line plots (done)
+#'  change order of boxes in plots (done)
+#'  manage error when not selecting animals in subsetting (started)
+
+  #' 04/08/2022
+#'  activate box in plots only if plots are inside  
+
 
 
   #' PRIORITIES

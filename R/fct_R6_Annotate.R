@@ -85,14 +85,14 @@ Annotate <- R6::R6Class("Annotate",
                                   "Periodogram - by cabinet",
                                   "Average daily Activity - Individual", "Average daily Activity - Sex",
                                   "Average daily Activity - Genotype"),
-                      "data" = c("Custom_tables$table1", "Custom_tables$table1", "Custom_tables$table1", "Custom_tables$table1",
-                                 "Custom_tables$table1", "Custom_tables$table1", "Custom_tables$table1", "Custom_tables$table1",
-                                 "Custom_tables$table2", "Custom_tables$table2", "Custom_tables$table2",
-                                 "Custom_tables$table2", "Custom_tables$table2", "Custom_tables$table2",
-                                 "Custom_tables$table4", "Custom_tables$table4", "Custom_tables$table4",
-                                 "Custom_tables$table4", "Custom_tables$table4",
-                                 "Custom_tables$table3",  "Custom_tables$table3",
-                                 "Custom_tables$table3"),
+                      "data" = c("Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]",
+                                 "Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]",
+                                 "Custom_tables$daily_act[[1]]", "Custom_tables$daily_act[[1]]", "Custom_tables$daily_act[[1]]",
+                                 "Custom_tables$daily_act[[1]]", "Custom_tables$daily_act[[1]]", "Custom_tables$daily_act[[1]]",
+                                 "Custom_tables$periodograms[[1]]", "Custom_tables$periodograms[[1]]", "Custom_tables$periodograms[[1]]",
+                                 "Custom_tables$periodograms[[1]]", "Custom_tables$periodograms[[1]]",
+                                 "Custom_tables$average_day[[1]]",  "Custom_tables$average_day[[1]]",
+                                 "Custom_tables$average_day[[1]]"),
                       "file_label" = c("Counts_table", "Counts_table", "Counts_table", "Counts_table",
                                        "Counts_table", "Counts_table", "Counts_table", "Counts_table",
                                        "Total_daily_act", "Total_daily_act", "Total_daily_act",
@@ -201,7 +201,7 @@ Annotate <- R6::R6Class("Annotate",
 #' @export
 #'
                     plot_actogram = function(x, type){   #access data to env2 (where custom_tables object is stored). env2 should contain myCleanMice objects
-                      data <- x$env2$Custom_tables$table1
+                      data <- x$env2$Custom_tables$locomotor_act[[1]]
                       len <- length(x$App_settings$dataList$name)
                       Llpha <- (0.4 / len)
                       LDcond <- x$LDcondition
@@ -262,7 +262,7 @@ Annotate <- R6::R6Class("Annotate",
 #' @return
 #' @export
                     plot_DPactogram = function(x, type){ #"total", "sex", "genotype", "cabinet", "individual"
-                      data <- x$env2$Custom_tables$table1
+                      data <- x$env2$Custom_tables$locomotor_act[[1]]
                       len <- as.numeric(length(x$App_settings$dataList$name))
                       lenD <-  14#x$Custom_tables$metadata$Data_length[1]/1440
                       Llpha <- (0.4 / (len*lenD))
@@ -335,28 +335,45 @@ Annotate <- R6::R6Class("Annotate",
                       }
                     },
 
-                    plot_DAct = function(x, type){
-                      activity <- x$env3$Custom_tables$table2 #get activity file from Custom_tables
+                    plot_DAct = function(x, type, error = "Sem"){
+                      activity <- x$env3$Custom_tables$daily_act[[1]] #get activity file from Custom_tables
 
                       if (type == "~gen"){
                         G_eff <- activity %>%
                           dplyr::group_by(Genotype, Day) %>%
                           dplyr::summarise(Activity = mean(Activity))
-                        std_gen <- activity %>% 
-                          dplyr::group_by(Genotype, Day) %>% 
-                          dplyr::summarise(std = std.error(Activity))
+                        std_gen <- activity %>%
+                          dplyr::group_by(Genotype, Day) %>%
+                          dplyr::summarise(n = dplyr::n(),
+                                           std = sd(Activity),
+                                           sem = sd(Activity)/sqrt(n))
+                        
+                        ## create table with valuer calculated (maybe not necessary to reorganise table?)
                         G_eff <- dplyr::tibble(Genotype = G_eff$Genotype,
                                         Day = G_eff$Day,
                                         Activity = G_eff$Activity,
-                                        Std = std_gen$std)
-
-                        plot <- ggplot2::ggplot(G_eff)+
+                                        Std = std_gen$std,
+                                        Sem = std_gen$sem,
+                                        n = std_gen$n)
+                        
+                        ## decide error to apply based on user choice
+                        # create a new table 'G_eff_use' in which on column is renamed error
+                        switch(error,
+                               "Sem" = {
+                                 G_eff_use <- G_eff
+                                 colnames(G_eff_use) <- c('Genotype', 'Day', 'Activity', 'Std', 'error', 'n')
+                               },
+                               "SD" = {
+                                 G_eff_use <- G_eff
+                                 colnames(G_eff_use) <- c('Genotype', 'Day', 'Activity', 'error', 'Sem', 'n')
+                               })
+                        plot <- ggplot2::ggplot(G_eff_use)+
                          ggplot2::geom_line(
                            ggplot2::aes(
                              Day, Activity, colour = Genotype), size = 1)+
                          ggplot2::geom_errorbar(
                            ggplot2::aes(
-                             x = Day, ymin=Activity-Std, ymax=Activity+Std, colour=Genotype), width=.2,
+                             x = Day, ymin=Activity-error, ymax=Activity+error, colour=Genotype), width=.2,
                                         position=ggplot2::position_dodge(0.05))+
                           ggplot2::theme(axis.text = ggplot2::element_text(size = 15))+
                           ggplot2::theme(axis.title = ggplot2::element_text(size = 15))+
@@ -368,19 +385,36 @@ Annotate <- R6::R6Class("Annotate",
                           dplyr::summarise(Activity = mean(Activity))
                         std_sex <- activity %>% 
                           dplyr::group_by(Sex, Day)%>% 
-                          dplyr::summarise(std = std.error(Activity))
+                          dplyr::summarise(n = dplyr::n(),
+                                           std = sd(Activity),
+                                           sem = sd(Activity)/sqrt(n))
+                       ## create table with valuer calculated (maybe not necessary to reorganise table?)
                         S_eff <- dplyr::tibble(Sex = S_eff$Sex,
-                                        Day = S_eff$Day,
-                                        Activity = S_eff$Activity,
-                                        Std = std_sex$std)
+                                               Day = S_eff$Day,
+                                               Activity = S_eff$Activity,
+                                               Std = std_sex$std,
+                                               Sem = std_sex$sem,
+                                               n = std_sex$n)
+                        
+                        ## decide error to apply based on user choice
+                        # create a new table 'S_eff_use' in which on column is renamed error
+                        switch(error,
+                               "Sem" = {
+                                 S_eff_use <- S_eff
+                                 colnames(S_eff_use) <- c('Sex', 'Day', 'Activity', 'Std', 'error', 'n')
+                               },
+                               "SD" = {
+                                 S_eff_use <- S_eff
+                                 colnames(S_eff_use) <- c('Sex', 'Day', 'Activity', 'error', 'Sem', 'n')
+                               })
 
-                        plot <- ggplot2::ggplot(S_eff)+
+                        plot <- ggplot2::ggplot(S_eff_use)+
                          ggplot2::geom_line(
                            ggplot2::aes(
                              Day, Activity, colour = Sex), size = 1)+
                          ggplot2::geom_errorbar(
                            ggplot2::aes(
-                             x = Day, ymin=Activity-Std, ymax=Activity+Std, colour=Sex), width=.2,
+                             x = Day, ymin=Activity-error, ymax=Activity+error, colour=Sex), width=.2,
                                         position=ggplot2::position_dodge(0.05))+
                           ggplot2::theme(axis.text = ggplot2::element_text(size = 15))+
                           ggplot2::theme(axis.title = ggplot2::element_text(size = 15))+
@@ -390,25 +424,44 @@ Annotate <- R6::R6Class("Annotate",
                         G_eff <- activity %>%
                           dplyr::group_by(Genotype, Day) %>%
                           dplyr::summarise(Activity = mean(Activity))
-                        std_gen <- activity %>% 
-                          dplyr::group_by(Genotype, Day) %>% 
-                          dplyr::summarise(std = std.error(Activity))
+                        std_gen <- activity %>%
+                          dplyr::group_by(Genotype, Day) %>%
+                          dplyr::summarise(n = dplyr::n(),
+                                           std = sd(Activity),
+                                           sem = sd(Activity)/sqrt(n))
+                        
+                        ## create table with valuer calculated (maybe not necessary to reorganise table?)
                         G_eff <- dplyr::tibble(Genotype = G_eff$Genotype,
-                                        Day = G_eff$Day,
-                                        Activity = G_eff$Activity,
-                                        Std = std_gen$std)
+                                               Day = G_eff$Day,
+                                               Activity = G_eff$Activity,
+                                               Std = std_gen$std,
+                                               Sem = std_gen$sem,
+                                               n = std_gen$n)
+                        
+                        ## decide error to apply based on user choice
+                        # create a new table 'G_eff_use' in which on column is renamed error
+                        switch(error,
+                               "Sem" = {
+                                 G_eff_use <- G_eff
+                                 colnames(G_eff_use) <- c('Genotype', 'Day', 'Activity', 'Std', 'error', 'n')
+                               },
+                               "SD" = {
+                                 G_eff_use <- G_eff
+                                 colnames(G_eff_use) <- c('Genotype', 'Day', 'Activity', 'error', 'Sem', 'n')
+                               })
 
                         plot <- ggplot2::ggplot()+
                          ggplot2::geom_line(
                            data = activity,ggplot2::aes(
                              Day, Activity, colour = id))+
                          ggplot2::geom_line(
-                           data = G_eff,ggplot2::aes(Day, Activity), size = 1)+
+                           data = G_eff_use,ggplot2::aes(Day, Activity), size = 1)+
                          ggplot2::geom_point(
-                           data = G_eff,ggplot2::aes(Day, Activity), size = 2)+
+                           data = G_eff_use,ggplot2::aes(Day, Activity), size = 2)+
                          ggplot2::geom_errorbar(
-                           data = G_eff,ggplot2::aes(
-                             x = Day, ymin=Activity-Std, ymax=Activity+Std), width=.2, position=ggplot2::position_dodge(0.05))+
+                           data = G_eff_use,
+                                   ggplot2::aes(
+                                     x = Day, ymin=Activity-error, ymax=Activity+error), width=.2, position=ggplot2::position_dodge(0.05))+
                           ggplot2::facet_wrap(~Genotype, ncol = 2)+
                           ggplot2::theme(axis.text = ggplot2::element_text(size = 15))+
                           ggplot2::theme(axis.title = ggplot2::element_text(size = 15))+
@@ -420,23 +473,39 @@ Annotate <- R6::R6Class("Annotate",
                           dplyr::summarise(Activity = mean(Activity))
                         std_gs <- activity %>% 
                           dplyr::group_by(Genotype, Sex, Day) %>% 
-                          dplyr::summarise(std = std.error(Activity))
+                          dplyr::summarise(n = dplyr::n(),
+                                           std = sd(Activity),
+                                           sem = sd(Activity)/sqrt(n))
                         GS_eff <-dplyr::tibble(Genotype = GS_eff$Genotype,
                                          Sex = GS_eff$Sex,
                                          Day = GS_eff$Day,
                                          Activity = GS_eff$Activity,
-                                         Std = std_gs$std)
+                                         Std = std_gs$std,
+                                         Sem = std_gs$sem,
+                                         n = std_gs$n)
+                        
+                        ## decide error to apply based on user choice
+                        # create a new table 'G_eff_use' in which on column is renamed error
+                        switch(error,
+                               "Sem" = {
+                                 GS_eff_use <- GS_eff
+                                 colnames(GS_eff_use) <- c('Genotype', 'Sex', 'Day', 'Activity', 'Std', 'error', 'n')
+                               },
+                               "SD" = {
+                                 GS_eff_use <- GS_eff
+                                 colnames(GS_eff_use) <- c('Genotype', 'Sex', 'Day', 'Activity', 'error', 'Sem', 'n')
+                               })
 
                         plot <- ggplot2::ggplot()+
                          ggplot2::geom_line(
-                           data = GS_eff,ggplot2::aes(
+                           data = GS_eff_use,ggplot2::aes(
                              Day, Activity, colour = Sex), size = 1)+
                          ggplot2::geom_point(
-                           data = GS_eff,ggplot2::aes(
+                           data = GS_eff_use,ggplot2::aes(
                              Day, Activity, colour = Sex), size = 2)+
                          ggplot2::geom_errorbar(
-                           data = GS_eff,ggplot2::aes(
-                             x = Day, ymin=Activity-Std, ymax=Activity+Std, colour = Sex), width=.2, position=ggplot2::position_dodge(0.05))+
+                           data = GS_eff_use,ggplot2::aes(
+                             x = Day, ymin=Activity-error, ymax=Activity+error, colour = Sex), width=.2, position=ggplot2::position_dodge(0.05))+
                           ggplot2::facet_wrap(~Genotype)+
                           ggplot2::theme(axis.text = ggplot2::element_text(size = 15))+
                           ggplot2::theme(axis.title = ggplot2::element_text(size = 15))+
@@ -448,23 +517,39 @@ Annotate <- R6::R6Class("Annotate",
                           dplyr::summarise(Activity = mean(Activity))
                         std_gs <- activity %>% 
                           dplyr::group_by(Genotype, Sex, Day) %>% 
-                          dplyr::summarise(std = std.error(Activity))
+                          dplyr::summarise(n = dplyr::n(),
+                                           std = sd(Activity),
+                                           sem = sd(Activity)/sqrt(n))
                         GS_eff <-dplyr::tibble(Genotype = GS_eff$Genotype,
-                                         Sex = GS_eff$Sex,
-                                         Day = GS_eff$Day,
-                                         Activity = GS_eff$Activity,
-                                         Std = std_gs$std)
-
+                                               Sex = GS_eff$Sex,
+                                               Day = GS_eff$Day,
+                                               Activity = GS_eff$Activity,
+                                               Std = std_gs$std,
+                                               Sem = std_gs$sem,
+                                               n = std_gs$n)
+                        
+                        ## decide error to apply based on user choice
+                        # create a new table 'G_eff_use' in which on column is renamed error
+                        switch(error,
+                               "Sem" = {
+                                 GS_eff_use <- GS_eff
+                                 colnames(GS_eff_use) <- c('Genotype', 'Sex', 'Day', 'Activity', 'Std', 'error', 'n')
+                               },
+                               "SD" = {
+                                 GS_eff_use <- GS_eff
+                                 colnames(GS_eff_use) <- c('Genotype', 'Sex', 'Day', 'Activity', 'error', 'Sem', 'n')
+                               })
+                        
                         plot <- ggplot2::ggplot()+
                          ggplot2::geom_line(
                            data = activity,ggplot2::aes(
                              Day, Activity, group = id, colour = Genotype))+
                          ggplot2::geom_line(
-                           data = GS_eff, ggplot2::aes(
+                           data = GS_eff_use, ggplot2::aes(
                              Day, Activity, colour = Genotype), linetype = "dashed", size = 1.5)+
                          ggplot2::geom_errorbar(
-                           data = GS_eff, ggplot2::aes(
-                             x = Day, ymin=Activity-Std, ymax=Activity+Std, colour = Genotype), width=.2, position=ggplot2::position_dodge(0.05))+
+                           data = GS_eff_use, ggplot2::aes(
+                             x = Day, ymin=Activity-error, ymax=Activity+error, colour = Genotype), width=.2, position=ggplot2::position_dodge(0.05))+
                           ggplot2::facet_wrap(~Sex)+
                           ggplot2::theme(axis.text = ggplot2::element_text(size = 15))+
                           ggplot2::theme(axis.title = ggplot2::element_text(size = 15))+
@@ -474,19 +559,37 @@ Annotate <- R6::R6Class("Annotate",
                         G_eff <- activity %>%
                           dplyr::group_by(Genotype, Day) %>%
                           dplyr::summarise(Activity = mean(Activity))
-                        std_gen <- activity %>% 
-                          dplyr::group_by(Genotype, Day) %>% 
-                          dplyr::summarise(std = std.error(Activity))
-                        G_eff <-dplyr::tibble(Genotype = G_eff$Genotype,
-                                        Day = G_eff$Day,
-                                        Activity = G_eff$Activity,
-                                        Std = std_gen$std)
+                        std_gen <- activity %>%
+                          dplyr::group_by(Genotype, Day) %>%
+                          dplyr::summarise(n = dplyr::n(),
+                                           std = sd(Activity),
+                                           sem = sd(Activity)/sqrt(n))
+                        
+                        ## create table with valuer calculated (maybe not necessary to reorganise table?)
+                        G_eff <- dplyr::tibble(Genotype = G_eff$Genotype,
+                                               Day = G_eff$Day,
+                                               Activity = G_eff$Activity,
+                                               Std = std_gen$std,
+                                               Sem = std_gen$sem,
+                                               n = std_gen$n)
+                        
+                        ## decide error to apply based on user choice
+                        # create a new table 'G_eff_use' in which on column is renamed error
+                        switch(error,
+                               "Sem" = {
+                                 G_eff_use <- G_eff
+                                 colnames(G_eff_use) <- c('Genotype', 'Day', 'Activity', 'Std', 'error', 'n')
+                               },
+                               "SD" = {
+                                 G_eff_use <- G_eff
+                                 colnames(G_eff_use) <- c('Genotype', 'Day', 'Activity', 'error', 'Sem', 'n')
+                               })
 
                         plot <- ggplot2::ggplot()+
                          ggplot2::geom_line(data = activity,ggplot2::aes(Day, Activity, group = id, colour = Genotype))+
-                         ggplot2::geom_line(data = G_eff,ggplot2::aes(Day, Activity, colour = Genotype), size = 1.5)+
-                         ggplot2::geom_point(data = G_eff,ggplot2::aes(Day, Activity, colour = Genotype), size = 2)+
-                         ggplot2::geom_errorbar(data = G_eff,ggplot2::aes(x = Day, ymin=Activity-Std, ymax=Activity+Std, colour = Genotype), width=.2, position=ggplot2::position_dodge(0.05))+
+                         ggplot2::geom_line(data = G_eff_use,ggplot2::aes(Day, Activity, colour = Genotype), size = 1.5)+
+                         ggplot2::geom_point(data = G_eff_use,ggplot2::aes(Day, Activity, colour = Genotype), size = 2)+
+                         ggplot2::geom_errorbar(data = G_eff_use,ggplot2::aes(x = Day, ymin=Activity-error, ymax=Activity+error, colour = Genotype), width=.2, position=ggplot2::position_dodge(0.05))+
                           ggplot2::facet_wrap(~Cabinet)+
                           ggplot2::theme(axis.text = ggplot2::element_text(size = 15))+
                           ggplot2::theme(axis.title = ggplot2::element_text(size = 15))+
@@ -496,7 +599,7 @@ Annotate <- R6::R6Class("Annotate",
                     },
 
                     plot_periodogram = function(funEnv, plotType){
-                      data <- funEnv$env3$Custom_tables$table4
+                      data <- funEnv$env3$Custom_tables$periodograms[[1]]
                       if ("Pertotal" %in% plotType){
                         plot <- ggetho::ggperio(data, mapping = ggplot2::aes(y = power, peak = peak))+
                          ggplot2::geom_line(ggplot2::aes(group = id))+
@@ -546,8 +649,8 @@ Annotate <- R6::R6Class("Annotate",
 #' @return
 #' @export
 #'
-                    plot_avg_day = function(funEnv, plotType){
-                      activity <- funEnv$env3$Custom_tables$table3 #get activity file from Custom_tables
+                    plot_avg_day = function(funEnv, plotType, error = "Sem"){
+                      activity <- funEnv$env3$Custom_tables$average_day[[1]] #get activity file from Custom_tables
                       if ("individualAvgD" %in% plotType){
                       # generate plot
                       plot <- ggplot2::ggplot()+
@@ -565,24 +668,41 @@ Annotate <- R6::R6Class("Annotate",
                         # group data by sex
                         S_eff <- activity %>%
                           dplyr::group_by(sex, CT) %>%
-                          dplyr::summarise(activity = mean(activity))
-                        # compute standard deviation of data
+                          dplyr::summarise(Activity = mean(activity))
+                        # compute SD and Sem of data
                         std_sex <- activity %>% 
                           dplyr::group_by(sex, CT)%>% 
-                          dplyr::summarise(std = std.error(activity))
-                        # create table with info necessary for plotting
-                        S_eff <- dplyr::tibble(sex = S_eff$sex,
+                          dplyr::summarise(n = dplyr::n(),
+                                           std = sd(activity),
+                                           sem = sd(activity)/sqrt(n))
+                        ## create table with values calculated (maybe not necessary to reorganise table?)
+                        S_eff <- dplyr::tibble(Sex = S_eff$sex,
                                                CT = S_eff$CT,
-                                               activity = S_eff$activity,
-                                               std = std_sex$std)
+                                               Activity = S_eff$Activity,
+                                               Std = std_sex$std,
+                                               Sem = std_sex$sem,
+                                               n = std_sex$n)
+                        
+                        ## decide error to apply based on user choice
+                        # create a new table 'S_eff_use' in which on column is renamed error
+                        switch(error,
+                               "Sem" = {
+                                 S_eff_use <- S_eff
+                                 colnames(S_eff_use) <- c('Sex', 'CT', 'Activity', 'Std', 'error', 'n')
+                               },
+                               "SD" = {
+                                 S_eff_use <- S_eff
+                                 colnames(S_eff_use) <- c('Sex', 'CT', 'Activity', 'error', 'Sem', 'n')
+                               })
+                        
                         # generate plot
-                        plot <- ggplot2::ggplot(S_eff)+
+                        plot <- ggplot2::ggplot(S_eff_use)+
                           ggplot2::geom_line(
                             ggplot2::aes(
-                              CT, activity, colour = sex), size = 1)+
+                              CT, Activity, colour = Sex), size = 1)+
                           ggplot2::geom_errorbar(
                             ggplot2::aes(
-                              x = CT, ymin=activity-std, ymax=activity+std, colour=sex), width=.2,
+                              x = CT, ymin=Activity-error, ymax=Activity+error, colour=Sex), width=.2,
                             position=ggplot2::position_dodge(0.05))+
                           ggplot2::scale_x_continuous(breaks = seq(0,24, by = 2))+
                           ggplot2::theme(axis.text = ggplot2::element_text(size = 15))+
@@ -592,32 +712,49 @@ Annotate <- R6::R6Class("Annotate",
                         self$avg_day_plots[2][[1]] <- plot
                       }
                       if ("genotypeAvgD" %in% plotType){
-                        # group data by sex
+                        # group data by genotype
                         G_eff <- activity %>%
                           dplyr::group_by(genotype, CT) %>%
-                          dplyr::summarise(activity = mean(activity))
-                        # compute standard deviation of data
-                        std_gen <- activity %>% 
-                          dplyr::group_by(genotype, CT)%>% 
-                          dplyr::summarise(std = std.error(activity))
-                        # create table with info necessary for plotting
-                        G_eff <- dplyr::tibble(genotype = G_eff$genotype,
+                          dplyr::summarise(Activity = mean(activity))
+                        # compute SD and Sem of data
+                        std_gen <- activity %>%
+                          dplyr::group_by(genotype, CT) %>%
+                          dplyr::summarise(n = dplyr::n(),
+                                           std = sd(activity),
+                                           sem = sd(activity)/sqrt(n))
+                        
+                        ## create table with values calculated (maybe not necessary to reorganise table?)
+                        G_eff <- dplyr::tibble(Genotype = G_eff$genotype,
                                                CT = G_eff$CT,
-                                               activity = G_eff$activity,
-                                               std = std_gen$std)
+                                               Activity = G_eff$Activity,
+                                               Std = std_gen$std,
+                                               Sem = std_gen$sem,
+                                               n = std_gen$n)
+                        
+                        ## decide error to apply based on user choice
+                        # create a new table 'G_eff_use' in which on column is renamed error
+                        switch(error,
+                               "Sem" = {
+                                 G_eff_use <- G_eff
+                                 colnames(G_eff_use) <- c('Genotype', 'CT', 'Activity', 'Std', 'error', 'n')
+                               },
+                               "SD" = {
+                                 G_eff_use <- G_eff
+                                 colnames(G_eff_use) <- c('Genotype', 'CT', 'Activity', 'error', 'Sem', 'n')
+                               })
                         # generate plot
-                        plot <- ggplot2::ggplot(G_eff)+
+                        plot <- ggplot2::ggplot(G_eff_use)+
                           ggplot2::geom_line(
                             ggplot2::aes(
-                              CT, activity, colour = genotype), size = 1)+
+                              CT, Activity, colour = Genotype), size = 1)+
                           ggplot2::geom_errorbar(
                             ggplot2::aes(
-                              x = CT, ymin=activity-std, ymax=activity+std, colour=genotype), width=.2,
+                              x = CT, ymin=Activity-error, ymax=Activity+error, colour=Genotype), width=.2,
                             position=ggplot2::position_dodge(0.05))+
                           ggplot2::scale_x_continuous(breaks = seq(0,24, by = 2))+
                           ggplot2::theme(axis.text = ggplot2::element_text(size = 15))+
                           ggplot2::theme(axis.title = ggplot2::element_text(size = 15))+
-                          ggplot2::ggtitle("Average day averaged by genotype", subtitle =  "")  
+                          ggplot2::ggtitle("Average day - grouped by Genotype", subtitle =  "")    
                         # store plot in Annotate
                         self$avg_day_plots[3][[1]] <- plot
                       }

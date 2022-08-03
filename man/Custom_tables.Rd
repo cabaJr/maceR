@@ -64,15 +64,13 @@ provide examples on how to call the function for the different
 \describe{
 \item{\code{metadata}}{list of metadata}
 
-\item{\code{table1}}{table 1}
+\item{\code{locomotor_act}}{list containing tables related to actograms}
 
-\item{\code{table2}}{table 2}
+\item{\code{daily_act}}{list containing tables related to sum of daily activity}
 
-\item{\code{table3}}{table 3}
+\item{\code{average_day}}{list containing tables related to average circadian day}
 
-\item{\code{table4}}{table 4}
-
-\item{\code{table5}}{table 5}
+\item{\code{periodograms}}{list containing tables related to periodograms}
 
 \item{\code{cacheKeys}}{table storing the cacheKeys to avoid reloading the same plots
 compile}

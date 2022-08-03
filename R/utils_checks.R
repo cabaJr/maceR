@@ -29,5 +29,20 @@ check_uploads <- function(App_settings){
 checkPlots <- function(App_settings){
     App_settings$plotTab <- TRUE
   } 
-# }
+
+subset_input_check <- function(idlist){
+  input_error <- dplyr::case_when(
+    !is.null(idlist) ~ "You need to select some animals",
+    TRUE ~ ""
+  )
+  if (input_error != "") {
+    showModal(modalDialog(
+      title = "input_error",
+      input_error,
+      easyClose = TRUE
+    ))
+    return() # exit the function here
+  }
+}
+
 ## add check functions to generate tables

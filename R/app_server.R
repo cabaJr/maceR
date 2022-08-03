@@ -120,7 +120,7 @@ app_server <- function( input, output, session ) {
   #DEBUG in app
   observeEvent(input$debug, {
     browser()
-  })  
+  })
   
   
 ## add function to display list of ids subset 

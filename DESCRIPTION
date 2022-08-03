@@ -16,6 +16,7 @@ Imports:
     golem (>= 0.3.1),
     lubridate,
     magrittr,
+    pkgload,
     pryr,
     rhandsontable,
     shinipsum,
@@ -23,6 +24,7 @@ Imports:
     shinycssloaders,
     shinydashboard,
     shinydashboardPlus,
+    shinyjs,
     shinyWidgets,
     zeitgebr
 Suggests: 

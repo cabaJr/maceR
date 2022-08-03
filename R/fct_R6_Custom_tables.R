@@ -13,18 +13,16 @@
 Custom_tables <- R6::R6Class("Custom_tables",
                          list(
 #' @field metadata list of metadata
-#' @field table1 table 1
-#' @field table2 table 2
-#' @field table3 table 3
-#' @field table4 table 4
-#' @field table5 table 5
+#' @field locomotor_act list containing tables related to actograms
+#' @field daily_act list containing tables related to sum of daily activity
+#' @field average_day list containing tables related to average circadian day
+#' @field periodograms list containing tables related to periodograms
 #' @field cacheKeys table storing the cacheKeys to avoid reloading the same plots
                            metadata = NULL,
-                           table1 = NULL,
-                           table2 = NULL,
-                           table3 = NULL,
-                           table4 = NULL,
-                           table5 = NULL,
+                           locomotor_act = list(),
+                           daily_act = list(),
+                           average_day = list(),
+                           periodograms = list(),
                            cacheKeys = dplyr::tibble("table" = seq(1:8), #table to store keys of hashed tables
                                               "key" = 0),
 #' compile
@@ -84,11 +82,12 @@ Custom_tables <- R6::R6Class("Custom_tables",
                              #switch to allow for data subsetting
                              switch(subsetVal,
                                     "Yes" = {
+                                      # subset_input_check(idlist = App_settings$subsetting$miceListFiltered)
                                       filteredMice <- env$subsetting$miceListFiltered$pos
                                       range = c((env$subsetting$timespan[1]*1440),(env$subsetting$timespan[2]*1440))
                                     },
                                     "No" = {
-                                      filteredMice <- seq_len(length(myCleanMice))
+                                      filteredMice <- seq_len(length(env$env2$myCleanMice))
                                       range = c(0,max(env$env2$Annotate$metaTable$Datapoints))
                                     })
                              myCleanMice <- env$env3$myCleanMice[filteredMice]
@@ -133,7 +132,8 @@ Custom_tables <- R6::R6Class("Custom_tables",
                                           "activity" = d6$d4,
                                           "sex" = d6$sex,
                                           "genotype" = d6$genotype)
-                             self$table3 <- d7
+                             self$average_day[[1]] <- d7
+                             
                            },
 #                            
 #' CheckIf
@@ -147,7 +147,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #' @examples write examples
                            checkIf = function(funEnv, subsetPlot){#to add option to check for presence of different tables
                              
-                             # if(is.null(self$table1) == TRUE){ #add conditions to see if values changed and it's necessary to recalculate the table
+                             # if(is.null(self$locomotor_act[[1]]) == TRUE){ #add conditions to see if values changed and it's necessary to recalculate the table
                              # if(funEnv$env2$Annotate$cacheKeys[1, 2] != self$cacheKeys[1, 2]){
                              self$behavrTable(funEnv, subsetPlot)
                              # }else{}
@@ -206,8 +206,8 @@ Custom_tables <- R6::R6Class("Custom_tables",
                              metadata <- self$metadata
                              data.table::setDT(d2, key = "id")
                              data.table::setDT(metadata, key = "id")
-                             self$table1 <- behavr::behavr(d2, metadata)
-                             #self$cacheKeys[1,2] <- digest::digest(self$table1, "xxhash64")
+                             self$locomotor_act[[1]] <- behavr::behavr(d2, metadata)
+                             #self$cacheKeys[1,2] <- digest::digest(self$locomotor_act[[1]], "xxhash64")
                            },
 #                            
 #' dailyAct
@@ -222,7 +222,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #'
 #' @examples dailyAct(env)
                            dailyAct = function(env, subsetVal){ #substitute x with env in whole fun
-                             browser()
+                             # browser()
                              #switch to allow for data subsetting
                              switch(subsetVal,
                                     "Yes" = {
@@ -264,11 +264,20 @@ Custom_tables <- R6::R6Class("Custom_tables",
                                )
                                activity <- rbind(activity, d3)
                              }
-                             self$table2 <- activity
+                             self$daily_act[[1]] <- activity
+                             #create wide table for export
+                             activity_wide <- activity %>% 
+                               tidyr::pivot_wider(
+                                 names_from = c(id, Genotype, Sex, Cabinet),
+                                 values_from = Activity,
+                                 names_glue = "{id}_{Sex}_{Genotype}_{Cabinet}",
+                                 values_fill = 0
+                                 )
+                             self$daily_act[[2]] <- activity_wide
                            },
 #                            
 #                            checkIf2 = function(funEnv){
-#                              if(is.null(Custom_tables$table2) == TRUE){
+#                              if(is.null(Custom_tables$daily_act[[1]]) == TRUE){
 #                                self$dailyAct(funEnv)
 #                                shinyjs::show(id = "Dl2", anim = FALSE)
 #                              }else{}
@@ -292,7 +301,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #'     
                            computePer = function(method, periodRange, funenv) {
                              # browser()
-                             data <- self$table1
+                             data <- self$locomotor_act[[1]]
                              meta <- self$metadata
                              perFun <- method
                              vals <- periodRange
@@ -320,11 +329,12 @@ Custom_tables <- R6::R6Class("Custom_tables",
                                     )
                              periodPeaks <- zeitgebr::find_peaks(period, n_peaks = 2)
                              meta <- data.table::setDT(meta, key = "id")
-                             period2 <- behavr::behavr(periodPeaks, metadata = meta)
-                             self$table4 <- period2
-                             #add table to store only peaks
+                             all_periods <- behavr::behavr(periodPeaks, metadata = meta)
+                             first_peak <- periodPeaks[which(periodPeaks$peak == 1),]
+                             first_peak$period <- first_peak$period / 3600
+                             self$periodograms[[1]] <- all_periods
+                             self$periodograms[[2]] <- first_peak
                              
-                             # self$table5 <- firstpeaks
 
                            }
 #                            
@@ -332,7 +342,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #                            # 
 #                            # save_table = function(file, file1){#, type, name){
 #                            #   file1 <- 
-#                            #   write.csv(self$table2, file, quote = FALSE, row.names = FALSE)
+#                            #   write.csv(self$daily_act[[1]], file, quote = FALSE, row.names = FALSE)
 #                            # }
                          )
 )
