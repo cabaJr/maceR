@@ -168,13 +168,17 @@
 #'  manage error when not selecting animals in subsetting (started)
 
   #' 04/08/2022
-#'  activate box in plots only if plots are inside  
+#'  finish error handling in data subset (DONE?)
+#'  change sidebar menu behaviour (done)
+
+  #'  07/08/2022
+#'  activate box in plots only if plots are inside
+#'  create plot of period distribution  
 #'  activate options to download different table
 #'  activate download button only after plot generation
 #'  clean data structure from unnecessary parts
 #'  link skip row button
-#'  update helpb uttons
-
+#'  update help buttons
 
   #' PRIORITIES
 #' - check workflow for data upload

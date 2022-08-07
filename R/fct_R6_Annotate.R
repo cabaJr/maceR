@@ -39,6 +39,12 @@ Annotate <- R6::R6Class("Annotate",
                                         Per4 = list(),
                                         Per5 = list()
                     ),
+                    period_plots_box = list(Per1_box = list(),
+                                        Per2_box = list(),
+                                        Per3_box = list(),
+                                        Per4_box = list(),
+                                        Per5_box = list()
+                    ),
                     avg_day_plots = list(AvgDay1 = list()
                       
                     ),
@@ -47,11 +53,13 @@ Annotate <- R6::R6Class("Annotate",
                                     "DAtotal", "DAsex", "DAgenotype", "DAcabinet",
                                     "~gen", "~sex", "individual", "gen~sex", "indiv+sex~gen", "indiv+cab~gen",
                                     "Pertotal", "Perfaceted", "Persex", "Pergenotype", "Percabinet",
+                                    "Pertotal_hist", "Perfaceted_hist", "Persex_hist", "Pergenotype_hist", "Percabinet_hist",
                                     "individualAvgD", "sexAvgD", "genotypeAvgD"),
                       "destination" = c("acto1", "acto2", "acto3", "acto4",
                                         "DPacto1", "DPacto2", "DPacto3", "DPacto4",
                                         "DAct1", "DAct2", "DAct3", "DAct4", "DAct5", "DAct6",
                                         "Per1", "Per2", "Per3", "Per4", "Per5",
+                                        "Per1_boxplot", "Per2_boxplot", "Per3_boxplot", "Per4_boxplot", "Per5_boxplot",
                                         "AvgDay1", "AvgDay2", "AvgDay3"),
                       ## list containing the location of each plot in Annotate$ 
                       "location" = list(## Actograms
@@ -68,6 +76,10 @@ Annotate <- R6::R6Class("Annotate",
                                      "Annotate$period_plots$Per1", "Annotate$period_plots$Per2", 
                                      "Annotate$period_plots$Per3", "Annotate$period_plots$Per4", 
                                      "Annotate$period_plots$Per5",
+                                     ## Period boxplots
+                                     "Annotate$period_plots_box$Per1_box", "Annotate$period_plots_box$Per2_box", 
+                                     "Annotate$period_plots_box$Per3_box", "Annotate$period_plots_box$Per4_box", 
+                                     "Annotate$period_plots_box$Per5_box",
                                      ## Average daily activity
                                      "Annotate$avg_day_plots[1][[1]]", "Annotate$avg_day_plots[2][[1]]",
                                      "Annotate$avg_day_plots[3][[1]]"
@@ -83,6 +95,9 @@ Annotate <- R6::R6Class("Annotate",
                                   "Periodogram - cumulative", "Periodogram - individual", 
                                   "Periodogram - by sex", "Periodogram - by genotype", 
                                   "Periodogram - by cabinet",
+                                  "Period boxplot - cumulative", "Period boxplot - individual", 
+                                  "Period boxplot - by sex", "Period boxplot - by genotype", 
+                                  "Period boxplot - by cabinet",
                                   "Average daily Activity - Individual", "Average daily Activity - Sex",
                                   "Average daily Activity - Genotype"),
                       "data" = c("Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]",
@@ -91,6 +106,8 @@ Annotate <- R6::R6Class("Annotate",
                                  "Custom_tables$daily_act[[1]]", "Custom_tables$daily_act[[1]]", "Custom_tables$daily_act[[1]]",
                                  "Custom_tables$periodograms[[1]]", "Custom_tables$periodograms[[1]]", "Custom_tables$periodograms[[1]]",
                                  "Custom_tables$periodograms[[1]]", "Custom_tables$periodograms[[1]]",
+                                 "Custom_tables$periodograms[[2]]", "Custom_tables$periodograms[[2]]", "Custom_tables$periodograms[[2]]",
+                                 "Custom_tables$periodograms[[2]]", "Custom_tables$periodograms[[2]]",
                                  "Custom_tables$average_day[[1]]",  "Custom_tables$average_day[[1]]",
                                  "Custom_tables$average_day[[1]]"),
                       "file_label" = c("Counts_table", "Counts_table", "Counts_table", "Counts_table",
@@ -99,13 +116,15 @@ Annotate <- R6::R6Class("Annotate",
                                        "Total_daily_act", "Total_daily_act", "Total_daily_act",
                                        "Period_peaks", "Period_peaks", "Period_peaks", 
                                        "Period_peaks", "Period_peaks",
+                                       "Period_peaks_boxplot", "Period_peaks_boxplot", "Period_peaks_boxplot", 
+                                       "Period_peaks_boxplot", "Period_peaks_boxplot",
                                        "Average_day", "Average_day",
                                        "Average_day")
                     ),
                     actTable = NULL,
                     metaTable = NULL,
                     cacheKeys = dplyr::tibble("table" = seq(1:8), #table to store keys of hashed tables when plotting
-                                       "key" = 0),
+                                       "key" = 0), #to be implemented
 #' showMeta
 #'
 #' @param env App_settings environment
@@ -140,9 +159,9 @@ Annotate <- R6::R6Class("Annotate",
 
 #' showdata
 #'
-#' @param env aa
-#' @param id ss
-#' @param miceList dd
+#' @param env App_settings
+#' @param id mouse Id
+#' @param miceList list of animals
 #'
 #' @return
 #' @export
@@ -194,33 +213,28 @@ Annotate <- R6::R6Class("Annotate",
 #                     
 #' plot_actogram
 #'
-#' @param x dd
-#' @param type ff
+#' @param env App_settings environment
+#' @param type plot type to be rendered
 #'
 #' @return
 #' @export
 #'
-                    plot_actogram = function(x, type){   #access data to env2 (where custom_tables object is stored). env2 should contain myCleanMice objects
-                      data <- x$env2$Custom_tables$locomotor_act[[1]]
-                      len <- length(x$App_settings$dataList$name)
-                      Llpha <- (0.4 / len)
-                      LDcond <- x$LDcondition
-                      # browser()
+                    plot_actogram = function(env, type){   #access data to env2 (where custom_tables object is stored). env2 should contain myCleanMice objects
+                      data <- env$env2$Custom_tables$locomotor_act[[1]]
+                      # len <- length(env$App_settings$dataList$name)
+                      # Llpha <- (0.4 / len)
+                      LDcond <- env$LDcondition
                       if(type == "total"){
                         plot <- ggetho::ggetho(data, mapping = ggplot2::aes(x = t, y = id, z = Activity), summary_time_window = 180)+
                           ggetho::stat_bar_tile_etho()+
                           LDcond$SLLD+
                           LDcond$SLDD+
-                          # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
                           ggplot2::ggtitle("Full length actogram ")
                         self$Actograms$acto1[[1]] <- plot
                       }else if(type == "sex"){
                         plot <- ggetho::ggetho(data, ggplot2::aes(x = t, y = id, z = Activity), summary_time_window = 180) +
                           LDcond$SLLD+
                           LDcond$SLDD+
-                          # ld1+
-                          # dd1+
-                          # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
                           ggetho::stat_bar_tile_etho()+
                           ggplot2::facet_grid(sex ~ ., space = "free", scales = "free_y")+
                           ggplot2::ylab("")+
@@ -233,18 +247,12 @@ Annotate <- R6::R6Class("Annotate",
                           ggplot2::ylab("")+
                           LDcond$SLLD+
                           LDcond$SLDD+
-                          # ld1+
-                          # dd1+
-                          # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
                           ggplot2::ggtitle("Actogram", subtitle = "Splitted by genotype")
                         self$Actograms$acto3[[1]] <- plot
                       }else if(type == "cabinet"){
                         plot <- ggetho::ggetho(data, ggplot2::aes(x = t, y = id, z = Activity), summary_time_window = 180) +
                           LDcond$SLLD+
                           LDcond$SLDD+
-                          # ld1+
-                          # dd1+
-                          # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
                           ggetho::stat_bar_tile_etho()+
                           ggplot2::facet_grid(Cabinet ~ ., space = "free", scales = "free_y")+
                           ggplot2::ylab("")+
@@ -254,28 +262,26 @@ Annotate <- R6::R6Class("Annotate",
                       # self$cacheKeys[1,2] <- data.table::copy(x$env2$Custom_tables$cacheKeys[1,2])
                     },
 
+
 #' plot_DPactogram
 #'
-#' @param x aa
-#' @param type ss 
+#' @param env App_settings environment
+#' @param type plot type to be rendered
 #'
 #' @return
 #' @export
-                    plot_DPactogram = function(x, type){ #"total", "sex", "genotype", "cabinet", "individual"
-                      data <- x$env2$Custom_tables$locomotor_act[[1]]
-                      len <- as.numeric(length(x$App_settings$dataList$name))
-                      lenD <-  14#x$Custom_tables$metadata$Data_length[1]/1440
-                      Llpha <- (0.4 / (len*lenD))
-                      LDcond <- x$LDcondition
+                    plot_DPactogram = function(env, type){ #"total", "sex", "genotype", "cabinet", "individual"
+                      data <- env$env2$Custom_tables$locomotor_act[[1]]
+                      # len <- as.numeric(length(env$App_settings$dataList$name))
+                      # lenD <-  env$Custom_tables$metadata$Data_length[1]/1440
+                      # Llpha <- (0.4 / (len*lenD))
+                      LDcond <- env$LDcondition
                       # browser()
                       if(type == "DAtotal"){
                         plot <- ggetho::ggetho(data, ggplot2::aes(x = t, z = Activity), multiplot = 2, summary_time_window = 120)+
                           LDcond$DPLD+
                           LDcond$DPDD1+
                           LDcond$DPDD2+
-                          # ld1+
-                          # dd1+
-                          # dd2+
                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
                           ggetho::stat_bar_tile_etho()+
                           ggplot2::facet_wrap(~id+sex+Genotype, ncol = 4, labeller = ggplot2::label_wrap_gen(multi_line=FALSE))+
@@ -289,9 +295,6 @@ Annotate <- R6::R6Class("Annotate",
                           LDcond$DPLD+
                           LDcond$DPDD1+
                           LDcond$DPDD2+
-                          # ld1+
-                          # dd1+
-                          # dd2+
                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
                           ggetho::stat_bar_tile_etho()+
                           ggplot2::facet_grid(sex~Genotype)+
@@ -305,9 +308,6 @@ Annotate <- R6::R6Class("Annotate",
                           LDcond$DPLD+
                           LDcond$DPDD1+
                           LDcond$DPDD2+
-                          # ld1+
-                          # dd1+
-                          # dd2+
                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
                           ggetho::stat_bar_tile_etho()+
                           ggplot2::facet_grid(Cabinet~Genotype)+
@@ -321,9 +321,6 @@ Annotate <- R6::R6Class("Annotate",
                           LDcond$DPLD+
                           LDcond$DPDD1+
                           LDcond$DPDD2+
-                          # ld1+
-                          # dd1+
-                          # dd2+
                           # stat_ld_annotations(height = 1, alpha = Llpha, outline = NA, period = hours(24), l_duration = hours(12), phase = 0, ld_colours = c(NA, "black"))+
                           ggetho::stat_bar_tile_etho()+
                           ggplot2::facet_grid(Cabinet~sex)+
@@ -335,8 +332,18 @@ Annotate <- R6::R6Class("Annotate",
                       }
                     },
 
-                    plot_DAct = function(x, type, error = "Sem"){
-                      activity <- x$env3$Custom_tables$daily_act[[1]] #get activity file from Custom_tables
+#' plot_DAct
+#'
+#' @param env App_settings environment
+#' @param type type of plot to be computed
+#' @param error "Sem" or "SD"
+#'
+#' @return
+#' @export
+#'
+#' @examples
+                    plot_DAct = function(env, type, error = "Sem"){
+                      activity <- env$env3$Custom_tables$daily_act[[1]] #get activity file from Custom_tables
 
                       if (type == "~gen"){
                         G_eff <- activity %>%
@@ -598,18 +605,27 @@ Annotate <- R6::R6Class("Annotate",
                       }
                     },
 
+#' plot_periodogram
+#'
+#' @param funEnv App_settings environment
+#' @param plotType type of plot to be computed
+#'
+#' @return
+#' @export
+#'
+#' @examples
                     plot_periodogram = function(funEnv, plotType){
                       data <- funEnv$env3$Custom_tables$periodograms[[1]]
                       if ("Pertotal" %in% plotType){
                         plot <- ggetho::ggperio(data, mapping = ggplot2::aes(y = power, peak = peak))+
-                         ggplot2::geom_line(ggplot2::aes(group = id))+
+                         ggplot2::geom_line(ggplot2::aes(group = id, colour = Genotype))+
                          ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
                           ggetho::geom_peak()
                         self$period_plots[1][[1]] <- plot
                       }
                       if ("Perfaceted" %in% plotType){
                         plot <- ggetho::ggperio(data, mapping = ggplot2::aes(y = power, peak = peak))+
-                         ggplot2::geom_line(ggplot2::aes(group = id))+
+                         ggplot2::geom_line(ggplot2::aes(group = id, colour = Genotype))+
                          ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
                           ggetho::geom_peak()+
                           ggplot2::facet_wrap(~id+sex+Genotype, ncol = 6, labeller = ggplot2::label_wrap_gen(multi_line=FALSE))
@@ -617,7 +633,7 @@ Annotate <- R6::R6Class("Annotate",
                       }
                       if ("Persex" %in% plotType){
                         plot <- ggetho::ggperio(data, mapping = ggplot2::aes(y = power, peak = peak))+
-                         ggplot2::geom_line(ggplot2::aes(group = id))+
+                         ggplot2::geom_line(ggplot2::aes(group = id, colour = sex))+
                          ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
                           ggetho::geom_peak()+
                           ggplot2::facet_wrap(sex ~ Genotype, ncol = 6, labeller = ggplot2::label_wrap_gen(multi_line=FALSE))
@@ -625,7 +641,7 @@ Annotate <- R6::R6Class("Annotate",
                       }
                       if ("Pergenotype" %in% plotType){
                         plot <- ggetho::ggperio(data, mapping = ggplot2::aes(y = power, peak = peak))+
-                         ggplot2::geom_line(ggplot2::aes(group = id))+
+                         ggplot2::geom_line(ggplot2::aes(group = id, colour = sex))+
                          ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
                           ggetho::geom_peak()+
                           ggplot2::facet_wrap(Genotype ~ ., ncol = 6, labeller = ggplot2::label_wrap_gen(multi_line=FALSE))
@@ -633,11 +649,55 @@ Annotate <- R6::R6Class("Annotate",
                       }
                       if ("Percabinet" %in% plotType){
                         plot <- ggetho::ggperio(data, mapping = ggplot2::aes(y = power, peak = peak))+
-                         ggplot2::geom_line(ggplot2::aes(group = id))+
+                         ggplot2::geom_line(ggplot2::aes(group = id, colour = Genotype))+
                          ggplot2::geom_line(ggplot2::aes(y = signif_threshold), colour = "red", alpha = 0.4)+
                           ggetho::geom_peak()+
                           ggplot2::facet_wrap(Cabinet ~ ., ncol = 6, labeller = ggplot2::label_wrap_gen(multi_line=FALSE))
                         self$period_plots[5][[1]] <- plot
+                      }
+                    },
+
+#' plot_periodogram_hist
+#'
+#' @param funEnv App_settings environment
+#' @param plotType type of plot to be computed
+#' @param periodRange vector containing period range selected 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+                    plot_periodogram_hist = function(funEnv, plotType, periodRange){
+                      data <- funEnv$env3$Custom_tables$periodograms[[2]]
+                      # browser()
+                      if ("Pertotal_hist" %in% plotType){
+                        # plot <- 
+                        # self$period_plots[1][[2]] <- plot
+                      }
+                      if ("Perfaceted_hist" %in% plotType){
+                        # plot <- 
+                        # self$period_plots[2][[2]] <- plot
+                      }
+                      if ("Persex_hist" %in% plotType){
+                        plot <- ggplot2::ggplot(data, ggplot2::aes(sex, period, fill = Genotype)) + 
+                          ggplot2::geom_boxplot() +
+                          ggplot2::geom_jitter(ggplot2::aes(size = power-signif_threshold), alpha=.4)+
+                          ggplot2::ylim(periodRange[1], periodRange[2])
+                        self$period_plots_box[3][[1]] <- plot
+                      }
+                      if ("Pergenotype_hist" %in% plotType){
+                        plot <- ggplot2::ggplot(data, ggplot2::aes(Genotype, period, fill = Genotype)) + 
+                          ggplot2::geom_boxplot() +
+                          ggplot2::geom_jitter(ggplot2::aes(size = power-signif_threshold), alpha=.4)+
+                          ggplot2::ylim(periodRange[1], periodRange[2])
+                        self$period_plots_box[4][[1]] <- plot
+                      }
+                      if ("Percabinet_hist" %in% plotType){
+                        plot <- ggplot2::ggplot(data, ggplot2::aes(genotype, period, fill = as.factor(Cabinet))) + 
+                          ggplot2::geom_boxplot() +
+                          ggplot2::geom_jitter(ggplot2::aes(size = power-signif_threshold), alpha=.4)+
+                          ggplot2::ylim(periodRange[1], periodRange[2])
+                        self$period_plots_box[5][[1]] <- plot
                       }
                     },
                   

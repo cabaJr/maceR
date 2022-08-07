@@ -269,10 +269,10 @@ mod_analysis_server <- function(id, App_settings){
       ## get user plot choices
       plot_choices <- input$stdActogram
       ## call the function to output the plot for all the selected plot types
-      purrr::map(plot_choices, ~ Annotate$plot_actogram(x = App_settings, type = .x))
+      purrr::map(plot_choices, ~ Annotate$plot_actogram(env = App_settings, type = .x))
       
       ## assign value to be returned to activate plot tab
-      if(App_settings$plotTab == FALSE){
+      if(App_settings$plotTab$tab == FALSE){
         toReturn$plotTab <- checkPlots(App_settings)
       }
       ## assign value of selected plots to be returned
@@ -297,10 +297,10 @@ mod_analysis_server <- function(id, App_settings){
       ## get user plot choices
       plot_choices <- input$DPActogram
       ## call the function to output the plot for all the selected plot types
-      purrr::map(plot_choices, ~ Annotate$plot_DPactogram(x = App_settings, type = .x))
+      purrr::map(plot_choices, ~ Annotate$plot_DPactogram(env = App_settings, type = .x))
       
       ## assign value to be returned to activate plot tab
-      if(App_settings$plotTab == FALSE){
+      if(App_settings$plotTab$tab == FALSE){
         toReturn$plotTab <- checkPlots(App_settings)
       }
       ## assign value of selected plots to be returned
@@ -320,10 +320,10 @@ mod_analysis_server <- function(id, App_settings){
       ## get user plot choices
       plot_choices <- input$DAsum
       ## call the function to output the plot for all the selected plot types
-      purrr::map(plot_choices, ~ Annotate$plot_DAct(x = App_settings, type = .x, error = input$DAct_error))
+      purrr::map(plot_choices, ~ Annotate$plot_DAct(env = App_settings, type = .x, error = input$DAct_error))
       
       ## assign value to be returned to activate plot tab
-      if(App_settings$plotTab == FALSE){
+      if(App_settings$plotTab$tab == FALSE){
         toReturn$plotTab <- checkPlots(App_settings)
       }
       ## assign value of selected plots to be returned
@@ -344,6 +344,8 @@ mod_analysis_server <- function(id, App_settings){
       Custom_tables$checkIf(App_settings, input$subsetPlot) #call to checker function that then calls behavrTable
       ## get user plot choices 
           plot_choices <- input$periodCho
+      ## create plot choices for histogram
+          plot_choices_hist <- paste(plot_choices, "_hist", sep = "")
       ## get period range
           periodRange <- input$periodRange
       ## get function to use
@@ -353,13 +355,15 @@ mod_analysis_server <- function(id, App_settings){
       Annotate <- App_settings$env4$Annotate
       ## call the function to output the plot for all the selected plot types
       purrr::map(plot_choices, ~ Annotate$plot_periodogram(funEnv = App_settings, plotType = .x))
+      ## call the function to output the period boxplots for all selected plot types
+      purrr::map(plot_choices_hist, ~ Annotate$plot_periodogram_hist(funEnv = App_settings, plotType = .x, periodRange = periodRange))
       ## assign value to be returned to activate plot tab
-      if(App_settings$plotTab == FALSE){
+      if(App_settings$plotTab$tab == FALSE){
         toReturn$plotTab <- checkPlots(App_settings)
       }
+      plot_choices_tot <- c(plot_choices, plot_choices_hist)
       ## assign value of selected plots to be returned
-          # toReturn$periods <- plot_choices
-      toReturn$periods <- plot_choices
+      toReturn$periods <- plot_choices_tot
     })
     
     ## download handler for periodogram table 
@@ -381,7 +385,7 @@ mod_analysis_server <- function(id, App_settings){
       ## call the function to output the plot for all the selected plot types
       purrr::map(plot_choices, ~ Annotate$plot_avg_day(funEnv = App_settings, plotType = .x, error = input$AvgDay_error))
       ## assign value to be returned to activate plot tab
-      if(App_settings$plotTab == FALSE){
+      if(App_settings$plotTab$tab == FALSE){
         toReturn$plotTab <- checkPlots(App_settings)
       }
       ## assign value of selected plots to be returned

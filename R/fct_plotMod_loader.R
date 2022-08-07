@@ -7,7 +7,6 @@
 #' @noRd
 load_plots <- function(env, plot_list, session){
   Annotate <- env$env4$Annotate
-  
   plot_list_static <- isolate(plot_list)
 
     acto_choices <- Annotate$output_list_acto
@@ -18,7 +17,7 @@ load_plots <- function(env, plot_list, session){
       title = unlist(acto_selected[i, 4])
       pos <- unlist(acto_selected[i, 2])
       module_id <- paste("box_plot_ui_", pos, sep = "")
-      plots_out <- mod_plots_server(id = "plots_ui_1",
+      plots_out <- mod_plots_server(id ="plots_ui_1", #check this, might be the cause for same title
                                     env = env,
                                     acto_selected = acto_selected,
                                     title = title,
