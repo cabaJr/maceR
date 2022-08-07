@@ -8,15 +8,15 @@
 
 Raw_mouse_data <- R6::R6Class("Raw_mouse_data",
                               list(
-                                #' @field id animal's id
-                                #' @field sex animal's sex
-                                #' @field genotype animal's genotype
-                                #' @field cabinet cabined in which the animal is housed
-                                #' @field lightOn hour when lights are switched on
-                                #' @field startdate starting date of the experiment
-                                #' @field data raw data
-                                #' @field length length of data table
-                                #'                             
+#' @field id animal's id
+#' @field sex animal's sex
+#' @field genotype animal's genotype
+#' @field cabinet cabined in which the animal is housed
+#' @field lightOn hour when lights are switched on
+#' @field startdate starting date of the experiment
+#' @field data raw data
+#' @field length length of data table
+#'                             
                                 id = as.character(),
                                 sex = as.character(),
                                 genotype = as.character(),
@@ -25,11 +25,11 @@ Raw_mouse_data <- R6::R6Class("Raw_mouse_data",
                                 startdate = as.character(),
                                 data = as.data.frame(NULL),
                                 length = as.numeric(),
-                                #' initialize
-                                #'
-                                #' @return initializes some field with the required type
-                                #' @export
-                                #'
+#' initialize
+#'
+#' @return initializes some field with the required type
+#' @export
+#'
                                 initialize = function(){
                                   self$id <- as.character()
                                   self$sex <- as.character()
@@ -39,24 +39,23 @@ Raw_mouse_data <- R6::R6Class("Raw_mouse_data",
                                   self$startdate <- as.character()
                                   self$data <- data.frame()
                                 },
-                                #' add
-                                #'
-                                #' @param datapath path where to find the uploaded data filed
-                                #' @param metadatapath path where to find the metadata file
-                                #'
-                                #' @return
-                                #' @export
-                                #'
-                                add = function(datapath, metadatapath){ #function to read from csv files and insert data inside the object
-                                  # browser()
+#' add
+#'
+#' @param datapath path where to find the uploaded data filed
+#' @param metadatapath path where to find the metadata file
+#' @param skipRows numeric, number of initial rows to skip in the imported files
+#'
+#' @return
+#' @export
+#'
+                                add = function(datapath, metadatapath, skipRows){ #function to read from csv files and insert data inside the object
                                   ## read from the specified datapath (from input button)
                                   datapath1 <- datapath
                                   ## read from the specified metadatapath (from input button)
                                   metadatapath1 <- metadatapath
-                                  data <- read.csv(datapath1, skip = 4, header = FALSE, col.names = c("Day", "Hour", "Minute", "Counts_min", "Lights"), stringsAsFactors = FALSE)
+                                  data <- read.csv(datapath1, skip = skipRows, header = FALSE, col.names = c("Day", "Hour", "Minute", "Counts_min", "Lights"), stringsAsFactors = FALSE)
                                   metadata <- read.csv(metadatapath1, header = TRUE, sep = ";")
                                   id <- read.csv(datapath1, skip = 1, nrows = 1, header = FALSE)
-                                  # browser()
                                   id_sel <- sapply(strsplit(id[1,1], "_"), function(x) x[(length(x)-1)])
                                   # id_sel <- substr(id[1,1], 4, 10)
                                   filtered <- metadata[metadata$Identifier == id_sel,]

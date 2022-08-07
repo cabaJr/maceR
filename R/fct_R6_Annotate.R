@@ -693,7 +693,7 @@ Annotate <- R6::R6Class("Annotate",
                         self$period_plots_box[4][[1]] <- plot
                       }
                       if ("Percabinet_hist" %in% plotType){
-                        plot <- ggplot2::ggplot(data, ggplot2::aes(genotype, period, fill = as.factor(Cabinet))) + 
+                        plot <- ggplot2::ggplot(data, ggplot2::aes(Genotype, period, fill = as.factor(Cabinet))) + 
                           ggplot2::geom_boxplot() +
                           ggplot2::geom_jitter(ggplot2::aes(size = power-signif_threshold), alpha=.4)+
                           ggplot2::ylim(periodRange[1], periodRange[2])

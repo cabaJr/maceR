@@ -1,6 +1,7 @@
 #' preload_data
 #'
 #' @param App_settings to access App_settings object
+#' @param skipRows numeric, rows to skip when importing data
 #'
 #' @description A function to create the Raw_mouse_data and preload the 
 #'     uploaded files inside of it, decomposing the metadata file and the 
@@ -10,11 +11,11 @@
 #'
 #' @noRd
 
-preload_data <- function(App_settings){
+preload_data <- function(App_settings, skipRows = 4){
   myMice <- NULL
   for(i in seq_len(length.out = length(App_settings$dataList$name))) {
     myMice[[i]] <- Raw_mouse_data$new()
-    myMice[[i]]$add(App_settings$dataList$datapath[i], App_settings$metadata$datapath)
+    myMice[[i]]$add(App_settings$dataList$datapath[i], App_settings$metadata$datapath, skipRows)
   }
   App_settings$env1 <- pryr::where("myMice") #store env of myMice inside App_settings
 }

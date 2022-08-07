@@ -23,8 +23,8 @@ mod_analysis_ui <- function(id){
   ns <- NS(id)
   tagList(
  
+    ## subset box
     fluidRow(div(style = ""),
-             
              shinydashboard::box(title= "Subset data to visualize", id = "box3_0", width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
                  fluidRow(column(width = 8,
                                  shinyWidgets::prettyRadioButtons(inputId = ns("subsetPlot"), label = "Do you want to subset the data to visualize?", choices = c("Yes", "No"), inline = TRUE, selected = "No")
@@ -44,14 +44,23 @@ mod_analysis_ui <- function(id){
                                  sliderInput(inputId = ns("timeSubset"), label = "Select time window to visualize", min = 0, max = 34, step = 0.125, value = c(0, 10), width = '90%')))
              )
     ),
+    ## double plotted actogram box
     fluidRow(div(style = ""),
              shinydashboard::box(title= "Actogram", id = "box3_2", width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
                                  fluidRow(column(width = 12,
                                                  shinyWidgets::prettyCheckboxGroup(inputId = ns("DPActogram"), label = "Select the desired plots:",
                                                                                    choiceNames = c("Cumulative", "Averaged by sex", "Averaged by genotype", "Averaged by cabinet"),# "Individual"),
                                                                                    choiceValues = c("DAtotal", "DAsex", "DAgenotype", "DAcabinet"),#, "individual"),
-                                                                                   inline = TRUE, width = "80%"), selectizeInput(inputId = ns("chooseId"), label = NULL, choices = c("choose" = "", levels(unique)), width = 85, multiple = FALSE),
-                                                 actionButton(inputId = ns("printDP"), label = "print")
+                                                                                   inline = TRUE, width = "80%"), 
+                                                 selectizeInput(inputId = ns("chooseId"), 
+                                                                label = NULL, 
+                                                                choices = c("choose" = "", levels(unique)), 
+                                                                width = 85, 
+                                                                multiple = FALSE),
+                                                 actionButton(inputId = ns("printDP"), 
+                                                              label = "print"), 
+                                                 downloadButton(outputId = ns("Dl0"), 
+                                                                label = "Download")
                                  ))
              )
     ),
@@ -85,18 +94,28 @@ mod_analysis_ui <- function(id){
     #              )
     #            )
     # ),
+    ## Single line actogram box
     fluidRow(div(style = ""),
-             
-             shinydashboard::box(title= "Single line actogram", id = ns("box3_1"), width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
+             shinydashboard::box(title= "Single line actogram", 
+                                 id = ns("box3_1"), 
+                                 width = 12, 
+                                 solidHeader = TRUE, 
+                                 collapsible = TRUE, 
+                                 status = "primary",
                  fluidRow(column(width = 12,
-                                 shinyWidgets::prettyCheckboxGroup(inputId = ns("stdActogram"), label = "Select the desired plots:",
+                                 shinyWidgets::prettyCheckboxGroup(inputId = ns("stdActogram"), 
+                                                                   label = "Select the desired plots:",
                                                     choiceNames = c("Total Actogram", "Splitted by sex", "Splitted by genotype", "Splitted by cabinet"),
                                                     choiceValues = c("total", "sex", "genotype", "cabinet"),
                                                     inline = TRUE, width = "80%"),
-                                 actionButton(inputId = ns("print"), label = "print"), downloadButton(outputId = ns("Dl1"), label = "Download")
+                                 actionButton(inputId = ns("print"), 
+                                              label = "print"), 
+                                 downloadButton(outputId = ns("Dl1"), 
+                                                label = "Download")
                  ))
              )
     ),
+    ## Sum of daily activity box
     fluidRow(div(style = ""),
              shinydashboard::box(title= "Sum of daily activity",
                                  id = ns("box3_3"),
@@ -105,14 +124,21 @@ mod_analysis_ui <- function(id){
                                  collapsible = TRUE,
                                  status = "primary",
                  fluidRow(column(width = 6,
-                                 shinyWidgets::prettyCheckboxGroup(inputId = ns("DAsum"), label = "Select the desired plots:",
+                                 shinyWidgets::prettyCheckboxGroup(inputId = ns("DAsum"), 
+                                                                   label = "Select the desired plots:",
                                                     choiceNames = c("Averaged by genotype", "Averaged by sex", "Individual + mean", "Averaged by sex, divided by cabinet", "Individual, divided by sex and genotype + mean", "Individual, divided by cabinet and genotype"),
                                                     choiceValues = c("~gen", "~sex", "individual", "gen~sex", "indiv+sex~gen", "indiv+cab~gen"),
-                                                    inline = FALSE, width = "80%"),
-                                 actionButton(inputId = ns("dayAct"), label = "Daily activity"),
+                                                    inline = FALSE, 
+                                                    width = "80%"),
+                                 actionButton(inputId = ns("dayAct"), 
+                                              label = "Daily activity"),
                  ),
                            column(width = 4, 
-                                  shinyWidgets::prettyRadioButtons(inputId = ns("DAct_error"), label = "Do you want to plot SD or Sem?", choices = c("SD", "Sem"), inline = TRUE, selected = "Sem")
+                                  shinyWidgets::prettyRadioButtons(inputId = ns("DAct_error"), 
+                                                                   label = "Do you want to plot SD or Sem?", 
+                                                                   choices = c("SD", "Sem"), 
+                                                                   inline = TRUE, 
+                                                                   selected = "Sem")
                            )),
                  fluidRow(column(width = 12,
                                  br(),
@@ -121,7 +147,8 @@ mod_analysis_ui <- function(id){
                  )),
                  fluidRow(column(width = 2, offset = 9,
                                  br(),
-                                 downloadButton(outputId = ns("Dl2"), label = "Download")
+                                 downloadButton(outputId = ns("Dl2"), 
+                                                label = "Download")
                  ))
              )
     ),
@@ -136,6 +163,7 @@ mod_analysis_ui <- function(id){
     #                                                     style="color: #fff; background-color: #1e690c; border-color: #1e530c;")))
     #          )
     # ),
+    ## Periodogran box
     fluidRow(div(style = ""),
              shinydashboard::box(title= "Periodogram", id = ns("box3_5"), width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
                  fluidRow(column(width = 6,
@@ -164,6 +192,7 @@ mod_analysis_ui <- function(id){
                  )
              )
     ),
+    ## Average day of activity box
     fluidRow(div(style = ""),
              shinydashboard::box(title= "Average day", id = ns("box3_6"), width = 12, solidHeader = TRUE, collapsible = TRUE, status = "primary",
                                  fluidRow(
@@ -207,6 +236,7 @@ mod_analysis_server <- function(id, App_settings){
     # clean interface
     observeEvent(sessionInfo(), ignoreNULL = TRUE, once = TRUE, {
       clearSubsetting(input_result)
+      clearDownload()
     })
     
     ## show help messages 
@@ -253,6 +283,36 @@ mod_analysis_server <- function(id, App_settings){
       App_settings$updateTimeRange(input$timeSubset)
     })
     
+    #### DOUBLE PLOTTED PERIODOGRAM ####
+    observeEvent(input$printDP, {
+      ## get Custom table object through App_settings
+      Custom_tables <- App_settings$env2$Custom_tables
+      ## check if locomotor_act[[1]] is already present or calculate it
+      Custom_tables$checkIf(App_settings, input$subsetPlot) #call to checker function that then calls behavrTable
+      ## get annotate environment
+      Annotate <- App_settings$env4$Annotate
+      ## add LD settings calculation
+      
+      ## get user plot choices
+      plot_choices <- input$DPActogram
+      ## call the function to output the plot for all the selected plot types
+      purrr::map(plot_choices, ~ Annotate$plot_DPactogram(env = App_settings, type = .x))
+      
+      ## assign value to be returned to activate plot tab
+      if(App_settings$plotTab$tab == FALSE){
+        toReturn$plotTab <- checkPlots(App_settings)
+      }
+      ## show download button
+      shinyjs::show(id = "Dl0", anim = FALSE)
+      ## assign value of selected plots to be returned
+      toReturn$DPactos <- plot_choices
+    })
+    
+    ## download handler for behavr table 
+    output$Dl0 <- download_obj(title = "Behavr_table_",
+                               location = App_settings$env2$Custom_tables$locomotor_act[[1]],
+                               format = "csv")
+    
     #### SINGLE LINE PERIODOGRAM ####
     observeEvent(input$print,{
       ## get Custom table object through App_settings
@@ -275,6 +335,8 @@ mod_analysis_server <- function(id, App_settings){
       if(App_settings$plotTab$tab == FALSE){
         toReturn$plotTab <- checkPlots(App_settings)
       }
+      ## show download button
+      shinyjs::show(id = "Dl1", anim = FALSE)
       ## assign value of selected plots to be returned
       toReturn$actos <- plot_choices
     })
@@ -283,29 +345,6 @@ mod_analysis_server <- function(id, App_settings){
     output$Dl1 <- download_obj(title = "Behavr_table_",
                                location = App_settings$env2$Custom_tables$locomotor_act[[1]],
                                format = "csv")
-    
-    #### DOUBLE PLOTTED PERIODOGRAM ####
-    observeEvent(input$printDP, {
-      ## get Custom table object through App_settings
-      Custom_tables <- App_settings$env2$Custom_tables
-      ## check if locomotor_act[[1]] is already present or calculate it
-      Custom_tables$checkIf(App_settings, input$subsetPlot) #call to checker function that then calls behavrTable
-      ## get annotate environment
-      Annotate <- App_settings$env4$Annotate
-      ## add LD settings calculation
-      
-      ## get user plot choices
-      plot_choices <- input$DPActogram
-      ## call the function to output the plot for all the selected plot types
-      purrr::map(plot_choices, ~ Annotate$plot_DPactogram(env = App_settings, type = .x))
-      
-      ## assign value to be returned to activate plot tab
-      if(App_settings$plotTab$tab == FALSE){
-        toReturn$plotTab <- checkPlots(App_settings)
-      }
-      ## assign value of selected plots to be returned
-      toReturn$DPactos <- plot_choices
-    })
     
     #### SUM OF DAILY ACTIVITY ####
     observeEvent(input$dayAct, {
@@ -326,6 +365,8 @@ mod_analysis_server <- function(id, App_settings){
       if(App_settings$plotTab$tab == FALSE){
         toReturn$plotTab <- checkPlots(App_settings)
       }
+      ## show download button
+      shinyjs::show(id = "Dl2", anim = FALSE)
       ## assign value of selected plots to be returned
       toReturn$Dact <- plot_choices
     })
@@ -361,6 +402,8 @@ mod_analysis_server <- function(id, App_settings){
       if(App_settings$plotTab$tab == FALSE){
         toReturn$plotTab <- checkPlots(App_settings)
       }
+      ## show download button
+      shinyjs::show(id = "Dl3", anim = FALSE)
       plot_choices_tot <- c(plot_choices, plot_choices_hist)
       ## assign value of selected plots to be returned
       toReturn$periods <- plot_choices_tot
@@ -388,6 +431,8 @@ mod_analysis_server <- function(id, App_settings){
       if(App_settings$plotTab$tab == FALSE){
         toReturn$plotTab <- checkPlots(App_settings)
       }
+      ## show download button
+      shinyjs::show(id = "Dl4", anim = FALSE)
       ## assign value of selected plots to be returned
       toReturn$avgDay <- plot_choices
     })
