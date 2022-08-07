@@ -118,7 +118,7 @@ Initialize_DS
 
 \item{\code{LDparams}}{list containing user defined LD condition settings}
 
-\item{\code{plotTab}}{TRUE/FALSE value to know if the plot tab has been activated}
+\item{\code{plotTab}}{list containing values fro showing/hiding elements in Plots Tab}
 
 \item{\code{env1}}{contains environment#1}
 

@@ -9,10 +9,10 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic 
-    
+    #possible themes to use: Solar, pulse, minty, 
     shinydashboardPlus::dashboardPage(
-      options = list(sidebarExpandOnHover = TRUE),
-      header = shinydashboardPlus::dashboardHeader(title = "MACE", 
+      options = list(sidebarExpandOnHover = FALSE),
+      header = shinydashboardPlus::dashboardHeader(title = "maceR", 
                                                    disable = App_settings$public_fields$dashboardHeader_appearance),
       title = "MACE",
       sidebar = shinydashboardPlus::dashboardSidebar(disable = FALSE, 

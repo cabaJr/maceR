@@ -20,7 +20,7 @@ App_settings <- R6::R6Class("App_settings",
 #' @field subsetting list containing info about data subsetting
 #' @field LDcondition list containing code to generate LD shading in actograms
 #' @field LDparams list containing user defined LD condition settings
-#' @field plotTab TRUE/FALSE value to know if the plot tab has been activated
+#' @field plotTab list containing values fro showing/hiding elements in Plots Tab
 #' @field env1 contains environment#1
 #' @field env2 contains environment#2
 #' @field env3 contains environment#3
@@ -48,7 +48,13 @@ App_settings <- R6::R6Class("App_settings",
                                               DDcheck = NULL,
                                               DDstart = NULL
                                               ),
-                              plotTab = FALSE,
+                              plotTab = list(tab = FALSE,
+                                             DPActo = FALSE,
+                                             acto = FALSE,
+                                             dayAct = FALSE,
+                                             period = FALSE,
+                                             avgDay = FALSE
+                                             ),
                               env1 = NULL,
                               env2 = NULL,
                               env3 = NULL,

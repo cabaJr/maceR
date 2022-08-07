@@ -27,9 +27,29 @@ check_uploads <- function(App_settings){
 #'
 
 checkPlots <- function(App_settings){
-    App_settings$plotTab <- TRUE
+    App_settings$plotTab$tab <- TRUE
   } 
 
+#' check_plot_tab
+#'
+#' @param App_setting env App_settings
+#' @param activate tab to activate
+#'
+#' @return
+#' @export
+#'
+check_plot_tab <- function(App_setting, activate){
+  activate <- TRUE
+}
+
+
+#' subset_input_check
+#'
+#' @param idlist list of selected animals for subsetting
+#'
+#' @return an error notification
+#' @export
+#'
 subset_input_check <- function(idlist){
   input_error <- dplyr::case_when(
     !is.null(idlist) ~ "You need to select some animals",
