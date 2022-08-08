@@ -113,20 +113,6 @@ Clean_mouse_data <- R6::R6Class("Clean_mouse_data",
                                 self$timepoint <- seq(from = 0, by = App_settings$timepointDur, length.out = dataLen)
                                 self$countsMinute <- data_counts
                                 self$length <- dataLen
-                              },
-
-#' print1
-#'
-#' @param x 
-                            print1 = function(x){
-                                yourTable = tibble(
-                                  "id" = self$id,
-                                  "Genotype" = self$genotype,
-                                  "realtime" = self$realTime,
-                                  "time" = self$timepoint,
-                                  "activity" = self$countsMinute
-                                )
-                                yourTable
                               }
 
 

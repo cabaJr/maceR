@@ -206,7 +206,7 @@ mod_analysis_server <- function(id, App_settings){
     
     # clean interface
     observeEvent(sessionInfo(), ignoreNULL = TRUE, once = TRUE, {
-      clearSubsetting(input_result)
+      clearSubsetting()
     })
     
     ## show help messages 
@@ -226,7 +226,7 @@ mod_analysis_server <- function(id, App_settings){
     observeEvent(input$subsetPlot, { #open/close subsetting parameters
       case <- input$subsetPlot
       if(is.null(App_settings$env2) == FALSE){
-        switch(case, "Yes" = {showSubsetting(input_result)}, "No" = {clearSubsetting(input_result)})
+        switch(case, "Yes" = {showSubsetting()}, "No" = {clearSubsetting()})
       }
     })
     ## update selectors
