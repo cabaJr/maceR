@@ -2,16 +2,18 @@
 #'
 #' @description R6 class object used for storing plots and other processed data.
 #'     It is accessed internally to display data.
+#' @details R6 object containing lists to store plots generated using methods
+#'     available inside the Annotate R6 object
 #'
 #' @return The return value, if any, from executing the function.
 #'
 #' @noRd
-
 Annotate <- R6::R6Class("Annotate",
 #' @field Actograms 1
 #' @field DPActograms 2
 #' @field DAct_plots 3
 #' @field period_plots 4
+#' @field period_plots_box 4_1
 #' @field actTable 5
 #' @field metaTable 6
 #' @field cacheKeys 7
@@ -130,8 +132,7 @@ Annotate <- R6::R6Class("Annotate",
 #' @param env App_settings environment
 #'
 #' @return returns a table containing the uploaded metadata
-#' @export
-#'
+#' 
                     showMeta = function(env){
                       # browser()
                       myCleanMice <- env$myCleanMice
@@ -162,9 +163,6 @@ Annotate <- R6::R6Class("Annotate",
 #' @param env App_settings
 #' @param id mouse Id
 #' @param miceList list of animals
-#'
-#' @return
-#' @export
 #'
                     showData = function(env, id, miceList){
                       myCleanMice <- env$myCleanMice
@@ -216,9 +214,6 @@ Annotate <- R6::R6Class("Annotate",
 #' @param env App_settings environment
 #' @param type plot type to be rendered
 #'
-#' @return
-#' @export
-#'
                     plot_actogram = function(env, type){   #access data to env2 (where custom_tables object is stored). env2 should contain myCleanMice objects
                       data <- env$env2$Custom_tables$locomotor_act[[1]]
                       # len <- length(env$App_settings$dataList$name)
@@ -267,9 +262,7 @@ Annotate <- R6::R6Class("Annotate",
 #'
 #' @param env App_settings environment
 #' @param type plot type to be rendered
-#'
-#' @return
-#' @export
+#' 
                     plot_DPactogram = function(env, type){ #"total", "sex", "genotype", "cabinet", "individual"
                       data <- env$env2$Custom_tables$locomotor_act[[1]]
                       # len <- as.numeric(length(env$App_settings$dataList$name))
@@ -338,10 +331,7 @@ Annotate <- R6::R6Class("Annotate",
 #' @param type type of plot to be computed
 #' @param error "Sem" or "SD"
 #'
-#' @return
-#' @export
-#'
-#' @examples
+
                     plot_DAct = function(env, type, error = "Sem"){
                       activity <- env$env3$Custom_tables$daily_act[[1]] #get activity file from Custom_tables
 
@@ -610,10 +600,7 @@ Annotate <- R6::R6Class("Annotate",
 #' @param funEnv App_settings environment
 #' @param plotType type of plot to be computed
 #'
-#' @return
-#' @export
-#'
-#' @examples
+
                     plot_periodogram = function(funEnv, plotType){
                       data <- funEnv$env3$Custom_tables$periodograms[[1]]
                       if ("Pertotal" %in% plotType){
@@ -663,10 +650,7 @@ Annotate <- R6::R6Class("Annotate",
 #' @param plotType type of plot to be computed
 #' @param periodRange vector containing period range selected 
 #'
-#' @return
-#' @export
-#'
-#' @examples
+
                     plot_periodogram_hist = function(funEnv, plotType, periodRange){
                       data <- funEnv$env3$Custom_tables$periodograms[[2]]
                       # browser()
@@ -693,7 +677,7 @@ Annotate <- R6::R6Class("Annotate",
                         self$period_plots_box[4][[1]] <- plot
                       }
                       if ("Percabinet_hist" %in% plotType){
-                        plot <- ggplot2::ggplot(data, ggplot2::aes(genotype, period, fill = as.factor(Cabinet))) + 
+                        plot <- ggplot2::ggplot(data, ggplot2::aes(Genotype, period, fill = as.factor(Cabinet))) + 
                           ggplot2::geom_boxplot() +
                           ggplot2::geom_jitter(ggplot2::aes(size = power-signif_threshold), alpha=.4)+
                           ggplot2::ylim(periodRange[1], periodRange[2])

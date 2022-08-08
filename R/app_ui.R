@@ -14,7 +14,7 @@ app_ui <- function(request) {
       options = list(sidebarExpandOnHover = FALSE),
       header = shinydashboardPlus::dashboardHeader(title = "maceR", 
                                                    disable = App_settings$public_fields$dashboardHeader_appearance),
-      title = "MACE",
+      title = "maceR",
       sidebar = shinydashboardPlus::dashboardSidebar(disable = FALSE, 
                                                      minified = TRUE, 
                                                      collapsed = TRUE,
@@ -88,7 +88,7 @@ golem_add_external_resources <- function(){
     favicon(),
     bundle_resources(
       path = app_sys('app/www'),
-      app_title = 'MACE'
+      app_title = 'maceR'
     )
     # Add here other external resources
     # for example, you can add shinyalert::useShinyalert() 

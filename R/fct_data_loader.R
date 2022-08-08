@@ -47,8 +47,8 @@ load_data <- function(env){
 #'
 #' @param funEnv connects to App_settings object
 #' @param session session object
+#' @param input_result TBD
 #'
-#' @examples upload_subsetting(App_settings)
 upload_subsetting <- function(funEnv, session, input_result){
   App_settings <- funEnv
   #import data

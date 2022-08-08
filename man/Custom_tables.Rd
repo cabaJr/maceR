@@ -17,48 +17,6 @@ method to generate a metadata table, integrating the metadata file
     uploaded from the user with computing of each raw data file in the 
     dataset.
 }
-\examples{
-
-## ------------------------------------------------
-## Method `Custom_tables$AvgDay`
-## ------------------------------------------------
-
-HHActivity(env)
-CheckIf
-
-
-## ------------------------------------------------
-## Method `Custom_tables$checkIf`
-## ------------------------------------------------
-
-write examples
-behavrTable
-
-
-## ------------------------------------------------
-## Method `Custom_tables$behavrTable`
-## ------------------------------------------------
-
-write examples of behavrTable application
-dailyAct
-
-
-## ------------------------------------------------
-## Method `Custom_tables$dailyAct`
-## ------------------------------------------------
-
-dailyAct(env)
-computePer
-
-
-## ------------------------------------------------
-## Method `Custom_tables$computePer`
-## ------------------------------------------------
-
-provide examples on how to call the function for the different 
-    period analyses available with different params
-    
-}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
@@ -107,7 +65,7 @@ compile}
 \subsection{Returns}{
 Metadata table to be stored inside the Custom_tables R6 object.
 
-HHActivity
+AvgDay
 }
 }
 \if{html}{\out{<hr>}}
@@ -132,18 +90,10 @@ function to create tibble with mouse activity daily grouped in
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A table with the sum
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{HHActivity(env)
+A table with the sum 
+
 CheckIf
-
 }
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-checkIf"></a>}}
@@ -158,23 +108,12 @@ CheckIf
 \describe{
 \item{\code{funEnv}}{env containing App_settings}
 
-\item{\code{subsetPlot}}{Yes/No value}
+\item{\code{subsetPlot}}{Yes/No value
+
+behavrTable}
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Returns}{
-
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{write examples
-behavrTable
-
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-behavrTable"></a>}}
@@ -189,23 +128,12 @@ behavrTable
 \describe{
 \item{\code{x}}{App_settings environment}
 
-\item{\code{subsetVal}}{Yes/No value if to subset dataset or not}
+\item{\code{subsetVal}}{Yes/No value if to subset dataset or not
+
+dailyAct}
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Returns}{
-
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{write examples of behavrTable application
-dailyAct
-
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-dailyAct"></a>}}
@@ -213,6 +141,8 @@ dailyAct
 \subsection{Method \code{dailyAct()}}{
 function to generate the sum of the activity for each day and
     store it on a table.
+
+computePer
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Custom_tables$dailyAct(env, subsetVal)}\if{html}{\out{</div>}}
 }
@@ -226,19 +156,6 @@ function to generate the sum of the activity for each day and
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Returns}{
-
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{dailyAct(env)
-computePer
-
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-computePer"></a>}}
@@ -264,19 +181,6 @@ function to analyse data generated with behavrTable() to
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Returns}{
-
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{provide examples on how to call the function for the different 
-    period analyses available with different params
-    
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

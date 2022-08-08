@@ -53,6 +53,8 @@ initialize}
 
 \subsection{Returns}{
 initializes some field with the required type
+
+add
 }
 }
 \if{html}{\out{<hr>}}
@@ -60,7 +62,7 @@ initializes some field with the required type
 \if{latex}{\out{\hypertarget{method-add}{}}}
 \subsection{Method \code{add()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Raw_mouse_data$add(datapath, metadatapath)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Raw_mouse_data$add(datapath, metadatapath, skipRows)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -69,11 +71,10 @@ initializes some field with the required type
 \item{\code{datapath}}{path where to find the uploaded data filed}
 
 \item{\code{metadatapath}}{path where to find the metadata file}
+
+\item{\code{skipRows}}{numeric, number of initial rows to skip in the imported files}
 }
 \if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-
 }
 }
 \if{html}{\out{<hr>}}

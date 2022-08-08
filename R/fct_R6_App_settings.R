@@ -65,10 +65,6 @@ App_settings <- R6::R6Class("App_settings",
 #'
 #' @param outsideData list of data files uploaded by the user
 #'
-#' @return
-#' @export
-#'
-#' @examples
                               setData = function(outsideData){
                                 self$dataList <- outsideData
                               },
@@ -77,10 +73,6 @@ App_settings <- R6::R6Class("App_settings",
 #'
 #' @param outsideMeta metadata file uploaded by the user
 #'
-#' @return
-#' @export
-#'
-#' @examples
                               setMeta = function(outsideMeta){
                                 # add checks for files to be in the correct format
                                 self$metadata <- outsideMeta
@@ -90,10 +82,6 @@ App_settings <- R6::R6Class("App_settings",
 #'
 #' @param env environment
 #'
-#' @return
-#' @export
-#'
-#' @examples
                               setListMice = function(env){
                                 miceList <- env$env2$myCleanMice
                                 d2 <- dplyr::tibble(
@@ -119,10 +107,6 @@ App_settings <- R6::R6Class("App_settings",
 #' @param genList list containing mice genotypes
 #' @param cabList list containing cabinet numbers
 #'
-#' @return
-#' @export
-#'
-#' @examples
                               setListMiceFiltered = function(x, idList, sexList, genList, cabList){
                                 metadata <- x$Annotate$metaTable
                                 # browser()
@@ -148,10 +132,6 @@ App_settings <- R6::R6Class("App_settings",
 #' @param ddVal Y/N value for DD
 #' @param ddStart day in which DD starts
 #'
-#' @return
-#' @export
-#'
-#' @examples
                               saveLDparams = function(x, light, ddVal, ddStart){
                                 self$LDparams$light = light
                                 self$LDparams$DDcheck = ddVal
@@ -166,10 +146,6 @@ App_settings <- R6::R6Class("App_settings",
 #' @param ddVal Y/N value for DD
 #' @param ddStart day in which DD starts
 #'
-#' @return
-#' @export
-#'
-#' @examples
                               setLD = function(x, light, ddVal, ddStart){ #add more comments
                                 qty <- length(x$env2$myCleanMice)
                                 length1 <- max(x$env2$Annotate$metaTable$Datapoints)*60
@@ -208,10 +184,6 @@ App_settings <- R6::R6Class("App_settings",
 #'
 #' @param x to be rechecked (numeric)
 #'
-#' @return
-#' @export
-#'
-#' @examples
                               updateTimeRange = function(x){
                                 self$subsetting$timespan <- x
                               },
@@ -220,10 +192,6 @@ App_settings <- R6::R6Class("App_settings",
 #'
 #' @param x number of rows to discard (numeric)
 #'
-#' @return
-#' @export
-#'
-#' @examples
                               setDiscRow = function(x){
                                 self$discardRow = x
                               },
@@ -231,10 +199,6 @@ App_settings <- R6::R6Class("App_settings",
 #'
 #' @param x to display time in 12/24h format
 #'
-#' @return
-#' @export
-#'
-#' @examples
                               setTimeDisp = function(x){
                                 self$timeDisplay = x
                               },
@@ -243,10 +207,6 @@ App_settings <- R6::R6Class("App_settings",
 #'
 #' @param x date value for when the experiment starts
 #'
-#' @return
-#' @export
-#'
-#' @examples
                               setExpstart = function(x){
                                 self$ExpStart = x
                               },
@@ -255,152 +215,7 @@ App_settings <- R6::R6Class("App_settings",
 #'
 #' @param x sampling rate
 #'
-#' @return
-#' @export
-#'
-#' @examples
-#' no examples provided
                               setTimepointDur = function(x){
                                 self$timepointDur = x
-                              },
-#' Initialize_DS
-#'
-#' @param server is it really needed?
-#'
-#' @return
-#' @export
-#'
-                              initialize_DS = function(server){ #create individual functions that close various segments and call them here
-                                #buttons to observe
-                                shinyjs::hide(id = "DFsubsetRT", anim = FALSE)
-                                shinyjs::hide(id = "DFsubsetRT2", anim = FALSE)
-                                shinyjs::hide(id = "DFsubsetTP", anim = FALSE)
-                                #related to serietype radiobutton
-                                shinyjs::hide(id = "rtStart", anim = FALSE)
-                                shinyjs::hide(id = "rtStartHour", anim = FALSE)
-                                shinyjs::hide(id = "tpDuration", anim = FALSE)
-                                # related to DFsubsetRT radiobutton
-                                shinyjs::hide(id = "timeFrame1", anim = FALSE)
-                                shinyjs::hide(id = "timeFrame2", anim = FALSE)
-                                shinyjs::hide(id = "RTanalysis_starttime", anim = FALSE)
-                                shinyjs::hide(id = "RTanalysis_endtime", anim = FALSE)
-                                # related to DFsubsetTP radiobutton
-                                shinyjs::hide(id = "TPanalysis_starttime", anim = FALSE)
-                                shinyjs::hide(id = "TPanalysis_endtime", anim = FALSE)
-                                # related to DFsubsetRT2 radiobutton
-                                shinyjs::hide(id = "timeFrame3", anim = FALSE)
-                                shinyjs::hide(id = "timeFrame4", anim = FALSE)
-                                shinyjs::hide(id = "RTanalysis_starttime2", anim = FALSE)
-                                shinyjs::hide(id = "RTanalysis_endtime2", anim = FALSE)
-                                # related to DFsubsetRT2 radiobutton
-                                shinyjs::hide(id = "TPanalysis_starttime2", anim = FALSE)
-                                shinyjs::hide(id = "TPanalysis_endtime2", anim = FALSE)
                               }
-                              # old initialize UI
-                              
-                                # self$clearActos()
-                                # self$clearDPActos()
-                                # self$clearDAct()
-                                # self$clearPer()
-                                # self$clearSubsetting()
-                                # hide(id = "dataTab", anim = FALSE)        #hide data
-                                # shinyjs::hide(id = "dailyTab", anim = FALSE)       #hide daily tab
-                                # shinyjs::hide(id = "chooseId", anim = FALSE)       #hide individual id selection in DP actogram
-                                # shinyjs::hide(id = "idCol", anim = FALSE)          #hide custom metadata mode
-                                # shinyjs::hide(id = "sexCol", anim = FALSE)
-                                # shinyjs::hide(id = "geneCol", anim = FALSE)
-                                # shinyjs::hide(id = "cabCol", anim = FALSE)
-                                # shinyjs::hide(id = "metafiltered", anim = FALSE)   #hide filtered metadata table
-                                # shinyjs::hide(id = "tablemetafilter", anim = FALSE)
-                                # shinyjs::hide(id = "alignData", anim = FALSE)
-                                # shinyjs::hide(id = "timeFrame3", anim = FALSE)
-                                # shinyjs::hide(id = "RTanalysis_starttime2", anim = FALSE)
-                                # shinyjs::hide(id = "RTanalysis_endtime2", anim = FALSE)
-                                # shinyjs::hide(id = "TPanalysis_starttime2", anim = FALSE)
-                                # shinyjs::hide(id = "TPanalysis_endtime2", anim = FALSE)
-                                # shinyjs::hide(id = "rtStart", anim = FALSE)
-                                # shinyjs::hide(id = "rtStarthour", anim = FALSE)
-                                # shinyjs::hide(id = "DFsubsetRT", anim = FALSE)
-                                # shinyjs::hide(id = "timeFrame1", anim = FALSE)
-                                # shinyjs::hide(id = "RTanalysis_starttime", anim = FALSE)
-                                # shinyjs::hide(id = "RTanalysis_endtime", anim = FALSE)
-                                # shinyjs::hide(id = "TPanalysis_starttime", anim = FALSE)
-                                # shinyjs::hide(id = "TPanalysis_endtime", anim = FALSE)
-                                # shinyjs::hide(id = "timeFrame4", anim = FALSE)
-                                # shinyjs::hide(id = "DFsubsetRT2", anim = FALSE)
-                                # shinyjs::hide(id = "Dl2", anim = FALSE) #hide download button for daily_act[[1]] before it's created
-                                # shinyjs::hide(id = "chooseM", anim = FALSE) #HIDE button to select mouse table to display
-                                # hide unnecessary buttons in box1_1 #
-                                # shinyjs::hide(id = "serieType", anim = FALSE)
-                                # shinyjs::hide(id = "DFsubsetTP", anim = FALSE)
-                              # },
-                              # clearActos = function(){
-                              #   hide(id = "spin1_1", anim = FALSE)
-                              #   hide(id = "actogram1", anim = FALSE)      #hide actograms
-                              #   hide(id = "actogram_1", anim = FALSE)
-                              #   hide(id = "spin1_2", anim = FALSE)
-                              #   hide(id = "actogram2", anim = FALSE)
-                              #   hide(id = "actogram_2", anim = FALSE)
-                              #   hide(id = "spin1_3", anim = FALSE)
-                              #   hide(id = "actogram3", anim = FALSE)
-                              #   hide(id = "actogram_3", anim = FALSE)
-                              #   hide(id = "spin1_4", anim = FALSE)
-                              #   hide(id = "actogram4", anim = FALSE)
-                              #   hide(id = "actogram_4", anim = FALSE)
-                              # },
-                              # clearDPActos = function(){
-                              #   hide(id = "DPactogram1", anim = FALSE)    #hide double plotted acto
-                              #   hide(id = "DPactogram_1", anim = FALSE)
-                              #   hide(id = "DPactogram2", anim = FALSE)
-                              #   hide(id = "DPactogram_2", anim = FALSE)
-                              #   hide(id = "DPactogram3", anim = FALSE)
-                              #   hide(id = "DPactogram_3", anim = FALSE)
-                              #   hide(id = "DPactogram4", anim = FALSE)
-                              #   hide(id = "DPactogram_4", anim = FALSE)
-                              #   hide(id = "DPactogram5", anim = FALSE)
-                              #   hide(id = "DPactogram_5", anim = FALSE)
-                              #   hide(id = "spin2_1", anim = FALSE)        #hide spinners for double plotted acto
-                              #   hide(id = "spin2_2", anim = FALSE)
-                              #   hide(id = "spin2_3", anim = FALSE)
-                              #   hide(id = "spin2_4", anim = FALSE)
-                              #   hide(id = "spin2_5", anim = FALSE)
-                              # },
-                              # clearDAct = function(){
-                              #   hide(id = "DAct1", anim = FALSE)          #hide daily activity
-                              #   hide(id = "DAct_1", anim = FALSE)
-                              #   hide(id = "DAct2", anim = FALSE)
-                              #   hide(id = "DAct_2", anim = FALSE)
-                              #   hide(id = "DAct3", anim = FALSE)
-                              #   hide(id = "DAct_3", anim = FALSE)
-                              #   hide(id = "DAct4", anim = FALSE)
-                              #   hide(id = "DAct_4", anim = FALSE)
-                              #   hide(id = "DAct5", anim = FALSE)
-                              #   hide(id = "DAct_5", anim = FALSE)
-                              #   hide(id = "DAct6", anim = FALSE)
-                              #   hide(id = "DAct_6", anim = FALSE)
-                              #   hide(id = "spin3_1", anim = FALSE)        #hide spinners for Daily activity
-                              #   hide(id = "spin3_2", anim = FALSE)
-                              #   hide(id = "spin3_3", anim = FALSE)
-                              #   hide(id = "spin3_4", anim = FALSE)
-                              #   hide(id = "spin3_5", anim = FALSE)
-                              #   hide(id = "spin3_6", anim = FALSE)
-                              # },
-                              # clearPer = function(){
-                              #   hide(id = "Per1", anim = FALSE)               #hide Periodogram plots
-                              #   hide(id = "Per_1", anim = FALSE)
-                              #   hide(id = "Per2", anim = FALSE)
-                              #   hide(id = "Per_2", anim = FALSE)
-                              #   hide(id = "Per3", anim = FALSE)
-                              #   hide(id = "Per_3", anim = FALSE)
-                              #   hide(id = "Per4", anim = FALSE)
-                              #   hide(id = "Per_4", anim = FALSE)
-                              #   hide(id = "Per5", anim = FALSE)
-                              #   hide(id = "Per_5", anim = FALSE)
-                              #   hide(id = "spin4_1", anim = FALSE)
-                              #   hide(id = "spin4_2", anim = FALSE)
-                              #   hide(id = "spin4_3", anim = FALSE)
-                              #   hide(id = "spin4_4", anim = FALSE)
-                              #   hide(id = "spin4_5", anim = FALSE)
-                              # },
-                              # }
                             ))

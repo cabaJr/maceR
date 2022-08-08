@@ -59,7 +59,7 @@
 #' @return
 #' @export
 #'
-  initialize_datastr_ui <- function(...){
+  initialize_datastr_ui <- function(){
       shinyjs::hide(id = "rtStart", anim = FALSE)
         shinyjs::hide(id = "rtStarthour", anim = FALSE)
         shinyjs::hide(id = "TPduration", anim = FALSE)
@@ -86,7 +86,7 @@
   #' @return
   #' @export
   #'
-  showall_datastr_ui <- function(...){
+  showall_datastr_ui <- function(){
     shinyjs::show(id = "rtStart", anim = FALSE)
     shinyjs::show(id = "rtStarthour", anim = FALSE)
     shinyjs::show(id = "TPduration", anim = FALSE)
@@ -110,9 +110,9 @@
   
 #' update_DS_ui
 #'
-#' @param session env 
-#' @param element subsetting or serietype
+#' @param ... additional argument to control switch
 #' @param case which case to apply
+#'
 #' @description function to dynalically update the possible choices in the
 #'     Data Structure tab box 1
 #' @return
@@ -214,26 +214,6 @@
 #'     #                         })
 #'   }
   
-#' #' displayPlot
-#' #'
-#' #'@description aa
-#' #' @param env a
-#' #' @param plot b
-#' #' @param placeholder v
-#' #' @param ... d
-#' #'
-#' #' @return
-#' #' @export
-#' #'
-#' #' @examples f
-#'   displayPlot <- function(env, plotUP, ...){
-#'     plot <- env$env4$selected
-#'     shiny::insertUI(
-#'       selector =  "plot_holder",
-#'       where = "afterEnd",
-#'       ui = 
-#'     )
-#'   }
   
 #' plot_actogram_sup
 #'
@@ -289,7 +269,7 @@ plot_actogram_sup <- function(env, plot_type){
   }
 }
 
-showSubsetting <- function(...){
+showSubsetting <- function(){
     shinyjs::show(id = "idSubsetList", anim = FALSE)   #hide plot subset settings
     shinyjs::show(id = "sexSubsetList", anim = FALSE)
     shinyjs::show(id = "geneSubsetList", anim = FALSE)
@@ -299,7 +279,7 @@ showSubsetting <- function(...){
     shinyjs::show(id = "timeSubset", anim = FALSE)
 }
 
-clearSubsetting <- function(...){
+clearSubsetting <- function(){
   shinyjs::hide(id = "idSubsetList", anim = FALSE)   #hide plot subset settings
     shinyjs::hide(id = "sexSubsetList", anim = FALSE)
     shinyjs::hide(id = "geneSubsetList", anim = FALSE)

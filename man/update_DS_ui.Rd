@@ -9,9 +9,7 @@ update_DS_ui(case, ...)
 \arguments{
 \item{case}{which case to apply}
 
-\item{session}{env}
-
-\item{element}{subsetting or serietype}
+\item{...}{additional argument to control switch}
 }
 \value{
 

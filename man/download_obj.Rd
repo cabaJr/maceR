@@ -12,6 +12,8 @@ download_obj(title, location, format, ...)
 \item{location}{path to object location}
 
 \item{format}{extension of the file to output ("csv", "png", "2.csv")}
+
+\item{...}{any additional to pass to download_obj}
 }
 \value{
 a file to be saved locally

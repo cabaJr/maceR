@@ -23,26 +23,6 @@
     #                           shiny::renderPlot(plotObj)
     #                         })
   }
-#' displayPlot
-#'
-#'@description aa
-#' @param env a
-#' @param plot b
-#' @param placeholder v
-#' @param ... d
-#'
-#' @return
-#' @export
-#'
-#' @examples f
-  displayPlot <- function(env, plotUP, ...){
-    plot <- env$env4$selected
-    shiny::insertUI(
-      selector =  "plot_holder",
-      where = "afterEnd",
-      ui = 
-    )
-  }
 plot_actogram_sup}
 \usage{
 plot_actogram_sup(env, plot_type)
@@ -76,26 +56,6 @@ plot_actogram_sup(env, plot_type)
     #                           ns <- session$ns
     #                           shiny::renderPlot(plotObj)
     #                         })
-  }
-#' displayPlot
-#'
-#'@description aa
-#' @param env a
-#' @param plot b
-#' @param placeholder v
-#' @param ... d
-#'
-#' @return
-#' @export
-#'
-#' @examples f
-  displayPlot <- function(env, plotUP, ...){
-    plot <- env$env4$selected
-    shiny::insertUI(
-      selector =  "plot_holder",
-      where = "afterEnd",
-      ui = 
-    )
   }
 plot_actogram_sup
 }

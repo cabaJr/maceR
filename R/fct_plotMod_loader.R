@@ -36,6 +36,7 @@ load_plots <- function(env, plot_list, session){
 #' @param title Title of the document to download
 #' @param location path to object location
 #' @param format extension of the file to output ("csv", "png", "2.csv")
+#' @param ... any additional to pass to download_obj
 #'
 #' @return a file to be saved locally
 #' @export

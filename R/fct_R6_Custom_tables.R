@@ -66,7 +66,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
                              # browser()
                            },
 
-#' HHActivity
+#' AvgDay
 #' @description function to create tibble with mouse activity daily grouped in 
 #'     15 minutes bins
 #'
@@ -76,7 +76,6 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #'
 #' @return A table with the sum 
 #'
-#' @examples HHActivity(env)
                            AvgDay = function(env, per_len, subsetVal){ #handle NA values to avoid dropping of values
                              d6 <- NULL
                              browser()
@@ -147,10 +146,6 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #' @param funEnv env containing App_settings
 #' @param subsetPlot Yes/No value
 #'
-#' @return
-#' @export
-#'
-#' @examples write examples
                            checkIf = function(funEnv, subsetPlot){#to add option to check for presence of different tables
                              
                              # if(is.null(self$locomotor_act[[1]]) == TRUE){ #add conditions to see if values changed and it's necessary to recalculate the table
@@ -164,10 +159,6 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #' @param x App_settings environment
 #' @param subsetVal Yes/No value if to subset dataset or not
 #'
-#' @return
-#' @export
-#'
-#' @examples write examples of behavrTable application
                            behavrTable = function(x, subsetVal){
                              d2 <- NULL
                              myCleanMice <- x$env2$myCleanMice
@@ -223,10 +214,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #'
 #' @description function to generate the sum of the activity for each day and
 #'     store it on a table.
-#' @return
-#' @export
-#'
-#' @examples dailyAct(env)
+#' 
                            dailyAct = function(env, subsetVal){ #substitute x with env in whole fun
                              # browser()
                              #switch to allow for data subsetting
@@ -288,7 +276,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #                                shinyjs::show(id = "Dl2", anim = FALSE)
 #                              }else{}
 #                            },
-#                            
+                        
 #' computePer
 #'
 #' @param method method to choose. Available are: "chi_sq_periodogram", 
@@ -299,11 +287,6 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #'     extract period lenght in data if present.
 #'     Describe Analysis methods and link to papers that compare the different
 #'     methods
-#' @return
-#' @export
-#'
-#' @examples provide examples on how to call the function for the different 
-#'     period analyses available with different params
 #'     
                            computePer = function(method, periodRange, funenv) {
                              # browser()

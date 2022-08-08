@@ -4,7 +4,7 @@
 \alias{showall_datastr_ui}
 \title{showall_datastr_ui}
 \usage{
-showall_datastr_ui(...)
+showall_datastr_ui()
 }
 \value{
 

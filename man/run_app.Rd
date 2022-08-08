@@ -2,7 +2,7 @@
 % Please edit documentation in R/run_app.R
 \name{run_app}
 \alias{run_app}
-\title{MACE}
+\title{maceR}
 \usage{
 run_app(
   onStart = NULL,

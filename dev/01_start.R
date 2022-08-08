@@ -19,8 +19,8 @@
 ## to change the name in the app_sys() function in app_config.R /!\
 ## 
 golem::fill_desc(
-  pkg_name = "MACE", # The Name of the package containing the App 
-  pkg_title = "MACE_PGK", # The Title of the package containing the App 
+  pkg_name = "maceR", # The Name of the package containing the App 
+  pkg_title = "maceR_PGK", # The Title of the package containing the App 
   pkg_description = "App to analyse locomotor activity data from circadian cabinets.", # The Description of the package containing the App 
   author_first_name = "Marco", # Your First Name
   author_last_name = "Ferrari", # Your Last Name
