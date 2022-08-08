@@ -10,10 +10,9 @@ upload_subsetting(funEnv, session, input_result)
 \item{funEnv}{connects to App_settings object}
 
 \item{session}{session object}
+
+\item{input_result}{TBD}
 }
 \description{
 upload_subsetting
-}
-\examples{
-upload_subsetting(App_settings)
 }

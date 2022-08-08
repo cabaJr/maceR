@@ -1,7 +1,7 @@
 #' Document functions and dependencies
 #' attachment::att_to_description()
 #' Check the package
-#' devtools:check()
+#' devtools::check()
 
   #' 09/05/2022
 #' Added tabs as modules (inputDF, your_data, data_structure, analysis, plots)
@@ -182,6 +182,7 @@
 
   #'  08/08/2022
 #'  update help buttons
+#'  change print1 name
 #'  solve RMD check prob
 
   #' PRIORITIES

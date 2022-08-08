@@ -53,6 +53,8 @@ initialize}
 
 \subsection{Returns}{
 initializes some field with the required type
+
+add
 }
 }
 \if{html}{\out{<hr>}}
@@ -73,9 +75,6 @@ initializes some field with the required type
 \item{\code{skipRows}}{numeric, number of initial rows to skip in the imported files}
 }
 \if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-
 }
 }
 \if{html}{\out{<hr>}}

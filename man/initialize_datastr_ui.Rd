@@ -4,7 +4,7 @@
 \alias{initialize_datastr_ui}
 \title{initialize_datastr_ui}
 \usage{
-initialize_datastr_ui(...)
+initialize_datastr_ui()
 }
 \value{
 

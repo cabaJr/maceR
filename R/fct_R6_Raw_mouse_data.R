@@ -28,7 +28,6 @@ Raw_mouse_data <- R6::R6Class("Raw_mouse_data",
 #' initialize
 #'
 #' @return initializes some field with the required type
-#' @export
 #'
                                 initialize = function(){
                                   self$id <- as.character()
@@ -44,9 +43,6 @@ Raw_mouse_data <- R6::R6Class("Raw_mouse_data",
 #' @param datapath path where to find the uploaded data filed
 #' @param metadatapath path where to find the metadata file
 #' @param skipRows numeric, number of initial rows to skip in the imported files
-#'
-#' @return
-#' @export
 #'
                                 add = function(datapath, metadatapath, skipRows){ #function to read from csv files and insert data inside the object
                                   ## read from the specified datapath (from input button)

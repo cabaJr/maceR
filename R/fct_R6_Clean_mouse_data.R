@@ -35,10 +35,7 @@ Clean_mouse_data <- R6::R6Class("Clean_mouse_data",
 #' compile
 #'
 #' @param x 
-#'
-#' @return
-#' @export
-#'
+
                               compile = function(x){
                                 self$id <- as.factor(x$id)
                                 self$sex <- x$sex
@@ -53,10 +50,7 @@ Clean_mouse_data <- R6::R6Class("Clean_mouse_data",
 #'
 #' @param x 
 #' @param App_settings 
-#'
-#' @return
-#' @export
-#'
+#' 
                               addData = function(x, App_settings){ #more comments on these fun
                                 # load day, hour and minute separately
                                 # browser()
@@ -124,11 +118,7 @@ Clean_mouse_data <- R6::R6Class("Clean_mouse_data",
 #' print1
 #'
 #' @param x 
-#'
-#' @return
-#' @export
-#'
-                              print1 = function(x){
+                            print1 = function(x){
                                 yourTable = tibble(
                                   "id" = self$id,
                                   "Genotype" = self$genotype,

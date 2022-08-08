@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# MACE
+# maceR
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
@@ -27,10 +27,10 @@ The goal of MACE is to ...
 
 ## Installation
 
-You can install the released version of MACE from [CRAN](https://CRAN.R-project.org) with:
+You can install the released version of maceR from [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-install.packages("MACE")
+install.packages("maceR")
 ```
 
 ## Example
@@ -38,7 +38,7 @@ install.packages("MACE")
 This is a basic example which shows you how to solve a common problem:
 
 ```{r example}
-library(MACE)
+library(maceR)
 ## basic example code
 ```
 

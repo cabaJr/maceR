@@ -11,86 +11,6 @@ A R6 class object to contain parameters of the app that can be
     accessible from the global.env, making possible to communicate between 
     different R6 objects
 }
-\examples{
-
-## ------------------------------------------------
-## Method `App_settings$setData`
-## ------------------------------------------------
-
-setMeta
-
-
-## ------------------------------------------------
-## Method `App_settings$setMeta`
-## ------------------------------------------------
-
-setListMice
-
-
-## ------------------------------------------------
-## Method `App_settings$setListMice`
-## ------------------------------------------------
-
-setListMiceFiltered
-
-
-## ------------------------------------------------
-## Method `App_settings$setListMiceFiltered`
-## ------------------------------------------------
-
-saveLDparams
-
-
-## ------------------------------------------------
-## Method `App_settings$saveLDparams`
-## ------------------------------------------------
-
-setLD
-
-
-## ------------------------------------------------
-## Method `App_settings$setLD`
-## ------------------------------------------------
-
-updateTimeRange
-
-
-## ------------------------------------------------
-## Method `App_settings$updateTimeRange`
-## ------------------------------------------------
-
-setDiscRow
-
-
-## ------------------------------------------------
-## Method `App_settings$setDiscRow`
-## ------------------------------------------------
-
-setTimeDisp
-
-
-## ------------------------------------------------
-## Method `App_settings$setTimeDisp`
-## ------------------------------------------------
-
-setExpstart
-
-
-## ------------------------------------------------
-## Method `App_settings$setExpstart`
-## ------------------------------------------------
-
-setTimepointDur
-
-
-## ------------------------------------------------
-## Method `App_settings$setTimepointDur`
-## ------------------------------------------------
-
-no examples provided
-Initialize_DS
-
-}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
@@ -148,7 +68,6 @@ setData}
 \item \href{#method-setTimeDisp}{\code{App_settings$setTimeDisp()}}
 \item \href{#method-setExpstart}{\code{App_settings$setExpstart()}}
 \item \href{#method-setTimepointDur}{\code{App_settings$setTimepointDur()}}
-\item \href{#method-initialize_DS}{\code{App_settings$initialize_DS()}}
 \item \href{#method-clone}{\code{App_settings$clone()}}
 }
 }
@@ -163,22 +82,12 @@ setData}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{outsideData}}{list of data files uploaded by the user}
+\item{\code{outsideData}}{list of data files uploaded by the user
+
+setMeta}
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Returns}{
-
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{setMeta
-
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-setMeta"></a>}}
@@ -191,22 +100,12 @@ setData}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{outsideMeta}}{metadata file uploaded by the user}
+\item{\code{outsideMeta}}{metadata file uploaded by the user
+
+setListMice}
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Returns}{
-
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{setListMice
-
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-setListMice"></a>}}
@@ -219,22 +118,12 @@ setData}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{env}}{environment}
+\item{\code{env}}{environment
+
+setListMiceFiltered}
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Returns}{
-
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{setListMiceFiltered
-
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-setListMiceFiltered"></a>}}
@@ -255,22 +144,12 @@ setData}
 
 \item{\code{genList}}{list containing mice genotypes}
 
-\item{\code{cabList}}{list containing cabinet numbers}
+\item{\code{cabList}}{list containing cabinet numbers
+
+saveLDparams}
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Returns}{
-
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{saveLDparams
-
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-saveLDparams"></a>}}
@@ -289,22 +168,12 @@ setData}
 
 \item{\code{ddVal}}{Y/N value for DD}
 
-\item{\code{ddStart}}{day in which DD starts}
+\item{\code{ddStart}}{day in which DD starts
+
+setLD}
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Returns}{
-
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{setLD
-
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-setLD"></a>}}
@@ -323,22 +192,12 @@ setData}
 
 \item{\code{ddVal}}{Y/N value for DD}
 
-\item{\code{ddStart}}{day in which DD starts}
+\item{\code{ddStart}}{day in which DD starts
+
+updateTimeRange}
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Returns}{
-
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{updateTimeRange
-
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-updateTimeRange"></a>}}
@@ -351,22 +210,12 @@ setData}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{x}}{to be rechecked (numeric)}
+\item{\code{x}}{to be rechecked (numeric)
+
+setDiscRow}
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Returns}{
-
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{setDiscRow
-
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-setDiscRow"></a>}}
@@ -379,22 +228,12 @@ setData}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{x}}{number of rows to discard (numeric)}
+\item{\code{x}}{number of rows to discard (numeric)
+
+setTimeDisp}
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Returns}{
-
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{setTimeDisp
-
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-setTimeDisp"></a>}}
@@ -407,22 +246,12 @@ setData}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{x}}{to display time in 12/24h format}
+\item{\code{x}}{to display time in 12/24h format
+
+setExpstart}
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Returns}{
-
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{setExpstart
-
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-setExpstart"></a>}}
@@ -435,22 +264,12 @@ setData}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{x}}{date value for when the experiment starts}
+\item{\code{x}}{date value for when the experiment starts
+
+setTimepointDur}
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Returns}{
-
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{setTimepointDur
-
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-setTimepointDur"></a>}}
@@ -466,38 +285,6 @@ setData}
 \item{\code{x}}{sampling rate}
 }
 \if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{no examples provided
-Initialize_DS
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-initialize_DS"></a>}}
-\if{latex}{\out{\hypertarget{method-initialize_DS}{}}}
-\subsection{Method \code{initialize_DS()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{App_settings$initialize_DS(server)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{server}}{is it really needed?}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-
 }
 }
 \if{html}{\out{<hr>}}

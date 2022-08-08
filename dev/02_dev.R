@@ -44,7 +44,7 @@ usethis::use_test( "app" )
 # Documentation
 
 ## Vignette ----
-usethis::use_vignette("MACE")
+usethis::use_vignette("maceR")
 devtools::build_vignettes()
 
 ## Code Coverage----

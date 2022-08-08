@@ -1,4 +1,4 @@
 library(testthat)
-library(MACE)
+library(maceR)
 
-test_check("MACE")
+test_check("maceR")
