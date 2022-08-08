@@ -85,7 +85,7 @@ Messages <- R6::R6Class("Messages",
                                                   are treated as <mark>factors</mark>, so they have to be directly typed in. You can find a list of the available
                                                   IDs in the <code>Input</code> page, or in the <code>Analysis</code> > <code>Subset data to visualize</code>, by ticking <code>Yes</code>. </li>
                                                   <li><mark>t</mark>(Time) and <mark>counts_min</mark> are discrete values and can be filtered using a slider or in alternative by typing the exact desired limits.</li>
-                                                  <li>It is possible to change the number of rows to visualise (10, 25, 50, 100) using the drop menù in the top-left corner</li>
+                                                  <li>It is possible to change the number of rows to visualise (10, 25, 50, 100) using the drop menu in the top-left corner</li>
                                                   <li>The entire table of data can be downloaded in .csv format using the <code>Download</code> button in the bottom rigth position. </li></ul><br>
                                                   Filtering the table does not affect data plotting.
                                                   ")),

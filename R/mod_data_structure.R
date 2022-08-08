@@ -226,7 +226,7 @@ mod_data_structure_server <- function(id, env, ...){
  
  # clean interface
  observeEvent(sessionInfo(), ignoreNULL = TRUE, once = TRUE, {
-   initialize_datastr_ui(dataStructure_out)
+   initialize_datastr_ui()#dataStructure_out)
  })
  
  # initialize returnable reactiveValue

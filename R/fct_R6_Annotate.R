@@ -5,19 +5,21 @@
 #' @details R6 object containing lists to store plots generated using methods
 #'     available inside the Annotate R6 object
 #'
-#' @return The return value, if any, from executing the function.
+#' @return An Annotate object
 #'
 #' @noRd
 Annotate <- R6::R6Class("Annotate",
+                    list(
 #' @field Actograms 1
-#' @field DPActograms 2
 #' @field DAct_plots 3
 #' @field period_plots 4
 #' @field period_plots_box 4_1
+#' @field avg_day_plots list containing average circadian day plots
+#' @field output_list_acto table with combination of output titles, location, etc
 #' @field actTable 5
 #' @field metaTable 6
 #' @field cacheKeys 7
-                    list(Actograms = list(acto1 = list(),
+                      Actograms = list(acto1 = list(),
                                           acto2 = list(),
                                           acto3 = list(),
                                           acto4 = list()
@@ -689,9 +691,6 @@ Annotate <- R6::R6Class("Annotate",
 #'
 #' @param funenv App_settings environment
 #' @param type plot type
-#'
-#' @return
-#' @export
 #'
                     plot_avg_day = function(funEnv, plotType, error = "Sem"){
                       activity <- funEnv$env3$Custom_tables$average_day[[1]] #get activity file from Custom_tables

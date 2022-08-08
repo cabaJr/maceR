@@ -175,15 +175,15 @@
 #'  activate box in plots only if plots are inside (not working with
 #'      shinyjs::hide() or shiny::hideTab())
 #'  create plot of period distribution (done)
-#'  activate options to download different table 
 #'  activate download button only after plot generation (done)
-#'  clean data structure from unnecessary parts
 #'  link skip row button (done)
+#'  solve RMD check prob (done)
 
   #'  08/08/2022
 #'  update help buttons
 #'  change print1 name
-#'  solve RMD check prob
+#'  clean data structure from unnecessary parts
+#'  activate options to download different table 
 
   #' PRIORITIES
 #' - check workflow for data upload
