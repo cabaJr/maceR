@@ -93,7 +93,6 @@ mod_Input_DF_server <- function(id, env){
       output$metaList <- renderTable(App_settings$metadata$name)
       if(check_uploads(App_settings) == TRUE){
         toReturn$ui <- TRUE
-        App_settings$initialize_DS(session)
         preload_data(App_settings)
       }
     })

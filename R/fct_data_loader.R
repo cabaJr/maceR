@@ -14,7 +14,7 @@ preload_data <- function(App_settings){
   myMice <- NULL
   for(i in seq_len(length.out = length(App_settings$dataList$name))) {
     myMice[[i]] <- Raw_mouse_data$new()
-    myMice[[i]]$add(App_settings$dataList$datapath[i], App_settings$metadata$datapath)
+    myMice[[i]]$add(App_settings$dataList$datapath[i], App_settings$metadata$datapath, App_settings)
   }
   App_settings$env1 <- pryr::where("myMice") #store env of myMice inside App_settings
 }

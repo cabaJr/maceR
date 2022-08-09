@@ -141,37 +141,105 @@ App_settings <- R6::R6Class("App_settings",
                               
 #' setLD
 #'
-#' @param x App_settings environment
+#' @param env App_settings environment
 #' @param light ligthOn value
 #' @param ddVal Y/N value for DD
 #' @param ddStart day in which DD starts
 #'
-                              setLD = function(x, light, ddVal, ddStart){ #add more comments
-                                qty <- length(x$env2$myCleanMice)
-                                length1 <- max(x$env2$Annotate$metaTable$Datapoints)*60
+                              setLD = function(env, light, ddVal, ddStart){ #add more comments
+                                qty <- length(env$env2$myCleanMice)
+                                length1 <- max(env$env2$Annotate$metaTable$Datapoints)*60
                                 per1End <- ddStart*86400
                                 Llpha1 <- (0.2 / qty)
                                 Llpha2 <- 0.01
                                 # define DDstart and DDlength
                                 DDday <- as.numeric(ddStart)
                                 dataLen <- (length1%/%86400)-2
+                                if(ddStart <= 2){
+                                  DDStart1 <- 1
+                                  DDStart2 <- 1
+                                }else{
                                 DDStart1 <- (1-((DDday-1)/dataLen))
                                 DDStart2 <- (1-((DDday-2)/dataLen))
+                                }
                                 DDlength <- 24-as.numeric(light)
                                 SLLD <- switch(ddVal,
-                                               "Yes" = {ggetho::stat_ld_annotations(height = 1, alpha = Llpha1, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(light), x_limits = c(0, per1End), phase = behavr::hours(6), ld_colours = c(NA, "black"))},
-                                               "No" = {ggetho::stat_ld_annotations(height = 1, alpha = Llpha1, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(light), phase = behavr::hours(6), ld_colours = c(NA, "black"))})
+                                               "Yes" = {
+                                                 ggetho::stat_ld_annotations(
+                                                   height = 1, 
+                                                   alpha = Llpha1, 
+                                                   outline = NA, 
+                                                   period = behavr::hours(24), 
+                                                   l_duration = behavr::hours(light), 
+                                                   x_limits = c(0, per1End), 
+                                                   phase = behavr::hours(6), 
+                                                   ld_colours = c(NA, "black")
+                                                   )
+                                                 },
+                                               "No" = {
+                                                 ggetho::stat_ld_annotations(
+                                                   height = 1, 
+                                                   alpha = Llpha1, 
+                                                   outline = NA, 
+                                                   period = behavr::hours(24), 
+                                                   l_duration = behavr::hours(light), 
+                                                   phase = behavr::hours(6), 
+                                                   ld_colours = c(NA, "black")
+                                                   )
+                                                 }
+                                               )
                                 # check the rest of the function from here + implement value gathering inside server and function call
                                 SLDD <- switch(ddVal,
-                                               "Yes" = {ggetho::stat_ld_annotations(height = 1, alpha = Llpha1, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(0), x_limits = c(per1End, length1), phase = 0, ld_colours = c(NA, "black"))},
+                                               "Yes" = {
+                                                 ggetho::stat_ld_annotations(
+                                                   height = 1, 
+                                                   alpha = Llpha1, 
+                                                   outline = NA, 
+                                                   period = behavr::hours(24), 
+                                                   l_duration = behavr::hours(0), 
+                                                   x_limits = c(per1End, length1), 
+                                                   phase = 0, 
+                                                   ld_colours = c(NA, "black"))},
                                                "No" = {NULL})
-                                DPLD <- ggetho::stat_ld_annotations(height = 1, alpha = Llpha2, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(light), phase = behavr::hours(6), ld_colours = c(NA, "black"))
+                                DPLD <- ggetho::stat_ld_annotations(
+                                  height = 1, 
+                                  alpha = Llpha2, 
+                                  outline = NA, 
+                                  period = behavr::hours(24), 
+                                  l_duration = behavr::hours(light), 
+                                  phase = behavr::hours(6), 
+                                  ld_colours = c(NA, "black")
+                                  )
                                 DPDD1 <- switch(ddVal,
-                                                "Yes" = {ggetho::stat_ld_annotations(height = DDStart1, alpha = Llpha2, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(DDlength), x_limits = c(behavr::hours(0), behavr::hours(24)), phase = behavr::hours(18), ld_colours = c(NA, "black"))},
-                                                "No" = {NULL})
+                                                "Yes" = {
+                                                  ggetho::stat_ld_annotations(
+                                                    height = DDStart1, 
+                                                    alpha = Llpha2, 
+                                                    outline = NA, 
+                                                    period = behavr::hours(24), 
+                                                    l_duration = behavr::hours(DDlength), 
+                                                    x_limits = c(behavr::hours(0), 
+                                                                 behavr::hours(24)), 
+                                                    phase = behavr::hours(18), 
+                                                    ld_colours = c(NA, "black"))},
+                                                "No" = {NULL}
+                                                )
                                 DPDD2 <- switch(ddVal,
-                                                "Yes" = {ggetho::stat_ld_annotations(height = DDStart2, alpha = Llpha2, outline = NA, period = behavr::hours(24), l_duration = behavr::hours(DDlength), x_limits = c(behavr::hours(24), behavr::hours(48)), phase = behavr::hours(18), ld_colours = c(NA, "black"))},
-                                                "No" = {NULL})
+                                                "Yes" = {
+                                                  ggetho::stat_ld_annotations(
+                                                    height = DDStart2, 
+                                                    alpha = Llpha2, 
+                                                    outline = NA, 
+                                                    period = behavr::hours(24), 
+                                                    l_duration = behavr::hours(DDlength), 
+                                                    x_limits = c(behavr::hours(24), 
+                                                                 behavr::hours(48)), 
+                                                    phase = behavr::hours(18), 
+                                                    ld_colours = c(NA, "black")
+                                                    )
+                                                  },
+                                                "No" = {NULL}
+                                                )
                                 self$LDcondition$SLLD = SLLD
                                 self$LDcondition$SLDD = SLDD
                                 self$LDcondition$DPLD = DPLD
@@ -182,10 +250,22 @@ App_settings <- R6::R6Class("App_settings",
                               
 #' updateTimeRange
 #'
-#' @param x to be rechecked (numeric)
+#' @param range to be rechecked (numeric)
+#' @param env App settings environment
 #'
-                              updateTimeRange = function(x){
-                                self$subsetting$timespan <- x
+                              updateTimeRange = function(range, env){
+                                self$subsetting$timespan <- range
+                                #also update LD setting when time subsetting
+                                if(is.null(self$env1$myMice) == FALSE){
+                                light <- self$LDparams$light
+                                ddVal <- self$LDparams$DDcheck
+                                ddstart <- self$LDparams$DDstart
+                                newddStart <- ddstart - range[1]
+                                if(newddStart<0){
+                                  newddStart <- 0
+                                }
+                                self$setLD(env, light = light, ddVal = ddVal, ddStart = newddStart)
+                                }
                               },
                               
 #' setDiscRow
