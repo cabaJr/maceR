@@ -185,8 +185,9 @@
 
   #'  09/08/2022
 #'  update help buttons
+#'  if time subsetting recompute LD values subtracting timeRange[1] to ddStart (done)
 #'  clean data structure from unnecessary parts
-#'  activate options to download different table 
+#'  activate options to download different table (changed to first peak table)
 
   #' PRIORITIES
 #' - add optional factor

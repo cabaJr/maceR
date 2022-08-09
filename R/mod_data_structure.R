@@ -153,13 +153,12 @@ mod_data_structure_ui <- function(id){
              #                                                     # ),
              #### LD settings #####
     fluidRow(div(style = ""),         
-    shinydashboard::box(title = "LD cycle - Advanced",
+    shinydashboard::box(title = "Light/Dark cycle",
                         id = ns("box1_1_4"),
                         solidHeader = TRUE,
                         width = 12,
                         status = "primary",
                         collapsible = TRUE,
-                        collapsed = TRUE,
                  fluidRow(
                    column(width = 4,
                           numericInput(inputId = ns("LDcond"),
@@ -179,8 +178,8 @@ mod_data_structure_ui <- function(id){
                    column(width = 4,
                           numericInput(inputId = ns("DDcond"),label = "On which day does DD starts? ",
                                        min = 1, value = 1)),
-                   column(width = 4, offset = 2,
-                          actionButton(inputId = "updateLD", label = "Update"))
+                   # column(width = 4, offset = 2,
+                   #        actionButton(inputId = "updateLD", label = "Update"))
                  )
              ),
              shinydashboard::box(title = "Load data", id = ns("box1_1_5"), solidHeader = TRUE, width = 12, status = "primary", collapsible = TRUE,
