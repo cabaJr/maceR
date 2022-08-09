@@ -180,13 +180,13 @@ setLD}
 \if{latex}{\out{\hypertarget{method-setLD}{}}}
 \subsection{Method \code{setLD()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{App_settings$setLD(x, light, ddVal, ddStart)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{App_settings$setLD(env, light, ddVal, ddStart)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{x}}{App_settings environment}
+\item{\code{env}}{App_settings environment}
 
 \item{\code{light}}{ligthOn value}
 
@@ -204,13 +204,15 @@ updateTimeRange}
 \if{latex}{\out{\hypertarget{method-updateTimeRange}{}}}
 \subsection{Method \code{updateTimeRange()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{App_settings$updateTimeRange(x)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{App_settings$updateTimeRange(range, env)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{x}}{to be rechecked (numeric)
+\item{\code{range}}{to be rechecked (numeric)}
+
+\item{\code{env}}{App settings environment
 
 setDiscRow}
 }

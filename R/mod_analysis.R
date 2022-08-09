@@ -206,7 +206,7 @@ mod_analysis_server <- function(id, App_settings){
     
     # clean interface
     observeEvent(sessionInfo(), ignoreNULL = TRUE, once = TRUE, {
-      clearSubsetting()
+      clearSubsetting()#input_result)
     })
     
     ## show help messages 
@@ -250,7 +250,8 @@ mod_analysis_server <- function(id, App_settings){
                    })
     #update min max values
     observeEvent(input$timeSubset,{
-      App_settings$updateTimeRange(input$timeSubset)
+      Sys.sleep(2)
+      App_settings$updateTimeRange(input$timeSubset, App_settings)
     })
     
     #### SINGLE LINE PERIODOGRAM ####
@@ -368,7 +369,7 @@ mod_analysis_server <- function(id, App_settings){
     
     ## download handler for periodogram table 
     output$Dl3 <- download_obj(title = "Periodogram_table_",
-                               location = App_settings$env2$Custom_tables$periodograms[[1]],
+                               location = App_settings$env2$Custom_tables$periodograms[[2]],
                                format = "csv")
     
     #### AVERAGE DAY OF ACTIVITY ####

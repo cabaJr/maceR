@@ -180,12 +180,18 @@
 #'  solve RMD check prob (done)
 
   #'  08/08/2022
+#'  fix RMD checks failure (done)
+#'  change print1 name (done)
+
+  #'  09/08/2022
 #'  update help buttons
-#'  change print1 name
 #'  clean data structure from unnecessary parts
 #'  activate options to download different table 
 
   #' PRIORITIES
+#' - add optional factor
+#' - if time subsetting recompute LD values subtracting timeRange[1] to ddStart
+#' - Think of a new name that is not taken on CRAN
 #' - check workflow for data upload
 #' - activate functions to display/hide elements in Datastructure tab
 #' - remake analysis tab with more user friendly flipbox

@@ -42,13 +42,17 @@ Raw_mouse_data <- R6::R6Class("Raw_mouse_data",
 #'
 #' @param datapath path where to find the uploaded data filed
 #' @param metadatapath path where to find the metadata file
+#' @param env App_settings environment
 #' @param skipRows numeric, number of initial rows to skip in the imported files
 #'
-                                add = function(datapath, metadatapath, skipRows){ #function to read from csv files and insert data inside the object
+                                add = function(datapath, metadatapath, env, skipRows = 4){ #function to read from csv files and insert data inside the object
                                   ## read from the specified datapath (from input button)
                                   datapath1 <- datapath
                                   ## read from the specified metadatapath (from input button)
                                   metadatapath1 <- metadatapath
+                                  if(is.null(env$discardRow) == FALSE){
+                                    skipRows <- env$discardRow
+                                  }
                                   data <- read.csv(datapath1, skip = skipRows, header = FALSE, col.names = c("Day", "Hour", "Minute", "Counts_min", "Lights"), stringsAsFactors = FALSE)
                                   metadata <- read.csv(metadatapath1, header = TRUE, sep = ";")
                                   id <- read.csv(datapath1, skip = 1, nrows = 1, header = FALSE)

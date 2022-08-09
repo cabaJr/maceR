@@ -19,7 +19,7 @@ mod_data_structure_ui <- function(id){
                    column(5, #serieType DFsubsetRT
                           numericInput(inputId = ns("discardFirst"),
                                        label = "Insert number of row to discard upfront: ",
-                                       min = 0, value = 3),
+                                       min = 0, value = 4),
                          shinyWidgets::prettyRadioButtons(inputId = ns("serieType"), label = "", inline = TRUE, 
                                        choices = c("Real time", "Time points"), selected = "Time points"),
                           ######## second time window analysis ######################
@@ -272,7 +272,7 @@ mod_data_structure_server <- function(id, env, ...){
       # Create table with metadata
       App_settings$env2$Annotate$showMeta(App_settings$env2)
       # load LD settings into App_settings
-      App_settings$setLD(x = App_settings, light = input$LDcond, ddVal = input$DDask, ddStart = input$DDcond)
+      App_settings$setLD(env = App_settings, light = input$LDcond, ddVal = input$DDask, ddStart = input$DDcond)
       # shinyjs::show("chooseM", anim = FALSE)
       toReturn$YourDataTab <- TRUE
       toReturn$AnalysisTab <- TRUE
