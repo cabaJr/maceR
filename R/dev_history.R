@@ -186,7 +186,10 @@
   #'  09/08/2022
 #'  update help buttons
 #'  clean data structure from unnecessary parts
-#'  activate options to download different table 
+#'  activate options to download different table
+
+  #' 09/09/2022
+#'  
 
   #' PRIORITIES
 #' - add optional factor
