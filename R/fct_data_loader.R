@@ -29,6 +29,8 @@ load_data <- function(env){
     App_settings <- env
     myMice2 <- App_settings$env1$myMice
     myCleanMice <- list()
+    # go through all the raw_mouse_data object in the myMice list and compile 
+    #    the clean_mouse_data object
     for (i in seq_len(length.out = length(App_settings$dataList$name))){
       myCleanMice[[i]] <- Clean_mouse_data$new()
       myCleanMice[[i]]$compile(myMice2[[i]])

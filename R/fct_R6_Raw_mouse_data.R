@@ -16,6 +16,8 @@ Raw_mouse_data <- R6::R6Class("Raw_mouse_data",
 #' @field startdate starting date of the experiment
 #' @field data raw data
 #' @field length length of data table
+#' @field fct_1 additional user defined factor
+#' @field fct_2 additional user defined factor
 #'                             
                                 id = as.character(),
                                 sex = as.character(),
@@ -25,6 +27,8 @@ Raw_mouse_data <- R6::R6Class("Raw_mouse_data",
                                 startdate = as.character(),
                                 data = as.data.frame(NULL),
                                 length = as.numeric(),
+                                fct_1 = as.character(),
+                                fct_2 = as.character(),
 #' initialize
 #'
 #' @return initializes some field with the required type
@@ -50,6 +54,7 @@ Raw_mouse_data <- R6::R6Class("Raw_mouse_data",
                                   datapath1 <- datapath
                                   ## read from the specified metadatapath (from input button)
                                   metadatapath1 <- metadatapath
+                                  #add comment on this: conditional option to skip rows
                                   if(is.null(env$discardRow) == FALSE){
                                     skipRows <- env$discardRow
                                   }
@@ -64,6 +69,8 @@ Raw_mouse_data <- R6::R6Class("Raw_mouse_data",
                                   hour <- startdate[1,2]
                                   fulldate <- paste(day, hour, sep = "")
                                   # startdate <- as.POSIXct.Date(fulldate, format("%Y-%m-%d %H:%M:%S"))
+                                  
+                                  # fill data with all fields contained in metadata table from user
                                   self$id <- filtered$Identifier
                                   self$sex <- filtered$Sex
                                   self$genotype <- filtered$Genotype

@@ -188,8 +188,8 @@
 #'  clean data structure from unnecessary parts
 #'  activate options to download different table
 
-  #' 09/09/2022
-#'  
+  #' 13/09/2022
+#'  started planning the addition of new factors in metadata + some general comments
 
   #' PRIORITIES
 #' - add optional factor
@@ -208,6 +208,8 @@
 #' - activate option when plotting individual plots to select for ids
 #' - create analysis presets (e.g. 1 periodogram, 1 daily activity, 1 periodogram, etc..)
 #' - In plots, hide tabs that do not contain any plot
+#' - When displaying actogram longer than x days, or when there's overall many
+#'     data, reduce plotting accuracy in actograms.
 #' 
   #' UI
 #' 
@@ -216,6 +218,10 @@
 #'     plots. Box are generated from module call 
 #'     (mod_box_plot_ui() + mod_box_plot_server()), which generates a new box each
 #'     time is called.
+#' - Waiting time during plot generation is filled with animation (better than
+#'     spinning circle) and jokes about mice (like: changing cages bedding, 
+#'     refilling water bottles, following the traces, oh, one mouse is out of
+#'     the cage!, Spinning the running wheel, clearing the wheel from bedding) 
 #' 
   #' WRITING
 #' 

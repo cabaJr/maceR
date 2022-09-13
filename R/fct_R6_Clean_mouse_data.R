@@ -34,7 +34,7 @@ Clean_mouse_data <- R6::R6Class("Clean_mouse_data",
                               length = as.numeric(),
 #' compile
 #'
-#' @param x 
+#' @param x Raw_mouse_data object
 
                               compile = function(x){
                                 self$id <- as.factor(x$id)
