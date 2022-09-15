@@ -191,6 +191,10 @@
   #' 13/09/2022
 #'  started planning the addition of new factors in metadata + some general comments
 
+  #' 15/09/2022
+#'  added optional factors in myMice and myCleanMice objects
+#'  added optional factors in add and compile functions
+
   #' PRIORITIES
 #' - add optional factor
 #' - if time subsetting recompute LD values subtracting timeRange[1] to ddStart

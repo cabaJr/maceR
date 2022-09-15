@@ -58,18 +58,38 @@ Raw_mouse_data <- R6::R6Class("Raw_mouse_data",
                                   if(is.null(env$discardRow) == FALSE){
                                     skipRows <- env$discardRow
                                   }
+                                  # read data file and store it in data variable
                                   data <- read.csv(datapath1, skip = skipRows, header = FALSE, col.names = c("Day", "Hour", "Minute", "Counts_min", "Lights"), stringsAsFactors = FALSE)
+                                  # read metadata file and store it in metadata variable
                                   metadata <- read.csv(metadatapath1, header = TRUE, sep = ";")
+                                  #get animal id from second row
                                   id <- read.csv(datapath1, skip = 1, nrows = 1, header = FALSE)
+                                  # select only relevant portion of the id
                                   id_sel <- sapply(strsplit(id[1,1], "_"), function(x) x[(length(x)-1)])
                                   # id_sel <- substr(id[1,1], 4, 10)
+                                  #filter metadata table to extract values only to the appropriate id
                                   filtered <- metadata[metadata$Identifier == id_sel,]
+                                  # get startdate of experiment from data file
                                   startdate <- read.csv(datapath1, skip = 2, nrows = 1, header = FALSE)
                                   day <- startdate[1,1]
                                   hour <- startdate[1,2]
                                   fulldate <- paste(day, hour, sep = "")
                                   # startdate <- as.POSIXct.Date(fulldate, format("%Y-%m-%d %H:%M:%S"))
-                                  
+                                  addFct <- (ncol(metadata) - 5)
+                                    switch(addFct,
+                                      0 = {
+                                        self$fct_1 <- 0
+                                        self$fct_2 <- 0
+                                        },
+                                      1 = {
+                                        self$fct_1 <- filtered[,6]
+                                        self$fct_2 <- 0
+                                        },
+                                      2 = {
+                                        self$fct_1 <- filtered[,6]
+                                        self$fct_2 <- filtered[,7]
+                                        }
+                                    )
                                   # fill data with all fields contained in metadata table from user
                                   self$id <- filtered$Identifier
                                   self$sex <- filtered$Sex

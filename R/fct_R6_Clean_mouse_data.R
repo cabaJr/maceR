@@ -21,6 +21,8 @@ Clean_mouse_data <- R6::R6Class("Clean_mouse_data",
 #' @field realTime time format of each datapoint
 #' @field countsMinute numeric how many spins per minute
 #' @field length numeric, how many datapoints
+#' @field fct_1 addidional optional factor
+#' @field fct_2 additional optional factor
 #' 
                               id = as.character(),
                               sex = as.character(),
@@ -32,6 +34,8 @@ Clean_mouse_data <- R6::R6Class("Clean_mouse_data",
                               realTime = as.character(),
                               countsMinute = as.integer(),
                               length = as.numeric(),
+                              fct_1 = as.character(),
+                              fct_2 = as.character(),
 #' compile
 #'
 #' @param x Raw_mouse_data object
@@ -42,6 +46,8 @@ Clean_mouse_data <- R6::R6Class("Clean_mouse_data",
                                 self$genotype <- x$genotype
                                 self$cabinet <- x$cabinet
                                 self$lightOn <- x$lightOn
+                                self$fct_1 <- x$fct_1
+                                self$fct_2 <- x$fct_2
                                 # self$startdate <- as.character()
                                 # self$data <- data.frame()
                               },
