@@ -75,21 +75,21 @@ Raw_mouse_data <- R6::R6Class("Raw_mouse_data",
                                   hour <- startdate[1,2]
                                   fulldate <- paste(day, hour, sep = "")
                                   # startdate <- as.POSIXct.Date(fulldate, format("%Y-%m-%d %H:%M:%S"))
-                                  # addFct <- (ncol(metadata) - 5)
-                                  #   switch(addFct,
-                                  #     0 = {
-                                  #       self$fct_1 <- 0
-                                  #       self$fct_2 <- 0
-                                  #       },
-                                  #     1 = {
-                                  #       self$fct_1 <- filtered[,6]
-                                  #       self$fct_2 <- 0
-                                  #       },
-                                  #     2 = {
-                                  #       self$fct_1 <- filtered[,6]
-                                  #       self$fct_2 <- filtered[,7]
-                                  #       }
-                                  #   )
+                                  addFct <- (ncol(metadata) - 5)
+                                    switch(addFct,
+                                      "0" = {
+                                        self$fct_1 <- 0
+                                        self$fct_2 <- 0
+                                        },
+                                      "1" = {
+                                        self$fct_1 <- filtered[,6]
+                                        self$fct_2 <- 0
+                                        },
+                                      "2" = {
+                                        self$fct_1 <- filtered[,6]
+                                        self$fct_2 <- filtered[,7]
+                                        }
+                                    )
                                   # fill data with all fields contained in metadata table from user
                                   self$id <- filtered$Identifier
                                   self$sex <- filtered$Sex
