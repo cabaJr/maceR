@@ -22,7 +22,6 @@ check_uploads <- function(App_settings){
 #'     not it renders the Plots tab.
 #' @param App_settings environment
 #'
-#' @return
 #' @export
 #'
 
@@ -35,7 +34,6 @@ checkPlots <- function(App_settings){
 #' @param App_setting env App_settings
 #' @param activate tab to activate
 #'
-#' @return
 #' @export
 #'
 check_plot_tab <- function(App_setting, activate){
