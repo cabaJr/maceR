@@ -6,9 +6,6 @@
 \usage{
 showall_datastr_ui()
 }
-\value{
-
-}
 \description{
 showall_datastr_ui
 }

@@ -11,9 +11,6 @@ update_DS_ui(case, ...)
 
 \item{...}{additional argument to control switch}
 }
-\value{
-
-}
 \description{
 function to dynalically update the possible choices in the
     Data Structure tab box 1

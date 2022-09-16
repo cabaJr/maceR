@@ -29,7 +29,11 @@ A R6 class object to contain the uploaded files and info extracted
 
 \item{\code{data}}{raw data}
 
-\item{\code{length}}{length of data table
+\item{\code{length}}{length of data table}
+
+\item{\code{fct_1}}{additional user defined factor}
+
+\item{\code{fct_2}}{additional user defined factor
                             
 initialize}
 }
@@ -38,14 +42,14 @@ initialize}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{Raw_mouse_data$new()}}
-\item \href{#method-add}{\code{Raw_mouse_data$add()}}
-\item \href{#method-clone}{\code{Raw_mouse_data$clone()}}
+\item \href{#method-Raw_mouse_data-new}{\code{Raw_mouse_data$new()}}
+\item \href{#method-Raw_mouse_data-add}{\code{Raw_mouse_data$add()}}
+\item \href{#method-Raw_mouse_data-clone}{\code{Raw_mouse_data$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-Raw_mouse_data-new"></a>}}
+\if{latex}{\out{\hypertarget{method-Raw_mouse_data-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Raw_mouse_data$new()}\if{html}{\out{</div>}}
@@ -58,8 +62,8 @@ add
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-add"></a>}}
-\if{latex}{\out{\hypertarget{method-add}{}}}
+\if{html}{\out{<a id="method-Raw_mouse_data-add"></a>}}
+\if{latex}{\out{\hypertarget{method-Raw_mouse_data-add}{}}}
 \subsection{Method \code{add()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Raw_mouse_data$add(datapath, metadatapath, env, skipRows = 4)}\if{html}{\out{</div>}}
@@ -80,8 +84,8 @@ add
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-Raw_mouse_data-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-Raw_mouse_data-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

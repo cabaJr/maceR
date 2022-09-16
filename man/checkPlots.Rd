@@ -9,9 +9,6 @@ checkPlots(App_settings)
 \arguments{
 \item{App_settings}{environment}
 }
-\value{
-
-}
 \description{
 function to check if Plot TabItem is already present, and if
     not it renders the Plots tab.

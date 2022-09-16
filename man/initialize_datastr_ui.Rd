@@ -6,9 +6,6 @@
 \usage{
 initialize_datastr_ui()
 }
-\value{
-
-}
 \description{
 initialize_datastr_ui
 }

@@ -38,18 +38,18 @@ compile}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-compile}{\code{Custom_tables$compile()}}
-\item \href{#method-AvgDay}{\code{Custom_tables$AvgDay()}}
-\item \href{#method-checkIf}{\code{Custom_tables$checkIf()}}
-\item \href{#method-behavrTable}{\code{Custom_tables$behavrTable()}}
-\item \href{#method-dailyAct}{\code{Custom_tables$dailyAct()}}
-\item \href{#method-computePer}{\code{Custom_tables$computePer()}}
-\item \href{#method-clone}{\code{Custom_tables$clone()}}
+\item \href{#method-Custom_tables-compile}{\code{Custom_tables$compile()}}
+\item \href{#method-Custom_tables-AvgDay}{\code{Custom_tables$AvgDay()}}
+\item \href{#method-Custom_tables-checkIf}{\code{Custom_tables$checkIf()}}
+\item \href{#method-Custom_tables-behavrTable}{\code{Custom_tables$behavrTable()}}
+\item \href{#method-Custom_tables-dailyAct}{\code{Custom_tables$dailyAct()}}
+\item \href{#method-Custom_tables-computePer}{\code{Custom_tables$computePer()}}
+\item \href{#method-Custom_tables-clone}{\code{Custom_tables$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-compile"></a>}}
-\if{latex}{\out{\hypertarget{method-compile}{}}}
+\if{html}{\out{<a id="method-Custom_tables-compile"></a>}}
+\if{latex}{\out{\hypertarget{method-Custom_tables-compile}{}}}
 \subsection{Method \code{compile()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Custom_tables$compile(env)}\if{html}{\out{</div>}}
@@ -69,8 +69,8 @@ AvgDay
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AvgDay"></a>}}
-\if{latex}{\out{\hypertarget{method-AvgDay}{}}}
+\if{html}{\out{<a id="method-Custom_tables-AvgDay"></a>}}
+\if{latex}{\out{\hypertarget{method-Custom_tables-AvgDay}{}}}
 \subsection{Method \code{AvgDay()}}{
 function to create tibble with mouse activity daily grouped in 
     15 minutes bins
@@ -96,8 +96,8 @@ CheckIf
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-checkIf"></a>}}
-\if{latex}{\out{\hypertarget{method-checkIf}{}}}
+\if{html}{\out{<a id="method-Custom_tables-checkIf"></a>}}
+\if{latex}{\out{\hypertarget{method-Custom_tables-checkIf}{}}}
 \subsection{Method \code{checkIf()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Custom_tables$checkIf(funEnv, subsetPlot)}\if{html}{\out{</div>}}
@@ -116,8 +116,8 @@ behavrTable}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-behavrTable"></a>}}
-\if{latex}{\out{\hypertarget{method-behavrTable}{}}}
+\if{html}{\out{<a id="method-Custom_tables-behavrTable"></a>}}
+\if{latex}{\out{\hypertarget{method-Custom_tables-behavrTable}{}}}
 \subsection{Method \code{behavrTable()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Custom_tables$behavrTable(x, subsetVal)}\if{html}{\out{</div>}}
@@ -136,8 +136,8 @@ dailyAct}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dailyAct"></a>}}
-\if{latex}{\out{\hypertarget{method-dailyAct}{}}}
+\if{html}{\out{<a id="method-Custom_tables-dailyAct"></a>}}
+\if{latex}{\out{\hypertarget{method-Custom_tables-dailyAct}{}}}
 \subsection{Method \code{dailyAct()}}{
 function to generate the sum of the activity for each day and
     store it on a table.
@@ -158,8 +158,8 @@ computePer
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-computePer"></a>}}
-\if{latex}{\out{\hypertarget{method-computePer}{}}}
+\if{html}{\out{<a id="method-Custom_tables-computePer"></a>}}
+\if{latex}{\out{\hypertarget{method-Custom_tables-computePer}{}}}
 \subsection{Method \code{computePer()}}{
 function to analyse data generated with behavrTable() to 
     extract period lenght in data if present.
@@ -183,8 +183,8 @@ function to analyse data generated with behavrTable() to
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-Custom_tables-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-Custom_tables-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

@@ -56,7 +56,6 @@
   
 #' initialize_datastr_ui
 #'
-#' @return
 #' @export
 #'
   initialize_datastr_ui <- function(){
@@ -83,7 +82,6 @@
 
   #' showall_datastr_ui
   #'
-  #' @return
   #' @export
   #'
   showall_datastr_ui <- function(){
@@ -115,7 +113,6 @@
 #'
 #' @description function to dynalically update the possible choices in the
 #'     Data Structure tab box 1
-#' @return
 #' @export
 #'
   update_DS_ui <- function(case, ...){
@@ -220,7 +217,6 @@
 #' @param env aa
 #' @param plot_type ss
 #'
-#' @return
 #' @export
 #'
 plot_actogram_sup <- function(env, plot_type){

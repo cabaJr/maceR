@@ -32,9 +32,6 @@ plot_actogram_sup(env, plot_type)
 
 \item{plot_type}{ss}
 }
-\value{
-
-}
 \description{
 #' insert_box
 #' @description Generates a new box after the placeholder

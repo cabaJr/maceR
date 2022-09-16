@@ -57,23 +57,23 @@ setData}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-setData}{\code{App_settings$setData()}}
-\item \href{#method-setMeta}{\code{App_settings$setMeta()}}
-\item \href{#method-setListMice}{\code{App_settings$setListMice()}}
-\item \href{#method-setListMiceFiltered}{\code{App_settings$setListMiceFiltered()}}
-\item \href{#method-saveLDparams}{\code{App_settings$saveLDparams()}}
-\item \href{#method-setLD}{\code{App_settings$setLD()}}
-\item \href{#method-updateTimeRange}{\code{App_settings$updateTimeRange()}}
-\item \href{#method-setDiscRow}{\code{App_settings$setDiscRow()}}
-\item \href{#method-setTimeDisp}{\code{App_settings$setTimeDisp()}}
-\item \href{#method-setExpstart}{\code{App_settings$setExpstart()}}
-\item \href{#method-setTimepointDur}{\code{App_settings$setTimepointDur()}}
-\item \href{#method-clone}{\code{App_settings$clone()}}
+\item \href{#method-App_settings-setData}{\code{App_settings$setData()}}
+\item \href{#method-App_settings-setMeta}{\code{App_settings$setMeta()}}
+\item \href{#method-App_settings-setListMice}{\code{App_settings$setListMice()}}
+\item \href{#method-App_settings-setListMiceFiltered}{\code{App_settings$setListMiceFiltered()}}
+\item \href{#method-App_settings-saveLDparams}{\code{App_settings$saveLDparams()}}
+\item \href{#method-App_settings-setLD}{\code{App_settings$setLD()}}
+\item \href{#method-App_settings-updateTimeRange}{\code{App_settings$updateTimeRange()}}
+\item \href{#method-App_settings-setDiscRow}{\code{App_settings$setDiscRow()}}
+\item \href{#method-App_settings-setTimeDisp}{\code{App_settings$setTimeDisp()}}
+\item \href{#method-App_settings-setExpstart}{\code{App_settings$setExpstart()}}
+\item \href{#method-App_settings-setTimepointDur}{\code{App_settings$setTimepointDur()}}
+\item \href{#method-App_settings-clone}{\code{App_settings$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-setData"></a>}}
-\if{latex}{\out{\hypertarget{method-setData}{}}}
+\if{html}{\out{<a id="method-App_settings-setData"></a>}}
+\if{latex}{\out{\hypertarget{method-App_settings-setData}{}}}
 \subsection{Method \code{setData()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App_settings$setData(outsideData)}\if{html}{\out{</div>}}
@@ -90,8 +90,8 @@ setMeta}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-setMeta"></a>}}
-\if{latex}{\out{\hypertarget{method-setMeta}{}}}
+\if{html}{\out{<a id="method-App_settings-setMeta"></a>}}
+\if{latex}{\out{\hypertarget{method-App_settings-setMeta}{}}}
 \subsection{Method \code{setMeta()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App_settings$setMeta(outsideMeta)}\if{html}{\out{</div>}}
@@ -108,8 +108,8 @@ setListMice}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-setListMice"></a>}}
-\if{latex}{\out{\hypertarget{method-setListMice}{}}}
+\if{html}{\out{<a id="method-App_settings-setListMice"></a>}}
+\if{latex}{\out{\hypertarget{method-App_settings-setListMice}{}}}
 \subsection{Method \code{setListMice()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App_settings$setListMice(env)}\if{html}{\out{</div>}}
@@ -126,8 +126,8 @@ setListMiceFiltered}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-setListMiceFiltered"></a>}}
-\if{latex}{\out{\hypertarget{method-setListMiceFiltered}{}}}
+\if{html}{\out{<a id="method-App_settings-setListMiceFiltered"></a>}}
+\if{latex}{\out{\hypertarget{method-App_settings-setListMiceFiltered}{}}}
 \subsection{Method \code{setListMiceFiltered()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App_settings$setListMiceFiltered(x, idList, sexList, genList, cabList)}\if{html}{\out{</div>}}
@@ -152,8 +152,8 @@ saveLDparams}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-saveLDparams"></a>}}
-\if{latex}{\out{\hypertarget{method-saveLDparams}{}}}
+\if{html}{\out{<a id="method-App_settings-saveLDparams"></a>}}
+\if{latex}{\out{\hypertarget{method-App_settings-saveLDparams}{}}}
 \subsection{Method \code{saveLDparams()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App_settings$saveLDparams(x, light, ddVal, ddStart)}\if{html}{\out{</div>}}
@@ -176,8 +176,8 @@ setLD}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-setLD"></a>}}
-\if{latex}{\out{\hypertarget{method-setLD}{}}}
+\if{html}{\out{<a id="method-App_settings-setLD"></a>}}
+\if{latex}{\out{\hypertarget{method-App_settings-setLD}{}}}
 \subsection{Method \code{setLD()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App_settings$setLD(env, light, ddVal, ddStart)}\if{html}{\out{</div>}}
@@ -200,8 +200,8 @@ updateTimeRange}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-updateTimeRange"></a>}}
-\if{latex}{\out{\hypertarget{method-updateTimeRange}{}}}
+\if{html}{\out{<a id="method-App_settings-updateTimeRange"></a>}}
+\if{latex}{\out{\hypertarget{method-App_settings-updateTimeRange}{}}}
 \subsection{Method \code{updateTimeRange()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App_settings$updateTimeRange(range, env)}\if{html}{\out{</div>}}
@@ -220,8 +220,8 @@ setDiscRow}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-setDiscRow"></a>}}
-\if{latex}{\out{\hypertarget{method-setDiscRow}{}}}
+\if{html}{\out{<a id="method-App_settings-setDiscRow"></a>}}
+\if{latex}{\out{\hypertarget{method-App_settings-setDiscRow}{}}}
 \subsection{Method \code{setDiscRow()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App_settings$setDiscRow(x)}\if{html}{\out{</div>}}
@@ -238,8 +238,8 @@ setTimeDisp}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-setTimeDisp"></a>}}
-\if{latex}{\out{\hypertarget{method-setTimeDisp}{}}}
+\if{html}{\out{<a id="method-App_settings-setTimeDisp"></a>}}
+\if{latex}{\out{\hypertarget{method-App_settings-setTimeDisp}{}}}
 \subsection{Method \code{setTimeDisp()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App_settings$setTimeDisp(x)}\if{html}{\out{</div>}}
@@ -256,8 +256,8 @@ setExpstart}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-setExpstart"></a>}}
-\if{latex}{\out{\hypertarget{method-setExpstart}{}}}
+\if{html}{\out{<a id="method-App_settings-setExpstart"></a>}}
+\if{latex}{\out{\hypertarget{method-App_settings-setExpstart}{}}}
 \subsection{Method \code{setExpstart()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App_settings$setExpstart(x)}\if{html}{\out{</div>}}
@@ -274,8 +274,8 @@ setTimepointDur}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-setTimepointDur"></a>}}
-\if{latex}{\out{\hypertarget{method-setTimepointDur}{}}}
+\if{html}{\out{<a id="method-App_settings-setTimepointDur"></a>}}
+\if{latex}{\out{\hypertarget{method-App_settings-setTimepointDur}{}}}
 \subsection{Method \code{setTimepointDur()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{App_settings$setTimepointDur(x)}\if{html}{\out{</div>}}
@@ -290,8 +290,8 @@ setTimepointDur}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-App_settings-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-App_settings-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

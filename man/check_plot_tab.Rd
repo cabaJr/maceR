@@ -11,9 +11,6 @@ check_plot_tab(App_setting, activate)
 
 \item{activate}{tab to activate}
 }
-\value{
-
-}
 \description{
 check_plot_tab
 }
