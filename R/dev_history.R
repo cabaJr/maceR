@@ -195,6 +195,9 @@
 #'  added optional factors in myMice and myCleanMice objects
 #'  added optional factors in add and compile functions
 
+  #' 16/09/2022
+#'  add data reduction for datasets that are longer than x
+
   #' PRIORITIES
 #' - add optional factor
 #' - if time subsetting recompute LD values subtracting timeRange[1] to ddStart
