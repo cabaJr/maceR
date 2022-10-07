@@ -18,6 +18,7 @@ Annotate <- R6::R6Class("Annotate",
 #' @field output_list_acto table with combination of output titles, location, etc
 #' @field actTable 5
 #' @field metaTable 6
+#' @field metaTablefilt 6_6
 #' @field cacheKeys 7
                       Actograms = list(acto1 = list(),
                                           acto2 = list(),
@@ -127,6 +128,7 @@ Annotate <- R6::R6Class("Annotate",
                     ),
                     actTable = NULL,
                     metaTable = NULL,
+                    metaTablefilt = NULL,
                     cacheKeys = dplyr::tibble("table" = seq(1:8), #table to store keys of hashed tables when plotting
                                        "key" = 0), #to be implemented
 #' showMeta
@@ -136,7 +138,6 @@ Annotate <- R6::R6Class("Annotate",
 #' @return returns a table containing the uploaded metadata
 #' 
                     showMeta = function(env){
-                      # browser()
                       myCleanMice <- env$myCleanMice
                       d1 <- dplyr::tibble(
                         "id" = as.character(),
@@ -146,6 +147,12 @@ Annotate <- R6::R6Class("Annotate",
                         "Light_On" = as.character(),
                         "Datapoints" = as.character()
                       )
+                     #  d3 <- read.csv(env$App_settings$metadata$datapath, header = TRUE, sep = ";")
+                     # colnames(d3) <- c("id", "Cabinet", "Sex", "Genotype", "Light_On")
+                     # d3 <- d3[, c(1, 3, 4, 2, 5)]
+                     #  Datapoints <- vector("numeric", length(d3[,1]))
+                     #  d3 <- cbind(d3, Datapoints)
+                      # d3 <- dplyr::tibble(d3)
                       for(h in seq_len(length(myCleanMice))){
                         d2 <- dplyr::tibble(
                           "id" = myCleanMice[[h]]$id,
@@ -156,8 +163,11 @@ Annotate <- R6::R6Class("Annotate",
                           "Datapoints" = myCleanMice[[h]]$length
                         )
                         d1 <- rbind(d1, d2)
+                        # d3[d3$id == d2$id, "Datapoints"] <- d2$Datapoints
                       }
+                      # browser()
                       self$metaTable <- d1
+                      # self$metaTablefilt <- d3
                     },
 
 #' showdata

@@ -48,7 +48,7 @@ Clean_mouse_data <- R6::R6Class("Clean_mouse_data",
 
 #' addData
 #'
-#' @param x 
+#' @param x myMice data object
 #' @param App_settings 
 #' 
                               addData = function(x, App_settings){ #more comments on these fun

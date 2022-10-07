@@ -188,11 +188,21 @@
 #'  if time subsetting recompute LD values subtracting timeRange[1] to ddStart (done)
 #'  clean data structure from unnecessary parts
 #'  activate options to download different table (changed to first peak table)
+#'  error when subsetting with no animal selected (done)
+
+  #'  14/10/2022  
+#'  write help messages (half done)
+#'  implement timepoint setting (done)
+#'  implement real time setting (done)
+#'  remove time windows subsetting (done)
+#'  help button in LD cycle settings (done)
+#'  help button in Load files (done)
+#'  implement display full metadata 
+#'  
 
   #' PRIORITIES
 #' - add optional factor
-#' - if time subsetting recompute LD values subtracting timeRange[1] to ddStart
-#' - Think of a new name that is not taken on CRAN
+#' - Think of a new name that is not taken on CRAN (RACETrack)
 #' - check workflow for data upload
 #' - activate functions to display/hide elements in Datastructure tab
 #' - remake analysis tab with more user friendly flipbox
@@ -203,12 +213,17 @@
 
   #' CODING
 #'     option selection. See mod_analysis for details.
+#' - when generating periodograms, add option for analysisng only DD period     
 #' - activate option when plotting individual plots to select for ids
 #' - create analysis presets (e.g. 1 periodogram, 1 daily activity, 1 periodogram, etc..)
 #' - In plots, hide tabs that do not contain any plot
 #' 
   #' UI
-#' 
+#' - Make periodogram selection more visual, introducing actogram preview
+#'     to decide where to place boundaries for analysys, or preview of available 
+#'     plots.as a big box with previews in the right and command selection on 
+#'     the left.Could be triggering from flipbox if possible to switch between 
+#'     objects.
 #' - Update landing page
 #' - redesign plotting to be more user friendly, use of boxes to display
 #'     plots. Box are generated from module call 
@@ -223,6 +238,7 @@
 #'
   #' FIXINGS 
 #' 
+#' - problem with significance threshold in LS periodogram when timeserience are long
 #' - fix updating of LD information
 #' - add error if not selecting any id when subsetting time
 #' - select an option that when plotting individual double plotted actograms caps

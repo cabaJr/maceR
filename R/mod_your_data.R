@@ -15,15 +15,33 @@ mod_your_data_ui <- function(id){
   tagList(
  
     fluidRow(style = "",
-             shinydashboardPlus::box(title= "Uploaded metafiles", id = ns("box2_1"), width = 12, solidHeader = TRUE, collapsible = TRUE, status = "danger",
-                 fluidRow(
-                   column(width = 8, shinyWidgets::prettyRadioButtons(inputId = ns('tablemetafilter'), label = '', choiceNames = c('Display full metadata table', 'Display metadata of uploaded files only'),
-                                                  choiceValues = c('Y', 'N'), inline = TRUE, selected = 'Y')),
-                   column(width = 3, offset = 1, actionButton(ns('help2_1'), label = 'Help',
-                                                              style="color: #fff; background-color: #1e690c; border-color: #1e530c;"))
+             shinydashboardPlus::box(
+               title= "Uploaded metafiles", 
+               id = ns("box2_1"), 
+               width = 12, 
+               solidHeader = TRUE, 
+               collapsible = TRUE, 
+               status = "danger",
+               fluidRow(
+                 column(width = 8, 
+                        shinyWidgets::prettyRadioButtons(inputId = ns('tablemetafilter'), 
+                                                         label = '', 
+                                                         choiceNames = c('Display full metadata table', 'Display metadata of uploaded files only'),
+                                                         choiceValues = c('Full', 'Filtered'), 
+                                                         inline = TRUE, 
+                                                         selected = 'Filtered')
+                        )
                  ),
-                 fluidRow(
-                   column(width = 9, DT::DTOutput(ns('metatable')), DT::DTOutput(ns('metafiltered'))))
+               fluidRow(
+                 column(width = 9,
+                        DT::DTOutput(ns('metatable')),
+                        DT::DTOutput(ns('metafiltered'))
+                        ),
+                 column(width = 3,
+                        actionButton(ns('help2_1'),
+                                     label = 'Help',
+                                     style="color: #fff; background-color: #1e690c; border-color: #1e530c;"))
+                   )
              )
     ),
     fluidRow(style = "",
@@ -36,13 +54,17 @@ mod_your_data_ui <- function(id){
                  #        textInput('findPointH', label = "", placeholder = 'hh:mm:ss')),
                  # textOutput('findtime')),
                  column(width = 12, DT::DTOutput(ns('showdata'))),#, DT::DTOutput('aligned')),
-                 column(width = 2, offset = 6,
+                 column(width = 2, 
+                        offset = 7,
                         br(),
-                        actionButton(ns('help2_2'), label = 'Help',
-                                     style="color: #fff; background-color: #1e690c; border-color: #1e530c;")),
-                 column(width = 2, offset = 1,
+                        downloadButton(outputId = ns("dataTab"), label = "Download")),
+                 column(width = 2, 
+                        offset = 0,
                         br(),
-                        downloadButton(outputId = ns("dataTab"), label = "Download")
+                        actionButton(ns('help2_2'), 
+                                     label = 'Help',
+                                     style="color: #fff; background-color: #1e690c; border-color: #1e530c;")
+                        
                  )
                  
              )
@@ -63,16 +85,29 @@ mod_your_data_server <- function(id, env, idList = NULL){
     # show help messages 
     observeEvent(input$help2_1, {show_help(App_settings, 5)})
     observeEvent(input$help2_2, {show_help(App_settings, 6)})
-    
+    #observe change of button and update table accordingly
+    observeEvent(c(input$tablemetafilter, idList),{
     #don't compute when app is started but only after files are uploaded
     if(is.null(idList) == TRUE){}else{
+    choice <-  input$tablemetafilter 
     # show metadata table in Yourdata tab
-    output$metafiltered <- DT::renderDT(App_settings$env2$Annotate$metaTable)
-    shinyjs::show("metafiltered", anim = FALSE)
+    output$metatable <- DT::renderDT(App_settings$env2$Annotate$metaTable[[2]])
+    output$metafiltered <- DT::renderDT(App_settings$env2$Annotate$metaTable[[1]])
+    switch (choice,
+      "Full" = {
+        shinyjs::show("metatable", anim = FALSE)
+        shinyjs::hide("metafiltered", anim = FALSE)
+        },
+      "Filtered" = {
+        shinyjs::show("metafiltered", anim = FALSE)
+        shinyjs::hide("metatable", anim = FALSE)
+        }
+    )
     # Upload selector from listMice to choose what data to display in YourData
     idList <- App_settings$listMice[,2]
     updateSelectInput(session, "chooseM", choices = c("choose" = "", idList, "All" = "All"), selected = NULL)
-  }
+    }
+    })
     
     # display data in YourData tab
     observeEvent(input$chooseM, { #when a new id is selected this chunck runs twice (bug)

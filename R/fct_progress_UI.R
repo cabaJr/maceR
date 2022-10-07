@@ -76,6 +76,7 @@
         shinyjs::hide(id = "TPanalysis_endtime2", anim = FALSE)
         shinyjs::hide(id = "TPduration", anim = FALSE)
         shinyjs::hide(id = "DFsubsetRT", anim = FALSE)
+        shinyjs::hide(id = "DFsubsetTP", anim = FALSE)
         shinyjs::hide(id = "TPanalysis_starttime", anim = FALSE)
         shinyjs::hide(id = "TPanalysis_endtime", anim = FALSE)
         # shinyjs::hide(id = "DFsubsetTP", anim = FALSE)
@@ -123,17 +124,17 @@
              switch(case,
                     "6" = {
                       shinyjs::show(id = "rtStart", anim = FALSE)
-                      shinyjs::show(id = "rtStartHour", anim = FALSE)
-                      shinyjs::show(id = "DFsubsetRT", anim = FALSE)
-                      shinyjs::hide(id = "DFsubsetTP", anim = FALSE)
-                      shinyjs::hide(id = "tpDuration", anim = FALSE)
+                      shinyjs::show(id = "rtStarthour", anim = FALSE)
+                      # shinyjs::show(id = "DFsubsetRT", anim = FALSE)
+                      # shinyjs::hide(id = "DFsubsetTP", anim = FALSE)
+                      shinyjs::hide(id = "TPduration", anim = FALSE)
                     }, #Timepoints
                     "7" = {
-                      shinyjs::show(id = "tpDuration", anim = FALSE)
-                      shinyjs::show(id = "DFsubsetTP", anim = FALSE)
-                      shinyjs::hide(id = "DFsubsetRT", anim = FALSE)
+                      shinyjs::show(id = "TPduration", anim = FALSE)
+                      # shinyjs::show(id = "DFsubsetTP", anim = FALSE)
+                      # shinyjs::hide(id = "DFsubsetRT", anim = FALSE)
                       shinyjs::hide(id = "rtStart", anim = FALSE)
-                      shinyjs::hide(id = "rtStartHour", anim = FALSE)
+                      shinyjs::hide(id = "rtStarthour", anim = FALSE)
                     },  #Realtime
                     "1" = {
                       shinyjs::show(id = "timeframe1", anim = FALSE)

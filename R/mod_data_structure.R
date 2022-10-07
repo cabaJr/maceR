@@ -37,27 +37,53 @@ mod_data_structure_ui <- function(id){
                           # actionButton(inputId = "help_1_1_1", label = "HELP", style="color: #fff; background-color: #1e690c; border-color: #1e530c")
                           
                    ),
-                   column(5, offset = 1,
+                   column(width = 5, 
+                          offset = 1,
                           #default
-                          dateInput(ns("rtStart"), label = "Insert experiment start day",
+                          dateInput(ns("rtStart"), 
+                                    label = "Insert experiment start day",
                                     autoclose = TRUE),
                           textOutput(ns("time")),
-                          textInput(ns("rtStarthour"), label = "Insert experiment start hour", value = "00:00:00"),
-                          numericInput(inputId = ns("TPduration"), label = "Insert timepoint duration (sec):", min = 1, value = 60),
+                          textInput(ns("rtStarthour"), 
+                                    label = "Insert experiment start hour", 
+                                    value = "00:00:00"),
+                          numericInput(inputId = ns("TPduration"), 
+                                       label = "Insert timepoint duration (sec):", 
+                                       min = 1, 
+                                       value = 60),
                           #optional
-                         shinyWidgets::prettyRadioButtons(inputId = ns("DFsubsetRT"), label = "Do you want to analyse a particular time window?", inline = TRUE,
-                                       choices = c("Yes", "No"), selected = "No"),
-                          dateInput(inputId = ns("timeFrame1"), label = "Days to be analysed (default = all): "), dateInput(inputId = ns("timeFrame2"), label = ""),
-                          textInput(ns("RTanalysis_starttime"), label = "Insert the time when you want to start analyse your data: ",
-                                    placeholder = "hh:mm:ss"),
-                          textInput(ns("RTanalysis_endtime"), label = "Insert the time when you want to end your analysis: ",
-                                    placeholder = "hh:mm:ss"),
-                         shinyWidgets::prettyRadioButtons(inputId = ns("DFsubsetTP"), label = "Do you want to analyse a particular time window?", inline = TRUE,
-                                       choices = c("Yes", "No"), selected = "No"),
-                          numericInput(ns("TPanalysis_starttime"), label = "Insert the timepoint when you want to start analyse your data: ", min = 0, value = 0),
-                          numericInput(ns("TPanalysis_endtime"), label = "Insert the timepoint when you want to end your analysis: ", min = 0, value = 0),
-                          actionButton(inputId = ns("help1_1_1"), label = "HELP",
-                                       style="color: #fff; background-color: #1e690c; border-color: #1e530c")
+                         shinyWidgets::prettyRadioButtons(inputId = ns("DFsubsetRT"), 
+                                                          label = "Do you want to analyse a particular time window? RT", 
+                                                          inline = TRUE,
+                                                          choices = c("Yes", "No"), 
+                                                          selected = "No"),
+                         dateInput(inputId = ns("timeFrame1"), 
+                                    label = "Days to be analysed (default = all): "), 
+                         dateInput(inputId = ns("timeFrame2"), 
+                                   label = ""),
+                         textInput(ns("RTanalysis_starttime"), 
+                                   label = "Insert the time when you want to start analyse your data: ",
+                                   placeholder = "hh:mm:ss"),
+                         textInput(ns("RTanalysis_endtime"), 
+                                   label = "Insert the time when you want to end your analysis: ",
+                                   placeholder = "hh:mm:ss"),
+                         shinyWidgets::prettyRadioButtons(inputId = ns("DFsubsetTP"), 
+                                                          label = "Do you want to analyse a particular time window? TP", 
+                                                          inline = TRUE,
+                                                          choices = c("Yes", "No"), 
+                                                          selected = "No"),
+                         numericInput(ns("TPanalysis_starttime"), 
+                                      label = "Insert the timepoint when you want to start analyse your data: ", 
+                                      min = 0, 
+                                      value = 0),
+                         numericInput(ns("TPanalysis_endtime"), 
+                                      label = "Insert the timepoint when you want to end your analysis: ", 
+                                      min = 0, 
+                                      value = 0),
+                         br(),
+                         actionButton(inputId = ns("help1_1_1"), 
+                                      label = "HELP",
+                                      style="color: #fff; background-color: #1e690c; border-color: #1e530c")
                           
                    )
                  )
@@ -159,38 +185,67 @@ mod_data_structure_ui <- function(id){
                         width = 12,
                         status = "primary",
                         collapsible = TRUE,
-                 fluidRow(
-                   column(width = 4,
-                          numericInput(inputId = ns("LDcond"),
-                                       label = "How long is your light period? ",
-                                       min = 0, max = 24, value = 12),
-                   )#,
+                        fluidRow(
+                          column(width = 4,
+                                 shinyWidgets::prettyRadioButtons(
+                                   inputId = ns("DDask"), 
+                                   label = "Do you want to set a DD period?",
+                                   inline = TRUE, 
+                                   choices = c("Yes", "No"), 
+                                   selected = "No")
+                          )
+                        ),
+                        fluidRow(
+                          column(width = 4,
+                                 numericInput(inputId = ns("LDcond"),
+                                              label = "How long is your light period? ",
+                                              min = 0, 
+                                              max = 24, 
+                                              value = 12),
+                                 )#,
                    # column(width = 4,
                    #        numericInput(inputId = "dayLenght",
                    #                     label = "How long is your day? ",
                    #                     min = 8, max = 36, value = 24),
                    # )
                  ),
-                 fluidRow(column(width = 4,
-                                shinyWidgets::prettyRadioButtons(inputId = ns("DDask"), label = "Do you want to set a DD period?",inline = TRUE, choices = c("Yes", "No"), selected = "No"))
-                 ),
+                
                  fluidRow(
                    column(width = 4,
-                          numericInput(inputId = ns("DDcond"),label = "On which day does DD starts? ",
-                                       min = 1, value = 1)),
+                          numericInput(
+                            inputId = ns("DDcond"),
+                            label = "On which day does DD starts? ",
+                            min = 1, 
+                            value = 1)
+                          ),
+                   column(width = 4,
+                          offset = 2,
+                          br(),
+                          actionButton(inputId = ns("help1_1_12"), 
+                                       label = "HELP",
+                                       style="color: #fff; background-color: #1e690c; border-color: #1e530c"))
                    # column(width = 4, offset = 2,
                    #        actionButton(inputId = "updateLD", label = "Update"))
                  )
              ),
-             shinydashboard::box(title = "Load data", id = ns("box1_1_5"), solidHeader = TRUE, width = 12, status = "primary", collapsible = TRUE,
-                 fluidRow(
-                   column(width = 7,
-                          actionButton(inputId = ns("go"), label = "Load into Data frame")
-                   )
-                 )
-             )
-             #                                                     
-             #                                            )
+             shinydashboard::box(title = "Load data", 
+                                 id = ns("box1_1_5"), 
+                                 solidHeader = TRUE, 
+                                 width = 12, 
+                                 status = "primary", 
+                                 collapsible = TRUE,
+                                 fluidRow(
+                                   column(width = 6,
+                                          actionButton(
+                                            inputId = ns("go"), 
+                                            label = "Load into Data frame")
+                                          ),
+                                   column(width = 4,
+                                          actionButton(inputId = ns("help1_1_13"), 
+                                                       label = "HELP",
+                                                       style="color: #fff; background-color: #1e690c; border-color: #1e530c"))
+                                   )
+                                 )
     ),#end of FluidRow
     #                                   #####metadata panel#####
     #                                   tabPanel("Debug",
@@ -236,8 +291,8 @@ mod_data_structure_server <- function(id, env, ...){
     
     # show help messages 
     observeEvent(input$help1_1_1, {show_help(App_settings, 2)})
-    observeEvent(input$help1_1_2, {show_help(App_settings, 3)})
-    observeEvent(input$help1_2_1, {show_help(App_settings, 4)})
+    observeEvent(input$help1_1_12, {show_help(App_settings, 3)})
+    observeEvent(input$help1_2_13, {show_help(App_settings, 4)})
     
     #read parameters and enter in App_settings
     observeEvent(input$discardFirst, {App_settings$setDiscRow(input$discardFirst)})

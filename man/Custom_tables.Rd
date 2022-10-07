@@ -100,13 +100,13 @@ CheckIf
 \if{latex}{\out{\hypertarget{method-checkIf}{}}}
 \subsection{Method \code{checkIf()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Custom_tables$checkIf(funEnv, subsetPlot)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Custom_tables$checkIf(env, subsetPlot)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{funEnv}}{env containing App_settings}
+\item{\code{env}}{env containing App_settings}
 
 \item{\code{subsetPlot}}{Yes/No value
 
@@ -120,13 +120,13 @@ behavrTable}
 \if{latex}{\out{\hypertarget{method-behavrTable}{}}}
 \subsection{Method \code{behavrTable()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Custom_tables$behavrTable(x, subsetVal)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Custom_tables$behavrTable(env, subsetVal)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{x}}{App_settings environment}
+\item{\code{env}}{App_settings environment}
 
 \item{\code{subsetVal}}{Yes/No value if to subset dataset or not
 
@@ -166,7 +166,7 @@ function to analyse data generated with behavrTable() to
     Describe Analysis methods and link to papers that compare the different
     methods
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Custom_tables$computePer(method, periodRange, funenv)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Custom_tables$computePer(method, periodRange, env, subsetVal)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -177,7 +177,9 @@ function to analyse data generated with behavrTable() to
 
 \item{\code{periodRange}}{numeric,}
 
-\item{\code{funenv}}{Not used?}
+\item{\code{env}}{App_settings environment}
+
+\item{\code{subsetVal}}{Yes/No value}
 }
 \if{html}{\out{</div>}}
 }
