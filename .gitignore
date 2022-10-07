@@ -1,6 +1,13 @@
+# R project file
+maceR.Rproj
+
+# other files
 .Rproj.user
 .Rhistory
 .Rdata
 .httr-oauth
 .DS_Store
 inst/doc
+
+# package dev folder
+/dev/
