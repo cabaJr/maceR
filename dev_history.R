@@ -216,6 +216,20 @@
 #'  help button in LD cycle settings (done)
 #'  help button in Load files (done)
 #'  implement display full metadata 
+
+  #' To be implemented
+#'  Create an wide table output of counts exported from actogram download button
+#'  Each download button should output a different table summarised on 
+#'      different factors (Double plotted actograms)
+#'  Think about shading problem in single line actograms (shade is too light +
+#'      there are different level of opacity based on the number of lines in 
+#'      the plot. How to account for that)
+#'  Create wide table output for sum of daily activity table
+#'  Box not having unique names in each section of the plotting tab
+#'  Select a specific subset of data to be analysed for periodogram
+#'  only extract period with peak = 1 for data outputted from periodograms
+#'  remove period boxplots that are not generated
+#'  make wide table output for average day of activity
 #'  
 
 #' PRIORITIES

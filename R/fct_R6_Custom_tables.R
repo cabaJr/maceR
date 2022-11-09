@@ -78,7 +78,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #'
                            AvgDay = function(env, per_len, subsetVal){ #handle NA values to avoid dropping of values
                              d6 <- NULL
-                             browser()
+                             #browser()
                              #switch to allow for data subsetting
                              switch(subsetVal,
                                     "Yes" = {
