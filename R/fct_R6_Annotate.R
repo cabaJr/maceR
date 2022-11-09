@@ -112,7 +112,8 @@ Annotate <- R6::R6Class("Annotate",
                                  "Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]",
                                  "Custom_tables$daily_act[[1]]", "Custom_tables$daily_act[[1]]", "Custom_tables$daily_act[[1]]",
                                  "Custom_tables$daily_act[[1]]", "Custom_tables$daily_act[[1]]", "Custom_tables$daily_act[[1]]",
-                                 "Custom_tables$periodograms[[2]]", "Custom_tables$periodograms[[2]]", "Custom_tables$periodograms[[2]]", #changed to 2 to get only the first peak
+                                 #changed to 2 to get only the first peak. table [[1]] contains all peaks
+                                 "Custom_tables$periodograms[[2]]", "Custom_tables$periodograms[[2]]", "Custom_tables$periodograms[[2]]", 
                                  "Custom_tables$periodograms[[2]]", "Custom_tables$periodograms[[2]]",
                                  "Custom_tables$periodograms[[2]]", "Custom_tables$periodograms[[2]]", "Custom_tables$periodograms[[2]]",
                                  "Custom_tables$periodograms[[2]]", "Custom_tables$periodograms[[2]]",
@@ -227,13 +228,18 @@ Annotate <- R6::R6Class("Annotate",
                       # Llpha <- (0.4 / len)
                       LDcond <- env$LDcondition
                       if(type == "total"){
-                        plot <- ggetho::ggetho(data, mapping = ggplot2::aes(x = t, y = id, z = Activity), summary_time_window = 180)+
+                        plot <- ggetho::ggetho(data, mapping = ggplot2::aes(x = t, y = id, z = Activity), summary_time_window = 600)+
                           ggetho::stat_bar_tile_etho()+
                           LDcond$SLLD+
                           LDcond$SLDD+
                           ggplot2::ggtitle("Full length actogram ")
                         self$Actograms$acto1[[1]] <- plot
                       }else if(type == "sex"){
+                        # plot <- ggetho::ggetho(data, mapping = ggplot2::aes(x = t, y = id, z = Activity), summary_time_window = 180)+
+                        #   ggetho::stat_bar_tile_etho()+
+                        #   LDcond$SLLD+
+                        #   LDcond$SLDD+
+                        #   ggplot2::ggtitle("Full length actogram ")
                         plot <- ggetho::ggetho(data, ggplot2::aes(x = t, y = id, z = Activity), summary_time_window = 180) +
                           LDcond$SLLD+
                           LDcond$SLDD+
