@@ -222,6 +222,10 @@ Annotate <- R6::R6Class("Annotate",
 #' @param env App_settings environment
 #' @param type plot type to be rendered
 #'
+                    # add one option that increases summary time window when the data are longer than x
+                    # also explore the function of time_wrap
+                    # check if you implemented a solution that was available using time_offset
+
                     plot_actogram = function(env, type){   #access data to env2 (where custom_tables object is stored). env2 should contain myCleanMice objects
                       data <- env$env2$Custom_tables$locomotor_act[[1]]
                       # len <- length(env$App_settings$dataList$name)
