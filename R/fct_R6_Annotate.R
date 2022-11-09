@@ -53,12 +53,14 @@ Annotate <- R6::R6Class("Annotate",
                       
                     ),
                     output_list_acto = dplyr::tibble(
+                      # unique keyword that identifies the plots that have been requested from the user in the Analysis tab
                       "handler" = c("total", "sex", "genotype", "cabinet",
                                     "DAtotal", "DAsex", "DAgenotype", "DAcabinet",
                                     "~gen", "~sex", "individual", "gen~sex", "indiv+sex~gen", "indiv+cab~gen",
                                     "Pertotal", "Perfaceted", "Persex", "Pergenotype", "Percabinet",
                                     "Pertotal_hist", "Perfaceted_hist", "Persex_hist", "Pergenotype_hist", "Percabinet_hist",
                                     "individualAvgD", "sexAvgD", "genotypeAvgD"),
+                      #list of placeholders in the mod_plots file where the boxes are created
                       "destination" = c("acto1", "acto2", "acto3", "acto4",
                                         "DPacto1", "DPacto2", "DPacto3", "DPacto4",
                                         "DAct1", "DAct2", "DAct3", "DAct4", "DAct5", "DAct6",
@@ -88,6 +90,7 @@ Annotate <- R6::R6Class("Annotate",
                                      "Annotate$avg_day_plots[1][[1]]", "Annotate$avg_day_plots[2][[1]]",
                                      "Annotate$avg_day_plots[3][[1]]"
                                      ),
+                      # Title to be assigned to each box
                       "title" = c("Actogram - all animals", "Actogram - split by sex",
                                   "Actogram - split by genotype", "Actogram - split by cabinet",
                                   "Double plotted actogram - all animals", "Double plotted actogram - split by sex",
@@ -104,16 +107,18 @@ Annotate <- R6::R6Class("Annotate",
                                   "Period boxplot - by cabinet",
                                   "Average daily Activity - Individual", "Average daily Activity - Sex",
                                   "Average daily Activity - Genotype"),
+                      #Location of each table containing data
                       "data" = c("Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]",
                                  "Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]", "Custom_tables$locomotor_act[[1]]",
                                  "Custom_tables$daily_act[[1]]", "Custom_tables$daily_act[[1]]", "Custom_tables$daily_act[[1]]",
                                  "Custom_tables$daily_act[[1]]", "Custom_tables$daily_act[[1]]", "Custom_tables$daily_act[[1]]",
-                                 "Custom_tables$periodograms[[1]]", "Custom_tables$periodograms[[1]]", "Custom_tables$periodograms[[1]]",
-                                 "Custom_tables$periodograms[[1]]", "Custom_tables$periodograms[[1]]",
+                                 "Custom_tables$periodograms[[2]]", "Custom_tables$periodograms[[2]]", "Custom_tables$periodograms[[2]]", #changed to 2 to get only the first peak
+                                 "Custom_tables$periodograms[[2]]", "Custom_tables$periodograms[[2]]",
                                  "Custom_tables$periodograms[[2]]", "Custom_tables$periodograms[[2]]", "Custom_tables$periodograms[[2]]",
                                  "Custom_tables$periodograms[[2]]", "Custom_tables$periodograms[[2]]",
                                  "Custom_tables$average_day[[1]]",  "Custom_tables$average_day[[1]]",
                                  "Custom_tables$average_day[[1]]"),
+                      #partial label to be assigned to the saved file
                       "file_label" = c("Counts_table", "Counts_table", "Counts_table", "Counts_table",
                                        "Counts_table", "Counts_table", "Counts_table", "Counts_table",
                                        "Total_daily_act", "Total_daily_act", "Total_daily_act",
