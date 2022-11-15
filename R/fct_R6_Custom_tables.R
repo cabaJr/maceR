@@ -358,7 +358,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
                           switch(type, 
                           #### id_wide ####
                           "id_wide" = {
-                          newtable <- data %>% pivot_wider(names_from = c(id, Sex, Genotype),
+                          newtable <- data %>%tidyr::pivot_wider(names_from = c(id, Sex, Genotype),
                                                            values_from = Activity,
                                                            values_fill = 0)
                          #
@@ -371,7 +371,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
                           datalist = list()
                           sexMeans = list()
                           # create table listing various ids and activity
-                          newtable_sex <- data %>% pivot_wider(names_from = c(id, Sex, Genotype),
+                          newtable_sex <- data %>% tidyr::pivot_wider(names_from = c(id, Sex, Genotype),
                                                                values_from = Activity,
                                                                values_fill = 0)
                           # iterate for all sexes present in data
@@ -379,7 +379,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
                             # filter individual sexes
                             filter_sex <- which(data$Sex == Sex[i])
                             # create a wide table for e<ch sex
-                            datalist[[i]] <- data[filter_sex, ] %>% pivot_wider(names_from = c(id, Sex, Genotype),
+                            datalist[[i]] <- data[filter_sex, ] %>%tidyr::pivot_wider(names_from = c(id, Sex, Genotype),
                                                                                 values_from = Activity,
                                                                                 values_fill = 0)
                             # remove time column
@@ -403,7 +403,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
                           datalist = list()
                           genMeans = list()
                           # create table listing various ids and activity
-                          newtable_gen <- data %>% pivot_wider(names_from = c(id, Sex, Genotype),
+                          newtable_gen <- data %>%tidyr::pivot_wider(names_from = c(id, Sex, Genotype),
                                                                values_from = Activity,
                                                                values_fill = 0)
                           # iterate for all sexes present in data
@@ -411,7 +411,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
                             # filter individual sexes
                             filter_gen <- which(data$Genotype == Genotype[i])
                             # create a wide table for e<ch sex
-                            datalist[[i]] <- data[filter_gen, ] %>% pivot_wider(names_from = c(id, Sex, Genotype),
+                            datalist[[i]] <- data[filter_gen, ] %>%tidyr::pivot_wider(names_from = c(id, Sex, Genotype),
                                                                                 values_from = Activity,
                                                                                 values_fill = 0)
                             # remove time column
