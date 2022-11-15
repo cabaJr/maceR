@@ -271,7 +271,10 @@ mod_analysis_server <- function(id, App_settings){
       plot_choices <- input$stdActogram
       ## call the function to output the plot for all the selected plot types
       purrr::map(plot_choices, ~ Annotate$plot_actogram(env = App_settings, type = .x))
-      
+      ## generate tables for export if not already present
+      if(App_settings$env3$Custom_tables$locomotor_act[[2]] == "0"){
+        purrr::map(c("id_wide", "sexmeans_id_wide", "genmeans_id_wide"), ~ Custom_tables$create_table(type = .x))
+      }
       ## assign value to be returned to activate plot tab
       if(App_settings$plotTab$tab == FALSE){
         toReturn$plotTab <- checkPlots(App_settings)
@@ -299,7 +302,11 @@ mod_analysis_server <- function(id, App_settings){
       plot_choices <- input$DPActogram
       ## call the function to output the plot for all the selected plot types
       purrr::map(plot_choices, ~ Annotate$plot_DPactogram(env = App_settings, type = .x))
-      
+      ## generate tables for export if not already present
+      browser()
+      if(App_settings$env3$Custom_tables$locomotor_act[[2]] == "0"){
+        purrr::map(c("id_wide", "sexmeans_id_wide", "genmeans_id_wide"), ~ Custom_tables$create_table(type = .x))
+      }
       ## assign value to be returned to activate plot tab
       if(App_settings$plotTab$tab == FALSE){
         toReturn$plotTab <- checkPlots(App_settings)

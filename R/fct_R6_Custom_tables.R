@@ -204,6 +204,10 @@ Custom_tables <- R6::R6Class("Custom_tables",
                              data.table::setDT(d2, key = "id")
                              data.table::setDT(metadata, key = "id")
                              self$locomotor_act[[1]] <- behavr::behavr(d2, metadata)
+                             # add NULL values as placeholder for other tables
+                             self$locomotor_act[[2]] <- "0"
+                             self$locomotor_act[[3]] <- "0"
+                             self$locomotor_act[[4]] <- "0"
                              #self$cacheKeys[1,2] <- digest::digest(self$locomotor_act[[1]], "xxhash64")
                            },
 #                            
@@ -346,7 +350,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #' @return a table to be stored in self$locomotor_act[[2]]
 #'
 #' @examples
-                        create_table = function(type, format = ".csv", data = self$locomotor_act[[1]], ...){
+                        create_table = function(type, format = ".csv", data = self$locomotor_act[[1]], ...) {
                           #### manipulate csv file exported from actogram data to create a wide format table
                           # library("tidyr")
                           # library("magrittr")
@@ -356,12 +360,13 @@ Custom_tables <- R6::R6Class("Custom_tables",
                           # add package names before functions
                           
                           switch(type, 
-                          #### id_wide ####
+                          #### id_wide #### 
                           "id_wide" = {
                           newtable <- data %>%tidyr::pivot_wider(names_from = c(id, Sex, Genotype),
                                                            values_from = Activity,
                                                            values_fill = 0)
-                         #
+                          # add newtable to list available for output
+                         self$locomotor_act[[2]] <- newtable
                         },
                           ### sexmeans_id_wide ####
                           "sexmeans_id_wide" = {
@@ -394,6 +399,8 @@ Custom_tables <- R6::R6Class("Custom_tables",
                             # rename column names in table
                             colnames(newtable_sex) <- names
                           }
+                          # add newtable_sex to list available for output
+                          self$locomotor_act[[3]] <- newtable_sex
                         },
                           #### genmeans_id_wide ####
                          "genmeans_id_wide" = {
@@ -426,7 +433,10 @@ Custom_tables <- R6::R6Class("Custom_tables",
                             # rename column names in table
                             colnames(newtable_gen) <- names
                           }
+                          # add newtable_gen to list available for output
+                          self$locomotor_act[[4]] <- newtable_gen
                          }
+                          ) # end of switch
                           
                           #### creation of table with value summarised by Cabinet ####
                         } #end of create_table fun
