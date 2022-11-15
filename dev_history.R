@@ -219,8 +219,14 @@
 #'  
 #'  14/11/2022
 #'  added code to create tables to be exported as actogram data
+#'  
 
   #' To be implemented
+#' 
+#' #'  in the future add more tables: with different statsrelative to timeseries 
+#'  data. SD of data, and all the parameters that is possible to obtain using 
+#'  the rethomics package and others
+#'  
 #'  Create an wide table output of counts exported from actogram download button
 #'  Each download button should output a different table summarised on 
 #'      different factors (Double plotted actograms)
