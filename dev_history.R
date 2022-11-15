@@ -216,6 +216,9 @@
 #'  help button in LD cycle settings (done)
 #'  help button in Load files (done)
 #'  implement display full metadata 
+#'  
+#'  14/11/2022
+#'  added code to create tables to be exported as actogram data
 
   #' To be implemented
 #'  Create an wide table output of counts exported from actogram download button

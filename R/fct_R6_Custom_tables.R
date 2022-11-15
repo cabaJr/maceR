@@ -334,7 +334,102 @@ Custom_tables <- R6::R6Class("Custom_tables",
                              self$periodograms[[2]] <- first_peak 
                              
 
-                           }
+                           },
+#' create_table
+#'
+#' @param data the original data to be manipulated default to self
+#' @param type different table manipulations on original data. requires an 
+#'     handler present in the function
+#' @param format the intended output of the table after exporting. defaulti is .csv
+#' @param ... 
+#'
+#' @return a table to be stored in self$locomotor_act[[2]]
+#'
+#' @examples
+                        create_table = function(type, format = ".csv", data = self$locomotor_act[[1]], ...){
+                          #### manipulate csv file exported from actogram data to create a wide format table
+                          # library("tidyr")
+                          # library("magrittr")
+                          # library("dplyr")
+                          # 
+                          data <- self$locomotor_act[[1]]
+                          # add package names before functions
+                          
+                          switch(type, 
+                          #### id_wide ####
+                          "id_wide" = {
+                          newtable <- data %>% pivot_wider(names_from = c(id, Sex, Genotype),
+                                                           values_from = Activity,
+                                                           values_fill = 0)
+                         #
+                        },
+                          ### sexmeans_id_wide ####
+                          "sexmeans_id_wide" = {
+                          # get list of all sexes
+                          Sex <- unique(data$Sex)
+                          # create two list to host data
+                          datalist = list()
+                          sexMeans = list()
+                          # create table listing various ids and activity
+                          newtable_sex <- data %>% pivot_wider(names_from = c(id, Sex, Genotype),
+                                                               values_from = Activity,
+                                                               values_fill = 0)
+                          # iterate for all sexes present in data
+                          for (i in seq_along(Sex)){
+                            # filter individual sexes
+                            filter_sex <- which(data$Sex == Sex[i])
+                            # create a wide table for e<ch sex
+                            datalist[[i]] <- data[filter_sex, ] %>% pivot_wider(names_from = c(id, Sex, Genotype),
+                                                                                values_from = Activity,
+                                                                                values_fill = 0)
+                            # remove time column
+                            sexMeans[[i]] <- datalist[[i]][, -1]
+                            # create means
+                            values <- rowMeans(sexMeans[[i]], na.rm = FALSE, dims = 1)
+                            # add mean value to table
+                            newtable_sex <- cbind(newtable_sex, values)
+                            # get column names and change last one to the sex analysed
+                            names <- names(newtable_sex)
+                            names[length(names)] <- Sex[i]
+                            # rename column names in table
+                            colnames(newtable_sex) <- names
+                          }
+                        },
+                          #### genmeans_id_wide ####
+                         "genmeans_id_wide" = {
+                           # get list of all sexes
+                          Genotype <- unique(data$Genotype)
+                          # create two list to host data
+                          datalist = list()
+                          genMeans = list()
+                          # create table listing various ids and activity
+                          newtable_gen <- data %>% pivot_wider(names_from = c(id, Sex, Genotype),
+                                                               values_from = Activity,
+                                                               values_fill = 0)
+                          # iterate for all sexes present in data
+                          for (i in seq_along(Genotype)){
+                            # filter individual sexes
+                            filter_gen <- which(data$Genotype == Genotype[i])
+                            # create a wide table for e<ch sex
+                            datalist[[i]] <- data[filter_gen, ] %>% pivot_wider(names_from = c(id, Sex, Genotype),
+                                                                                values_from = Activity,
+                                                                                values_fill = 0)
+                            # remove time column
+                            genMeans[[i]] <- datalist[[i]][, -1]
+                            # create means
+                            values <- rowMeans(genMeans[[i]], na.rm = FALSE, dims = 1)
+                            # add mean value to table
+                            newtable_gen <- cbind(newtable_gen, values)
+                            # get column names and change last one to the sex analysed
+                            names <- names(newtable_gen)
+                            names[length(names)] <- Genotype[i]
+                            # rename column names in table
+                            colnames(newtable_gen) <- names
+                          }
+                         }
+                          
+                          #### creation of table with value summarised by Cabinet ####
+                        } #end of create_table fun
 #                            
 #                            #,
 #                            # 
