@@ -201,14 +201,14 @@
 #'  add data reduction for datasets that are longer than x
 
 
-#'  09/08/2022
+  #'  09/08/2022
 #'  update help buttons
 #'  if time subsetting recompute LD values subtracting timeRange[1] to ddStart (done)
 #'  clean data structure from unnecessary parts
 #'  activate options to download different table (changed to first peak table)
 #'  error when subsetting with no animal selected (done)
 
-#'  14/10/2022  
+  #'  14/10/2022  
 #'  write help messages (half done)
 #'  implement timepoint setting (done)
 #'  implement real time setting (done)
@@ -216,29 +216,37 @@
 #'  help button in LD cycle settings (done)
 #'  help button in Load files (done)
 #'  implement display full metadata 
-#'  
-#'  14/11/2022
+  
+  #'  14/11/2022
 #'  added code to create tables to be exported as actogram data
-#'  
+
+  #'  15/11/2022
+#'  activated exporting of other tables from actograms
+#'  activated exporting of wide table for sum of daily activity
+#'  activated exporting of wide table for average day of activity
 
   #' To be implemented
+#' finish adding custom table divided by sex or genotype for average day and total activity
 #' 
 #' #'  in the future add more tables: with different statsrelative to timeseries 
 #'  data. SD of data, and all the parameters that is possible to obtain using 
 #'  the rethomics package and others
 #'  
-#'  Create an wide table output of counts exported from actogram download button
-#'  Each download button should output a different table summarised on 
-#'      different factors (Double plotted actograms)
 #'  Think about shading problem in single line actograms (shade is too light +
 #'      there are different level of opacity based on the number of lines in 
 #'      the plot. How to account for that)
-#'  Create wide table output for sum of daily activity table
+#'      
+#'  Create wide table output for sum of daily activity table (done)
+#'  
 #'  Box not having unique names in each section of the plotting tab
+#'  
 #'  Select a specific subset of data to be analysed for periodogram
-#'  only extract period with peak = 1 for data outputted from periodograms
-#'  remove period boxplots that are not generated
-#'  make wide table output for average day of activity
+#'  
+#'  only extract period with peak = 1 for data outputted from periodograms (done)
+#'  
+#'  remove period boxplots that are not generated (first two)
+#'  
+#'  make wide table output for average day of activity (done)
 #'  
 
 #' PRIORITIES

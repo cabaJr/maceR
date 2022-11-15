@@ -132,12 +132,22 @@ Custom_tables <- R6::R6Class("Custom_tables",
                                d5 <- data.frame(seq(0, 23.75, by = 0.25), id,  d4, sex, genotype)
                                d6 <- rbind(d6, d5)
                              }
-                             d7 <- dplyr::tibble("CT" = d6[,1],
+                             d7 <- dplyr::tibble(
+                                          "CT" = d6[,1],
                                           "mouse" = d6$id,
                                           "activity" = d6$d4,
                                           "sex" = d6$sex,
                                           "genotype" = d6$genotype)
                              self$average_day[[1]] <- d7
+                             #create wide table for export
+                             avg_day_wide <- d7 %>% 
+                               tidyr::pivot_wider(
+                                 names_from = c(mouse, genotype, sex),
+                                 values_from = activity,
+                                 names_glue = "{mouse}_{sex}_{genotype}",
+                                 values_fill = 0
+                               )
+                             self$average_day[[2]] <- avg_day_wide
                              
                            },
 #                            
