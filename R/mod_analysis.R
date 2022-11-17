@@ -303,7 +303,7 @@ mod_analysis_server <- function(id, App_settings){
       ## call the function to output the plot for all the selected plot types
       purrr::map(plot_choices, ~ Annotate$plot_DPactogram(env = App_settings, type = .x))
       ## generate tables for export if not already present
-      browser()
+      #browser()
       if(App_settings$env3$Custom_tables$locomotor_act[[2]] == "0"){
         purrr::map(c("id_wide", "sexmeans_id_wide", "genmeans_id_wide"), ~ Custom_tables$create_table(type = .x))
       }

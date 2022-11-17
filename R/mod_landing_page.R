@@ -14,35 +14,54 @@ mod_landing_page_ui <- function(id){
     
     fluidRow(style = "",
              column(width = 3, #left column
-                    p(HTML("<h3></h3>
+                    p(HTML("
+                           <h3></h3>
                             <br>
-                            This version of the app is still in development, please use caution when using it
+                            <b>maceR</b> is designed to streamline the processing of your data, 
+                            creating various <b>plots</b> and <b>tables</b> ready to be exported 
+                            for presentations or further analysis in other software.
                             <ul></ul>
+                            <br>
+                            All tables are exported in <code>.csv</code> format for increased compatibility.
+                            <br>
+                            <br>
+                            <br>
+                            This version of the app is still in development
                             <br>
                             'If you encounter bugs along your path, remember: <br>
                             It's not a bug - it's an undocumented feature '  
                             <br>
-                                                   ")),
-                    shiny::imageOutput(ns("leftImage")),
+                            
+                           ")),
              ),
-             column(width = 5, #landing page central column
-                    p(HTML("<h3>maceR</h3>")),
+             column(width = 5, 
+               fluidRow(align = "center", #landing page central column
+                    p(HTML("<h3><b>maceR</b></h3>"))),
+               fluidRow(
                     p(HTML("
                             <br>
-                            <ul>maceR (Mouse Activity Circadian analysER) is a shiny based app designed to 
+                            <ul><b>maceR</b> (<b>M</b>ouse <b>A</b>ctivity <b>C</b>ircadian analys<b>ER</b>) is a shiny based app designed to 
                             process and analyse locomotor activity data from circadian cabinets
                             <br>
+                            <br>
                             with maceR you can generate several plots and tables including:
-                            <li>Actograms</li>
-                            <li>Periodograms</li>
-                            <li>Total daily activity</li>
-                            <li>Average circadian activity</li>
+                            <li><b>Actograms</b></li>
+                            <li><b>Periodograms</b></li>
+                            <li><b>Total daily activity</b></li>
+                            <li><b>Average circadian activity</b></li>
                             </ul>
                             <br>
-                            To start a new experiment press the button below!
+                            <br>
+                            "))
+                    ),
+                fluidRow(align = "center",           
+                            p(HTML("To start a new experiment press the button below!
+                            <br>
                                                    ")),
                     
-                    actionButton(inputId = "new_experiment", label = "Start a new experiment"),
+                    actionButton(inputId = "new_experiment",
+                                 label = "Start a new experiment",
+                                 style="color: #fff; background-color: #1e690c; border-color: #1e530c; width:200px; height: 50px;"),
                     br(),
                     p(HTML(
                       "<br>
@@ -51,7 +70,7 @@ mod_landing_page_ui <- function(id){
                       "
                     )),
                     shiny::imageOutput(ns("examplePlot"))
-             ),
+             )),
              column(width = 3, #right side column
                     p(HTML("<h3></h3>
                             <br>
