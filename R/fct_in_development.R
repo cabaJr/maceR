@@ -123,4 +123,13 @@
 # #### creation of table with value summarised by cabinet ####
 # 
 # 
-# #### creation of table with value summarised by Genotype ####
+# #### creation of wide table for sum of daily activity ####
+activity <- read.csv("C:/Users/mf420/Desktop/MACE output/Total_daily_act2022-11-15.csv")
+
+activity_wide <- activity %>% 
+  tidyr::pivot_wider(
+    names_from = c(id, Genotype, Sex, Cabinet),
+    values_from = Activity,
+    names_glue = "{id}_{Sex}_{Genotype}_{Cabinet}",
+    values_fill = 0
+  )
