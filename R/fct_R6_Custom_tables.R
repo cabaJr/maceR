@@ -139,6 +139,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
                                           "sex" = d6$sex,
                                           "genotype" = d6$genotype)
                              self$average_day[[1]] <- d7
+                             
                              #create wide table for export
                              avg_day_wide <- d7 %>% 
                                tidyr::pivot_wider(
@@ -148,7 +149,9 @@ Custom_tables <- R6::R6Class("Custom_tables",
                                  values_fill = 0
                                )
                              self$average_day[[2]] <- avg_day_wide
-                             
+                            
+                             # create wide table that summarizes between males and females
+                              
                            },
 #                            
 #' CheckIf

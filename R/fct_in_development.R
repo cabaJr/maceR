@@ -133,3 +133,129 @@
 #     names_glue = "{id}_{Sex}_{Genotype}_{Cabinet}",
 #     values_fill = 0
 #   )
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 
+# ### sexmeans_id_wide ####
+# "avgDay_sexmeans_id_wide" = {
+#   #temporary line to get data
+#   data <- read.csv(file = "C:/Users/mf420/Desktop/average_day.csv")
+#   data <- data[, -1]
+#   # get list of all sexes
+#   Sex <- unique(data$sex)
+#   # create two list to host data
+#   datalist = list()
+#   sexMeans = list()
+#   
+#   # create table listing various ids and activity
+#   newtable <- data %>% tidyr::pivot_wider(names_from = c(mouse, sex, genotype),
+#                                               values_from = activity,
+#                                               values_fill = 0)
+#   # create table of same length of data
+#   newtable_sex <- newtable[, 1]
+#   #calculate errors
+#   errors <- data %>% 
+#     dplyr::group_by(sex, CT) %>%
+#     dplyr::summarise(n = dplyr::n(),
+#                      STDev = sd(activity),
+#                      SEM = sd(activity)/sqrt(n))
+#   # iterate for all sexes present in data
+#   for (i in seq_along(Sex)){
+#     # filter individual sexes
+#     filter_sex <- data[data$sex == Sex[i], ]
+#     error_sex <- errors[errors$sex == Sex[i], ]
+#     # extract only the last three columns of errors
+#     error_sex <- error_sex[, c(3:5)]
+#     # create a wide table for each genotype
+#     datalist[[i]] <- filter_sex %>%tidyr::pivot_wider(names_from = c(mouse, sex, genotype),
+#                                                               values_from = activity,
+#                                                               values_fill = 0)
+#     # remove time column
+#     sexMeans[[i]] <- datalist[[i]][, -1]
+#     # create means
+#     activity <- rowMeans(sexMeans[[i]], na.rm = FALSE, dims = 1)
+#     # add calculation of SD and SEM as columns
+#     values <- cbind(activity, error_sex)
+#     # change rownames to the correct sex
+#     newColnames <- colnames(values)
+#     for (j in c(1:4)){
+#     newColnames[j] <- paste(newColnames[j], Sex[i], sep = "_")
+#     }
+#     colnames(values) <- newColnames
+#     # add mean value to table
+#     newtable_sex <- cbind(newtable_sex, values)
+#   }
+#   #export
+#   write.csv(newtable_sex, file = "C:/Users/mf420/Desktop/averageDay_bySex.csv", row.names = FALSE)
+#   # add newtable_sex to list available for output
+#   self$locomotor_act[[3]] <- newtable_sex
+# }
+# 
+# 
+# 
+# "avgDay_genmeans_id_wide" = {
+#   #temporary line to get data
+#   data <- read.csv(file = "C:/Users/mf420/Desktop/average_day.csv")
+#   data <- data[, -1]
+#   # get list of all sexes
+#   Gen <- unique(data$genotype)
+#   # create two list to host data
+#   datalist = list()
+#   genMeans = list()
+#   
+#   # create table listing various ids and activity
+#   newtable <- data %>% tidyr::pivot_wider(names_from = c(mouse, sex, genotype),
+#                                           values_from = activity,
+#                                           values_fill = 0)
+#   # create table of same length of data
+#   newtable_gen <- newtable[, 1]
+#   #calculate errors
+#   errors <- data %>% 
+#     dplyr::group_by(genotype, CT) %>%
+#     dplyr::summarise(n = dplyr::n(),
+#                      STDev = sd(activity),
+#                      SEM = sd(activity)/sqrt(n))
+#   # iterate for all sexes present in data
+#   for (i in seq_along(Gen)){
+#     # filter individual sexes
+#     filter_gen <- data[data$genotype == Gen[i], ]
+#     error_gen <- errors[errors$genotype == Gen[i], ]
+#     # extract only the last three columns of errors
+#     error_gen <- error_gen[, c(3:5)]
+#     # create a wide table for each genotype
+#     datalist[[i]] <- filter_gen %>%tidyr::pivot_wider(names_from = c(mouse, sex, genotype),
+#                                                       values_from = activity,
+#                                                       values_fill = 0)
+#     # remove time column
+#     genMeans[[i]] <- datalist[[i]][, -1]
+#     # create means
+#     activity <- rowMeans(genMeans[[i]], na.rm = FALSE, dims = 1)
+#     # add calculation of SD and SEM as columns
+#     values <- cbind(activity, error_gen)
+#     # change rownames to the correct sex
+#     newColnames <- colnames(values)
+#     for (j in c(1:4)){
+#       newColnames[j] <- paste(newColnames[j], Gen[i], sep = "_")
+#     }
+#     colnames(values) <- newColnames
+#     # add mean value to table
+#     newtable_gen <- cbind(newtable_gen, values)
+#   }
+#   #export
+#   write.csv(newtable_gen, file = "C:/Users/mf420/Desktop/averageDay_byGen.csv", row.names = FALSE)
+#   # add newtable_gen to list available for output
+#   self$locomotor_act[[3]] <- newtable_gen
+# }
+
+

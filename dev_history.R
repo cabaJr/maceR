@@ -225,8 +225,11 @@
 #'  activated exporting of wide table for sum of daily activity
 #'  activated exporting of wide table for average day of activity
 
+  #'  22/11/2022
+#'  created functions to export means and errors for average day tables
+
   #' To be implemented
-#' finish adding custom table divided by sex or genotype for average day and total activity
+#' finish adding custom table divided by sex or genotype for average day and total activity (to be activated)
 #' 
 #' #'  in the future add more tables: with different statsrelative to timeseries 
 #'  data. SD of data, and all the parameters that is possible to obtain using 
