@@ -258,4 +258,50 @@
 #   self$locomotor_act[[3]] <- newtable_gen
 # }
 
+# function to create wide table from long table data
+# data <- read.csv("/Users/marcoferrari/Downloads/Average_day.csv")
+# data <- data[, -1]
+# long_to_wide <- function(data, factor, ...){
+#   # get list of unique factor values
+#   uniqueFactor <- unique(data[, factor])
+#   # create two list to host data
+#   datalist = list()
+#   factorMeans = list()
+#   # get list of colnames to use to pivot_wider
+#   colNamesList <- colnames(data)
+#   
+#   # create table listing various ids and activity
+#   idTable <- data %>% tidyr::pivot_wider(names_from = colNamesList[c(2, 4, 5)],
+#                                           values_from = colNamesList[3],
+#                                           values_fill = 0)
+#   # create table of same length of data
+#   newtable <- idTable[, 1]
+#   # calculate errors
+#   errors <- data %>%
+#     dplyr::group_by(data[, 4], data[, 1]) %>%
+#     dplyr::summarise(n = dplyr::n(),
+#                      STDev = sd(data[, 3]),
+#                      SEM = sd(data[, 3])/sqrt(n))
+#   
+#   # tried generalised version without using colnames
+#   errors1 <- data %>% 
+#         dplyr::group_by(data[, 4], data[, 1]) #%>%
+#       errors2 <- errors1[, 1:5] #%>% 
+#     “# issue with new colnames being data[, x] and not original colname  
+#       dplyr::summarise(n = dplyr::n(),
+#                          STDev = sd(activity),
+#                          SEM = sd(activity)/sqrt(n))
+#   #return created table
+#   return(newtable)
+# }
+
+
+
+
+
+
+
+
+
+
 
