@@ -228,6 +228,11 @@
   #'  22/11/2022
 #'  created functions to export means and errors for average day tables
 
+  #'  30/11/2022  
+#'  handle error when the wrong type of file is uploaded in metadata
+#'  to change from line 64 in fct_R6_Raw_mouse_data
+#'  
+
   #' To be implemented
 #' finish adding custom table divided by sex or genotype for average day and total activity (to be activated)
 #' 
