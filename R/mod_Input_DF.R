@@ -89,6 +89,11 @@ mod_Input_DF_server <- function(id, env){
     
     # Store metadata
     observeEvent(input$fileMetaId, {
+      # added check on file extension before storing
+      # browser()
+      validate(
+        need(tools::file_ext(input$fileMetaId) == "csv", "Check the metadata file to be a .csv")
+      )
       App_settings$setMeta(input$fileMetaId)
       output$metaList <- renderTable(App_settings$metadata$name)
       if(check_uploads(App_settings) == TRUE){

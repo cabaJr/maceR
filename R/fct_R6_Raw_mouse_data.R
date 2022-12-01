@@ -53,8 +53,26 @@ Raw_mouse_data <- R6::R6Class("Raw_mouse_data",
                                   if(is.null(env$discardRow) == FALSE){
                                     skipRows <- env$discardRow
                                   }
+<<<<<<< Updated upstream
                                   data <- read.csv(datapath1, skip = skipRows, header = FALSE, col.names = c("Day", "Hour", "Minute", "Counts_min", "Lights"), stringsAsFactors = FALSE)
                                   metadata <- read.csv(metadatapath1, header = TRUE, sep = ";")
+=======
+                                  # read data file and store it in data variable
+                                  # validate(
+                                  #   need(tools::file_ext(datapath1) == "csv")
+                                  # )
+                                  data <- read.csv(datapath1, skip = skipRows, header = FALSE, col.names = c("Day", "Hour", "Minute", "Counts_min", "Lights"), stringsAsFactors = FALSE)
+                                  
+                                  # validate(
+                                  #   need(tools::file_ext(metadatapath1) == "csv")
+                                  # )
+                                  # read metadata file and store it in metadata variable
+                                  metadata <- read.csv(metadatapath1, header = TRUE, sep = ";")
+                                  # validate(
+                                  #   need(ncol(metadata) != 1)
+                                  # )
+                                  #get animal id from second row
+>>>>>>> Stashed changes
                                   id <- read.csv(datapath1, skip = 1, nrows = 1, header = FALSE)
                                   id_sel <- sapply(strsplit(id[1,1], "_"), function(x) x[(length(x)-1)])
                                   # id_sel <- substr(id[1,1], 4, 10)

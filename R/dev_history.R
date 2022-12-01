@@ -198,6 +198,53 @@
 #'  help button in LD cycle settings (done)
 #'  help button in Load files (done)
 #'  implement display full metadata 
+<<<<<<< Updated upstream:R/dev_history.R
+=======
+  
+  #'  14/11/2022
+#'  added code to create tables to be exported as actogram data
+
+  #'  15/11/2022
+#'  activated exporting of other tables from actograms
+#'  activated exporting of wide table for sum of daily activity
+#'  activated exporting of wide table for average day of activity
+
+  #'  22/11/2022
+#'  created functions to export means and errors for average day tables
+
+  #'  30/11/2022  
+#'  handle error when the wrong type of file is uploaded in metadata
+#'  to change from line 64 in fct_R6_Raw_mouse_data
+
+  #' 01/12/2022  
+#'  add checks to uploaded files in MOD input DF then cause the need function to display 
+#'      a popup banner when condition is not met
+#'  to add upload button that triggers upload of data instead of automatic uploading
+#'      and display of yourData tab
+
+  #' To be implemented
+#' finish adding custom table divided by sex or genotype for average day and total activity (to be activated)
+#' 
+#' #'  in the future add more tables: with different statsrelative to timeseries 
+#'  data. SD of data, and all the parameters that is possible to obtain using 
+#'  the rethomics package and others
+#'  
+#'  Think about shading problem in single line actograms (shade is too light +
+#'      there are different level of opacity based on the number of lines in 
+#'      the plot. How to account for that)
+#'      
+#'  Create wide table output for sum of daily activity table (done)
+#'  
+#'  Box not having unique names in each section of the plotting tab
+#'  
+#'  Select a specific subset of data to be analysed for periodogram
+#'  
+#'  only extract period with peak = 1 for data outputted from periodograms (done)
+#'  
+#'  remove period boxplots that are not generated (first two)
+#'  
+#'  make wide table output for average day of activity (done)
+>>>>>>> Stashed changes:dev_history.R
 #'  
 
   #' PRIORITIES
