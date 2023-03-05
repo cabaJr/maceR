@@ -1,18 +1,25 @@
 #' Annotate 
 #'
-#' @description R6 class object used for storing plots and other processed data.
-#'     It is accessed internally to display data.
-#' @details R6 object containing lists to store plots generated using methods
-#'     available inside the Annotate R6 object
+#' @description R6 class object used for generating and storing plots and other 
+#'     processed data. It is accessed internally to display data. Each top level 
+#'     list contains a different type of plot. Sublists are organised to store 
+#'     different plot versions.
+#'     Functions for plotting (i.e. plot_actogram, plot_DAct) get data from 
+#'     fct_R6_Custom_tables object and generate a plot that is saved into the 
+#'     relative list. 
+#'     There should be a method to pass plots to an external container based on
+#'     the handler.
 #'
 #' @return An Annotate object
 #'
 #' @noRd
 Annotate <- R6::R6Class("Annotate",
                     list(
-#' @field Actograms 1
-#' @field DAct_plots 3
-#' @field period_plots 4
+#' @field Actograms stores actograms generated via plot_actogram(), using ggetho function
+#' @field DPActograms stores Double plotted actograms generated via plot_actogram(),
+#'                    using ggetho function
+#' @field DAct_plots stores line plots summarizing total daily activity
+#' @field period_plots 
 #' @field period_plots_box 4_1
 #' @field avg_day_plots list containing average circadian day plots
 #' @field output_list_acto table with combination of output titles, location, etc
