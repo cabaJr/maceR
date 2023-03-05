@@ -9,7 +9,7 @@ Authors@R:
 Description: App to analyse locomotor activity data from circadian
     cabinets.
 License: LGPL (>= 3) + file LICENSE
-Imports: 
+Depends: 
     behavr,
     config (>= 0.3.1),
     data.table,
