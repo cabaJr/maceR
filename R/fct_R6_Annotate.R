@@ -15,17 +15,22 @@
 #' @noRd
 Annotate <- R6::R6Class("Annotate",
                     list(
-#' @field Actograms stores actograms generated via plot_actogram(), using ggetho function
-#' @field DPActograms stores Double plotted actograms generated via plot_actogram(),
-#'                    using ggetho function
+#' @field Actograms stores actograms generated via plot_actogram(), using ggetho 
+#' function
+#' @field DPActograms stores Double plotted actograms generated via 
+#' plot_actogram(), using ggetho function
 #' @field DAct_plots stores line plots summarizing total daily activity
-#' @field period_plots 
-#' @field period_plots_box 4_1
-#' @field avg_day_plots list containing average circadian day plots
-#' @field output_list_acto table with combination of output titles, location, etc
-#' @field actTable 5
-#' @field metaTable 6
-#' @field cacheKeys 7
+#' @field period_plots stores periodogram power plot generated via 
+#' plot_periodogram(), using ggetho::ggperio
+#' @field period_plots_box stores histogram plots of period length. Generated
+#' via plot_periodogram_hist()
+#' @field avg_day_plots list containing average circadian day line plots
+#' @field output_list_acto table with combination of output handler, 
+#' destination, location, title, data, and file label
+#' @field actTable Table containing data assembled using showData()
+#' @field metaTable Table containing data assembled using showMeta()
+#' @field cacheKeys list of cacheKeys to compare rendering of new plots and 
+#' avoid if it already present. Currently not in use
                       Actograms = list(acto1 = list(),
                                           acto2 = list(),
                                           acto3 = list(),
@@ -60,7 +65,7 @@ Annotate <- R6::R6Class("Annotate",
                       
                     ),
                     output_list_acto = dplyr::tibble(
-                      # unique keyword that identifies the plots that have been requested from the user in the Analysis tab
+                      # unique keyword that identifies the plots that have been requested from the user in the Analysis tab (see mod_analysis)
                       "handler" = c("total", "sex", "genotype", "cabinet",
                                     "DAtotal", "DAsex", "DAgenotype", "DAcabinet",
                                     "~gen", "~sex", "individual", "gen~sex", "indiv+sex~gen", "indiv+cab~gen",
@@ -74,8 +79,9 @@ Annotate <- R6::R6Class("Annotate",
                                         "Per1", "Per2", "Per3", "Per4", "Per5",
                                         "Per1_boxplot", "Per2_boxplot", "Per3_boxplot", "Per4_boxplot", "Per5_boxplot",
                                         "AvgDay1", "AvgDay2", "AvgDay3"),
-                      ## list containing the location of each plot in Annotate$ 
-                      "location" = list(## Actograms
+                      ## list containing the location of each plot in Annotate object 
+                      "location" = list(
+                                     ## Actograms
                                      "Annotate$Actograms$acto1[[1]]", "Annotate$Actograms$acto2[[1]]",
                                      "Annotate$Actograms$acto3[[1]]", "Annotate$Actograms$acto4[[1]]",
                                      ## DPActograms
@@ -98,20 +104,26 @@ Annotate <- R6::R6Class("Annotate",
                                      "Annotate$avg_day_plots[3][[1]]"
                                      ),
                       # Title to be assigned to each box
-                      "title" = c("Actogram - all animals", "Actogram - split by sex",
+                      "title" = c(
+                                  ## Actograms
+                                  "Actogram - all animals", "Actogram - split by sex",
                                   "Actogram - split by genotype", "Actogram - split by cabinet",
+                                  ## DPActograms
                                   "Double plotted actogram - all animals", "Double plotted actogram - split by sex",
                                   "Double plotted actogram - split by genotype", "Double plotted actogram - split by cabinet",
-                                  ## add corrected titles for sum of daily activity
-                                  "Sum of daily activity - ", "Sum of daily activity - ", 
-                                  "Sum of daily activity - ", "Sum of daily activity - ", 
-                                  "Sum of daily activity - ", "Sum of daily activity - ", 
+                                  ## Daily Activity
+                                  "Sum of daily activity - Genotype", "Sum of daily activity - Sex", 
+                                  "Sum of daily activity - Genotype ~ id", "Sum of daily activity - Genotype ~ sex", 
+                                  "Sum of daily activity - Sex ~ Genotype", "Sum of daily activity - Cabinet ~ Genotype", 
+                                  ## Periodograms
                                   "Periodogram - cumulative", "Periodogram - individual", 
                                   "Periodogram - by sex", "Periodogram - by genotype", 
                                   "Periodogram - by cabinet",
+                                  ## Periodogram boxplot
                                   "Period boxplot - cumulative", "Period boxplot - individual", 
                                   "Period boxplot - by sex", "Period boxplot - by genotype", 
                                   "Period boxplot - by cabinet",
+                                  ## Average day of activity
                                   "Average daily Activity - Individual", "Average daily Activity - Sex",
                                   "Average daily Activity - Genotype"),
                       #Location of each table containing data
@@ -143,10 +155,11 @@ Annotate <- R6::R6Class("Annotate",
                     cacheKeys = dplyr::tibble("table" = seq(1:8), #table to store keys of hashed tables when plotting
                                        "key" = 0), #to be implemented
 #' showMeta
+#' @description function to create a table that arranges all the available 
+#' metadata in a table, and saves it in metaTable var
+#' @param env App_settings environment to access myCleanMice object
 #'
-#' @param env App_settings environment
-#'
-#' @return returns a table containing the uploaded metadata
+#' @return no return
 #' 
                     showMeta = function(env){
                       # browser()
@@ -175,9 +188,12 @@ Annotate <- R6::R6Class("Annotate",
 
 #' showdata
 #'
-#' @param env App_settings
-#' @param id mouse Id
-#' @param miceList list of animals
+#' @description function to create a table that arranges activity data in a 
+#' table, and saves it in actTable var
+#' @param env App_settings environment to access myCleanMice object
+#' @param id mouse Id value from the list of Ids or "All" to display all data 
+#' @param miceList list of all available mouse Ids
+#' @return no return
 #'
                     showData = function(env, id, miceList){
                       myCleanMice <- env$myCleanMice
@@ -226,8 +242,10 @@ Annotate <- R6::R6Class("Annotate",
 #                     
 #' plot_actogram
 #'
-#' @param env App_settings environment
-#' @param type plot type to be rendered
+#' @description function to generate actogram plots arranged in different 
+#' configurations and store them in Actograms list
+#' @param env App_settings environment to access Custom_tables object
+#' @param type plot type to be rendered (list available in output_list_acto$handler[1:4])
 #'
                     # add one option that increases summary time window when the data are longer than x
                     # also explore the function of time_wrap
@@ -284,8 +302,10 @@ Annotate <- R6::R6Class("Annotate",
 
 #' plot_DPactogram
 #'
-#' @param env App_settings environment
-#' @param type plot type to be rendered
+#' @description function to generate double plotted actogram plots arranged in 
+#' different configurations and store them in DPActograms list
+#' @param env App_settings environment to access Custom_tables object
+#' @param type plot type to be rendered (list available in output_list_acto$handler[4:8])
 #' 
                     plot_DPactogram = function(env, type){ #"total", "sex", "genotype", "cabinet", "individual"
                       data <- env$env2$Custom_tables$locomotor_act[[1]]
@@ -351,8 +371,10 @@ Annotate <- R6::R6Class("Annotate",
 
 #' plot_DAct
 #'
-#' @param env App_settings environment
-#' @param type type of plot to be computed
+#' @description function to generate sum of daily activity line plots arranged 
+#' in different configurations and store them in DAct list
+#' @param env App_settings environment to access Custom_tables object
+#' @param type plot type to be rendered (list available in output_list_acto$handler[9:14])
 #' @param error "Sem" or "SD"
 #'
 
@@ -620,9 +642,11 @@ Annotate <- R6::R6Class("Annotate",
                     },
 
 #' plot_periodogram
-#'
-#' @param funEnv App_settings environment
-#' @param plotType type of plot to be computed
+#' 
+#' @description function to generate periodograms arranged in different
+#' configurations and store them in period_plots list
+#' @param funEnv App_settings environment to access Custom_tables object
+#' @param plotType plot type to be rendered (list available in output_list_acto$handler[15:19])
 #'
 
                     plot_periodogram = function(funEnv, plotType){
@@ -669,9 +693,11 @@ Annotate <- R6::R6Class("Annotate",
                     },
 
 #' plot_periodogram_hist
-#'
-#' @param funEnv App_settings environment
-#' @param plotType type of plot to be computed
+#' 
+#' @description function to generate histograms of period length data in different
+#' configurations and store them in period_plots_box list
+#' @param funEnv App_settings environment to access Custom_tables object
+#' @param plotType plot type to be rendered (list available in output_list_acto$handler[20:24])
 #' @param periodRange vector containing period range selected 
 #'
 
@@ -711,8 +737,10 @@ Annotate <- R6::R6Class("Annotate",
                   
 #' plot_avg_day
 #'
-#' @param funenv App_settings environment
-#' @param type plot type
+#' @description function to generate average daily activity line plots arranged 
+#' in different configurations and store them in avg_day_plots list
+#' @param funenv App_settings environment to access Custom_tables object
+#' @param type plot type to be rendered (list available in output_list_acto$handler[25:27])
 #'
                     plot_avg_day = function(funEnv, plotType, error = "Sem"){
                       activity <- funEnv$env3$Custom_tables$average_day[[1]] #get activity file from Custom_tables
