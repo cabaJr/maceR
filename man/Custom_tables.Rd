@@ -44,6 +44,7 @@ compile}
 \item \href{#method-Custom_tables-behavrTable}{\code{Custom_tables$behavrTable()}}
 \item \href{#method-Custom_tables-dailyAct}{\code{Custom_tables$dailyAct()}}
 \item \href{#method-Custom_tables-computePer}{\code{Custom_tables$computePer()}}
+\item \href{#method-Custom_tables-create_table}{\code{Custom_tables$create_table()}}
 \item \href{#method-Custom_tables-clone}{\code{Custom_tables$clone()}}
 }
 }
@@ -165,6 +166,8 @@ function to analyse data generated with behavrTable() to
     extract period lenght in data if present.
     Describe Analysis methods and link to papers that compare the different
     methods
+    
+create_table
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Custom_tables$computePer(method, periodRange, funenv)}\if{html}{\out{</div>}}
 }
@@ -180,6 +183,37 @@ function to analyse data generated with behavrTable() to
 \item{\code{funenv}}{Not used?}
 }
 \if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Custom_tables-create_table"></a>}}
+\if{latex}{\out{\hypertarget{method-Custom_tables-create_table}{}}}
+\subsection{Method \code{create_table()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Custom_tables$create_table(
+  type,
+  format = ".csv",
+  data = self$locomotor_act[[1]],
+  ...
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{type}}{different table manipulations on original data. requires an 
+handler present in the function}
+
+\item{\code{format}}{the intended output of the table after exporting. defaulti is .csv}
+
+\item{\code{data}}{the original data to be manipulated default to self}
+
+\item{\code{...}}{}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+a table to be stored in self$locomotor_act[[2]]
 }
 }
 \if{html}{\out{<hr>}}
