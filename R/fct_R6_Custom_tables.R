@@ -362,7 +362,6 @@ Custom_tables <- R6::R6Class("Custom_tables",
 #'
 #' @return a table to be stored in self$locomotor_act[[2]]
 #'
-#' @examples
                         create_table = function(type, format = ".csv", data = self$locomotor_act[[1]], ...) {
                           #### manipulate csv file exported from actogram data to create a wide format table
                           # library("tidyr")
