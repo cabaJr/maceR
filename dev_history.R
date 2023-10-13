@@ -232,7 +232,9 @@
   #'  30/11/2022  
 #'  handle error when the wrong type of file is uploaded in metadata
 #'  to change from line 64 in fct_R6_Raw_mouse_data
-#'  
+
+  #'  13/10/2023
+#'  uploaded R verion to 4.3.1
 
   #' To be implemented
 #' finish adding custom table divided by sex or genotype for average day and total activity (to be activated)
