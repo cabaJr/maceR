@@ -58,6 +58,8 @@ Raw_mouse_data <- R6::R6Class("Raw_mouse_data",
                                   if(is.null(env$discardRow) == FALSE){
                                     skipRows <- env$discardRow
                                   }
+                                  data <- read.csv(datapath1, skip = skipRows, header = FALSE, col.names = c("Day", "Hour", "Minute", "Counts_min", "Lights"), stringsAsFactors = FALSE)
+                                  metadata <- read.csv(metadatapath1, header = TRUE, sep = ";")
                                   # read data file and store it in data variable
                                   data <- read.csv(datapath1, skip = skipRows, header = FALSE, col.names = c("Day", "Hour", "Minute", "Counts_min", "Lights"), stringsAsFactors = FALSE)
                                   

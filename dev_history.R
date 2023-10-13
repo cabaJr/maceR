@@ -215,7 +215,8 @@
 #'  remove time windows subsetting (done)
 #'  help button in LD cycle settings (done)
 #'  help button in Load files (done)
-#'  implement display full metadata 
+#'  implement display full metadata
+#'  implement display full metadata
   
   #'  14/11/2022
 #'  added code to create tables to be exported as actogram data
