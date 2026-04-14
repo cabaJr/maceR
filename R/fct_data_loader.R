@@ -12,7 +12,7 @@
 
 preload_data <- function(App_settings){
   myMice <- NULL
-  for(i in seq_len(length.out = length(App_settings$dataList$name))) {
+  for(i in seq_along(App_settings$dataList$name)) {
     myMice[[i]] <- Raw_mouse_data$new()
     myMice[[i]]$add(App_settings$dataList$datapath[i], App_settings$metadata$datapath, App_settings)
   }
@@ -31,7 +31,7 @@ load_data <- function(env){
     myCleanMice <- list()
     # go through all the raw_mouse_data object in the myMice list and compile 
     #    the clean_mouse_data object
-    for (i in seq_len(length.out = length(App_settings$dataList$name))){
+    for (i in seq_along(App_settings$dataList$name)){
       myCleanMice[[i]] <- Clean_mouse_data$new()
       myCleanMice[[i]]$compile(myMice2[[i]])
       myCleanMice[[i]]$addData(myMice2[[i]], App_settings)
@@ -57,7 +57,7 @@ upload_subsetting <- function(funEnv, session, input_result){
   listMice <- App_settings$listMice[,2]
   metadata <- App_settings$env2$Annotate$metaTable
   #update subsetting fields
-  updateSelectInput(session, "idSubsetList", choice = c("choose" = "", listMice), selected = NULL)
+  updateSelectInput(session, "idSubsetList", choices = c("choose" = "", listMice), selected = NULL)
   listSex <- unique(metadata$Sex)
   updateSelectInput(session, "sexSubsetList", choices = c("choose" = "", listSex), selected = NULL)
   listGenotype <- unique(metadata$Genotype)
