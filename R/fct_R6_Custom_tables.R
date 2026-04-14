@@ -46,7 +46,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
                              lengthList <- c(0,0)
                              myCleanMice <-  env$myCleanMice
 
-                             for (i in seq_len(length(myCleanMice))){
+                             for (i in seq_along(myCleanMice)){
                                idList[i] <- as.character(myCleanMice[[i]]$id)
                                sexList[i] <- as.character(myCleanMice[[i]]$sex)
                                geneList[i] <- as.character(myCleanMice[[i]]$genotype)
@@ -92,11 +92,11 @@ Custom_tables <- R6::R6Class("Custom_tables",
                                       range = c((env$subsetting$timespan[1]*1440),(env$subsetting$timespan[2]*1440))
                                     },
                                     "No" = {
-                                      filteredMice <- seq_len(length(env$env2$myCleanMice))
+                                      filteredMice <- seq_along(env$env2$myCleanMice)
                                       range = c(0,max(env$env2$Annotate$metaTable$Datapoints))
                                     })
                              myCleanMice <- env$env3$myCleanMice[filteredMice]
-                             for (i in seq_len(length(myCleanMice))){
+                             for (i in seq_along(myCleanMice)){
                                #get light length
                                light_len <- env$LDparams$light
                                # discard half of light_len to align data
@@ -192,7 +192,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
                                       range = c((x$subsetting$timespan[1]*1440),(x$subsetting$timespan[2]*1440))
                                     },
                                     "No" = {
-                                      toLoad <- seq_len(length(myCleanMice))
+                                      toLoad <- seq_along(myCleanMice)
                                       range = c(0,max(x$env2$Annotate$metaTable$Datapoints))
                                     })
                              for (i in toLoad){
@@ -241,7 +241,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
                                       range = c((env$subsetting$timespan[1]*1440),(env$subsetting$timespan[2]*1440))
                                     },
                                     "No" = {
-                                      filteredMice <- seq_len(length(env$env2$myCleanMice))
+                                      filteredMice <- seq_along(env$env2$myCleanMice)
                                       range = c(0,max(env$env2$Annotate$metaTable$Datapoints))
                                     })
                              startDay = range[1]/1440
@@ -254,7 +254,7 @@ Custom_tables <- R6::R6Class("Custom_tables",
                                                 "Cabinet" = as.numeric(),
                                                 "Sex" = as.character(),
                                                 "Genotype" = as.character())
-                             for (h in seq_len(length(filteredMice))){
+                             for (h in seq_along(filteredMice)){
                                #if condition to handle time subsetting
                                if(subsetVal == "Yes"){
                                  range1 <- which(mouseData[[h]]$timepoint >= range[1]*60)

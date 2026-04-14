@@ -66,9 +66,6 @@ app_server <- function( input, output, session ) {
       }
   })
   
-  # get return values from mod_your_data
-  yourData_out <- mod_your_data_server("your_data_ui_1", App_settings)
-  
   # get return values from mod_analysis
   analysis_out <- mod_analysis_server("analysis_ui_1", App_settings)
   
@@ -78,6 +75,17 @@ app_server <- function( input, output, session ) {
       output$Plots <- render_tabItem_ui(tabname = "Plots",
                                         text = "Plots", 
                                         icon = "chart-pie")
+      # Also render Reports tab when plots are available
+      output$Reports <- render_tabItem_ui(tabname = "Reports",
+                                          text = "Reports",
+                                          icon = "file-alt")
+    }
+  }, once = TRUE)
+  
+  # Call report module server when Reports tab is available
+  observeEvent(analysis_out$plotTab(), {
+    if(isTRUE(analysis_out$plotTab()) == TRUE){ #to be changed with req()
+      mod_report_server("report_ui_1", App_settings)
     }
   }, once = TRUE)
   

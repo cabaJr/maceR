@@ -24,7 +24,8 @@ app_ui <- function(request) {
                                                  shinydashboard::menuItemOutput(outputId = "DataStructure"),
                                                  shinydashboard::menuItemOutput(outputId = "YourData"),
                                                  shinydashboard::menuItemOutput(outputId = "Analysis"),
-                                                 shinydashboard::menuItemOutput(outputId = "Plots")
+                                                 shinydashboard::menuItemOutput(outputId = "Plots"),
+                                                 shinydashboard::menuItemOutput(outputId = "Reports")
                      )
       ),
       body =  shinydashboard::dashboardBody(
@@ -59,7 +60,11 @@ app_ui <- function(request) {
           #### Plots ######
           shinydashboard::tabItem(tabName = "Plots",
                                   mod_plots_ui("plots_ui_1")
-                                  ) #endPlots
+                                  ), #endPlots
+          #### Reports ######
+          shinydashboard::tabItem(tabName = "Reports",
+                                  mod_report_ui("report_ui_1")
+                                  ) #endReports
         ) #end Tab Items
       ), #end dashboardBody
       

@@ -23,7 +23,58 @@ knitr::opts_chunk$set(
 [![CircleCI build status](https://circleci.com/gh/cabaJr/MACE_golem.svg?style=svg)](https://circleci.com/gh/cabaJr/MACE_golem)
 <!-- badges: end -->
 
-The goal of MACE is to ...
+The goal of maceR is to provide an interactive Shiny application for analyzing circadian locomotor activity data from laboratory mouse circadian cabinets. It streamlines data import, quality control, visualization, and statistical analysis of activity patterns across different experimental conditions.
+
+## Features
+
+- **Data Import**: Upload activity count data and experimental metadata (CSV format)
+- **Data Structure Validation**: Check and validate your data before analysis
+- **Interactive Subsetting**: Filter data by animal ID, sex, genotype, or time windows
+- **Visualization Suite**:
+  - Single-plotted actograms
+  - Double-plotted actograms
+  - Daily activity patterns
+  - Periodograms with circadian period estimation
+- **Data Export**: Download analysis tables, plots, and metadata in various formats
+- **Flexible Grouping**: Analyze individual animals or aggregate by sex, genotype, or experimental group
+
+## Installation
+
+To install the development version from GitHub:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("cabaJr/maceR")
+```
+
+## Usage
+
+Launch the application with:
+
+```{r example, eval = FALSE}
+library(maceR)
+run_app()
+```
+
+Then:
+
+1. Navigate to the **Input** tab and upload your activity data CSV files and metadata file
+2. Review the **Data Structure** tab to verify data loading  
+3. Use the **Your Data** tab to inspect individual animal records
+4. Set analysis parameters in the **Analysis** tab
+5. Generate and export plots and tables in the **Plots** tab
+
+## Data Requirements
+
+- **Activity data files** (CSV): Must contain columns for time/timepoint and activity counts
+- **Metadata file** (CSV): Must include animal identifiers and experimental factors (sex, genotype, cabinet, etc.)
+- See [data-raw/maceR_toy_dataset/](data-raw/maceR_toy_dataset/) for example data format
+
+## Citation
+
+If you use maceR in your research, please cite:
+
+Ferrari, M. maceR: Interactive Analysis of Circadian Locomotor Activity. <https://github.com/cabaJr/maceR>
 
 ## Installation
 

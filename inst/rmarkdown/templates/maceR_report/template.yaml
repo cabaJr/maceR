@@ -1,0 +1,5 @@
+name: maceR Report
+description: >
+   Generate a comprehensive report of circadian locomotor activity analysis
+   including actograms, periodograms, and statistical summaries.
+create_dir: false

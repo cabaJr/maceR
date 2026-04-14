@@ -52,6 +52,7 @@ Annotate <- R6::R6Class("Annotate",
                     avg_day_plots = list(AvgDay1 = list()
                       
                     ),
+                    Report = list(),
                     output_list_acto = dplyr::tibble(
                       # unique keyword that identifies the plots that have been requested from the user in the Analysis tab
                       "handler" = c("total", "sex", "genotype", "cabinet",
@@ -152,7 +153,7 @@ Annotate <- R6::R6Class("Annotate",
                         "Light_On" = as.character(),
                         "Datapoints" = as.character()
                       )
-                      for(h in seq_len(length(myCleanMice))){
+                      for(h in seq_along(myCleanMice)){
                         d2 <- dplyr::tibble(
                           "id" = myCleanMice[[h]]$id,
                           "Sex" = myCleanMice[[h]]$sex,
@@ -184,7 +185,7 @@ Annotate <- R6::R6Class("Annotate",
                           "Activity" = as.character()
                         )
                         if (id == "All"){
-                        for (h in seq_len(length(myCleanMice))){
+                        for (h in seq_along(myCleanMice)){
                           d1 <- dplyr::tibble(
                             "id" = myCleanMice[[h]]$id,
                             "Sex" = myCleanMice[[h]]$sex,
