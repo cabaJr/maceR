@@ -821,5 +821,3 @@ Annotate <- R6::R6Class("Annotate",
                     ###
                     )
 )
-
-
